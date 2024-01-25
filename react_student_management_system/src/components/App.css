@@ -1,0 +1,25 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+#help{
+  background-color:#b61271;
+  color: white;
+  font-weight: 700;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  margin-top: 3%;
+}
+.App > #title{
+  color: #f00000;
+  margin-top: 5%;
+  margin-bottom: 3%;
+}
+hr{
+  border: 1px solid black;
+  width: 100vw;
+}
