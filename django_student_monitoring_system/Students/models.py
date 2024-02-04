@@ -9,6 +9,7 @@ class StudentMaster(models.Model):
     phone = models.CharField(max_length=10, unique=True)
     currentSem = models.IntegerField() #which sem the student is in
     parentNumber = models.CharField(max_length=10, unique=True)
+    #section of student should be added!
 
     def __str__(self):
         return self.name
