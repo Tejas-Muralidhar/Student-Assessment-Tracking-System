@@ -1,11 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-def subject_list_view(request): 
-    # Implement subject list logic here
-    #to be removed
-    return JsonResponse({'message': 'Subject list view'})
-
 def subject_details_view(request, subject_id): #Student, Hod and Faculty only!
     '''
     Implement code to get details from tables and send it back if it is Hod or faculty.
