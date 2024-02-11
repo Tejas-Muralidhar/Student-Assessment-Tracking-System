@@ -3,11 +3,11 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from django.db import connection
+import json
 
-@csrf_exempt
-def user_profile_view(request): #path is: localhost:8000/accounts/view-profile/
+def UserProfile(request): #path is: localhost:8000/accounts/view-profile/
     if request.method == 'GET':
-        userTypeKey = request.GET.get('userTypeKey')  # Assuming user_id is passed as a query parameter
+        userTypeKey = request.GET.get('user_type_key')  # Assuming user_id is passed as a query parameter
         
         try:
             with connection.cursor() as cursor:
@@ -28,9 +28,8 @@ def user_profile_view(request): #path is: localhost:8000/accounts/view-profile/
     else:
         return JsonResponse({'message': 'Only GET requests are allowed'})
 
-@csrf_exempt
-def user_authentication(request): #path is: localhost:8000/accounts/user-auth/
-    if request.method == 'POST':
+def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
+    if request.method == 'POST': 
         email = request.POST.get('email')  # Assuming email is passed from the form
         password = request.POST.get('password')  # Assuming password is passed from the form
         
@@ -55,11 +54,26 @@ def user_authentication(request): #path is: localhost:8000/accounts/user-auth/
         return JsonResponse({'message': 'Only POST requests are allowed'})
     
 
-@csrf_exempt  # Disable CSRF protection for simplicity; consider enabling in production
-def insert_user_details(request): #path is: localhost:8000/accounts/register-user/
+def InsertUserDetails(request): #path is: localhost:8000/accounts/register-user/
     if request.method == 'POST':
         user_type = request.POST.get('user_type')  # Assuming user_type is passed from the form
         json_data = request.POST.get('json_data')  # Assuming json_data is passed from the form
+
+
+        # ~~~~~~~~~~~~~~~
+        #to check if the post request works:
+        # data = {
+        #         "facultyID": "FAC011",
+        #         "facultyName": "Mrs.Meenakshi",
+        #         "gender": "F",
+        #         "facultyPhone": "7803210",
+        #         "userEmail": "meenaki@gmal.com",
+        #         "userPassword": "21356",
+        #         "roleId_id": "2"
+        #         }
+        
+        # json_data = json.dumps(data)
+        # ~~~~~~~~~~~~~~~
         
         with connection.cursor() as cursor:
             cursor.callproc('SPInsertUserDetails', [user_type, json_data])

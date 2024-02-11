@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import subject_details_view
+from .views import AllMarksSubject,GetSubjects
 
 urlpatterns = [
-    path('details-subject/<str:subject_id>/',subject_details_view,name='subject-details'),
+    path('show-subject-marks/',AllMarksSubject,name='AllMarksSubject'), #admin use
+    path('get-subjects/',GetSubjects,name="GetSubjects") #faculty and student use
 ]

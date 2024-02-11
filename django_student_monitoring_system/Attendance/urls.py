@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import attendance_entry_view,show_attendance_view
+from .views import InsertStudentAttendance,GetAttendance,InsertMaxAttendance
 
 urlpatterns = [
-    path('attendance-entry/', attendance_entry_view, name='attendance_entry'),
-    path('attendance-view/', show_attendance_view, name="attendance_view"),
+    path('attendance-entry/', InsertStudentAttendance, name='InsertStudentAttendance'), #faculty use
+    path('attendance-view/', GetAttendance, name="GetAttendance"), #student and faculty use
+    path('set-max-attendance/',InsertMaxAttendance,name="InsertMaxAttendance") #faculty only
 ]
