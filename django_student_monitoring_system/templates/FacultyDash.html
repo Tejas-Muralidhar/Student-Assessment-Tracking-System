@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{% static FacultyDash.css %}">
+</head>
+<body>
+    <!-- Top margin divided into three parts: left, center, and right -->
+    <div class="top-margin">
+        <div class="left-margin">
+            <img src="{% static Left logo.jpg %}" alt="Left Logo">
+        </div>
+        <div class="center-margin">Student Assesment Tracking System</div>
+        <div class="right-margin">           
+            <img src="{% static Right logo.jpg %}" alt="Right Logo">
+        </div>
+    </div>
+
+    <!-- User profile container -->
+    <div class="container faculty-profile">
+        <div class="left-column">
+            <div class="logo-container">
+                <img src="{% static facultylogo.png %}" alt="Logo">
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="profile">
+                <h1>Faculty Profile</h1>
+                <ul><li><strong>User ID:</strong> <span id="user-id"></span></p></li>
+                    <li><p><strong>Email:</strong> <span id="email"></span></p></li>
+                    <li><p><strong>User Type:</strong> <span id="user-type"></span></li>
+                    <li><strong>Name:</strong> </li>
+                    <li><strong>Gender:</strong> </li>
+                    <li><strong>Phone Number:</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="Buttons">
+        <div class="button-column1">
+            <button class="main-button1" onmouseover="this.style.backgroundColor='rgba(17, 13, 87, 0.911)';" onmouseout="this.style.backgroundColor='#f6720c';">Marks</button>
+            <div class="sub-buttons1">
+                <button class="sub-button1a">View</button>
+                <button class="sub-button1b">Edit</button>
+            </div>
+        </div>
+        <div class="button-column2">
+            <button class="main-button2" onmouseover="this.style.backgroundColor='rgba(17, 13, 87, 0.911)';" onmouseout="this.style.backgroundColor='#f6720c';">Attendance</button>
+            <div class="sub-buttons2">
+                <button class="sub-button2a">View</button>
+                <button class="sub-button2b">Edit</button>
+            </div>
+        </div>
+        <div class="button-column3">
+            <button class="main-button3" onmouseover="this.innerHTML='View'; this.style.backgroundColor='rgba(17, 13, 87, 0.911)';" onmouseout="this.innerHTML='Students'; this.style.backgroundColor='#f6720c';">Students</button>
+        </div>
+        <div class="button-column4">
+            <button class="main-button3" onmouseover="this.innerHTML='View'; this.style.backgroundColor='rgba(17, 13, 87, 0.911)';" onmouseout="this.innerHTML='Subjects'; this.style.backgroundColor='#f6720c';">Subjects</button>
+        </div>
+    </div>
+    
+    
+    <div class="bottom-margin"></div>
+
+</body>
+</html>
