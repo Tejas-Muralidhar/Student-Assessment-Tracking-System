@@ -1,0 +1,129 @@
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header {
+    background-color: #09015f;
+    color: #ffffff;
+    padding: 20px;
+    /* position: fixed; */
+}
+
+.logo-left img,
+.logo-right img {
+    max-height: 50px; 
+}
+
+.nav-text h1 {
+    margin: 0;
+    text-align: center;
+}
+
+.logo-right img{
+    max-width:140px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+#header {
+    background-color: #09015f;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+#form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+#login-form {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+}
+
+#login-form input[type="email"],
+#login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#login-form input[type="email"]:focus,
+#login-form input[type="password"]:focus {
+    outline: none;
+    border-color: #09015f;
+}
+
+#login-btn {
+    width: 100%;
+    background-color: #ff6900;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#login-btn:hover {
+    background-color: #09015f;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #09015f;
+    color: #ffffff;
+    padding: 3px; 
+    text-align: center;
+    font-size: 14px; 
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+    padding-right: 20px;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.arrow {
+    margin-left: 5px; 
+}

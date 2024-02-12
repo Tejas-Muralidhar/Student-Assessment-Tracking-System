@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/StudentDash.css' %}">
+    <script src="{% static 'js/StudentDash.js' %}"></script>
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <div id="header">
+        <div id="navbar">
+            <div class="logo-left">
+                <img src="{% static 'images/RNSITCSE logo.jpg' %}" alt="Left Logo">
+            </div>
+            <div class="nav-text">
+                <!-- <h1>RNSIT</h1> -->
+                <h1>Student Assessment Tracking System</h1>
+            </div>
+            <div class="logo-right">
+                <img src="{% static 'images/RNSIT logo.jpg' %}" alt="Right Logo">
+            </div>
+        </div>        
+    </div>
+
+    <div id="student-details">
+        <div class="hero">
+            <div class="column">
+                <h2>Student</h2>
+                <img src="{% static 'images/studentIcon.jpg' %}" alt="Student Icon">
+            </div>
+            <div class="column details">
+                <p><strong>Name:</strong> abc </p>
+                <p><strong>USN:</strong> 136 </p>
+                <p><strong>Sem:</strong> 5</p>
+                <p><strong>Section:</strong> C </p>
+                <p><strong>Phone:</strong> 9876543210 </p>
+                <p><strong>Email:</strong> abc@gmail.com </p>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <div class="actions">
+                <button class="button marks" onmouseover="changeButtonText(this, 'View')" onclick = {% url 'GetStudentMarksWithMax' %} >Marks</button>
+                <button class="button attendance" onmouseover="changeButtonText(this, 'View')" onclick = {% url 'GetAttendance' %} >Attendance</button>
+                <button class="button subjects" onmouseover="changeButtonText(this, 'View')" onclick = {% url 'GetSubjects' %}>Subjects</button>
+            </div>            
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="left">
+                <p>&copy; RNSIT </p>
+            </div>
+            <div class="right">
+                <p><a href="https://www.rnsit.ac.in/">Visit our college website<span class="arrow">&#10140;</span></a></p>
+            </div>
+        </div>
+    </footer>        
+</body>
+</html>
