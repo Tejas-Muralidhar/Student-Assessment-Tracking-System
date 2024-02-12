@@ -1,0 +1,218 @@
+/* Reset default margin and padding */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Top margin divided into three parts */
+.top-margin {
+    display: flex;
+    height: 100px; /* Adjust height as needed */
+    background-color: rgba(17, 13, 87, 0.911); /* Dark blue color */
+}
+
+.left-margin, .right-margin, .center-margin {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: aliceblue;
+    margin: 0 10px; /* Add margin between left and right */
+}
+
+.left-margin img  {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 10px 200px 10px 40px;
+}
+
+.right-margin img {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 10px 0px 0px 100px;
+}
+
+/* Container for user profile */
+.container {
+    display: flex;
+    margin: 0; /* Remove default margin */
+    width: 100%; /* Full width */
+    height: 56vh; /* Full height */
+     /* Add shadow */
+    background-color: rgb(255, 255, 255); /* Set background color */
+}
+.texting{
+    padding: 10px 10px 10px 10px;
+}
+
+/* Faculty Profile specific styles */
+.faculty-profile {
+    flex: 1; /* Take up remaining space */
+}
+
+.faculty-profile .profile {
+    padding: 10px 10px 10px 10px;
+}
+.logo-container {
+    border-radius: 50%; /* Make the container round */
+    overflow: hidden; /* Hide overflow content to ensure circular shape */
+}
+
+.faculty-profile .profile h1 {
+    color: #f6720c; /* Adjust color as needed */
+    text-align: center;
+}
+
+.faculty-profile .profile ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.faculty-profile .profile ul li {
+    margin-bottom: 20px; /* Add margin between list items */
+}
+
+.faculty-profile .profile ul li strong {
+    font-weight: bold;
+    margin-right: 5px;
+}
+div.left-column {
+    padding: 18px 110px 10px 310px;
+}
+div.right-margin {
+    padding: 8px 43px 15px 228px;
+}
+div.left-margin {
+    padding: 5px 150px 6px 0px;
+}
+.bottom-margin {
+    background-color: rgba(17, 13, 87, 0.911); /* Dark blue color */
+    height: 69px; /* Adjust the height of the bottom margin */
+}
+.Buttons {
+    display: flex;
+    justify-content: center;
+    padding: 10px 10px 10px 160px;
+    height: 93px;
+    box-shadow: 10px 30px 10px black;
+}
+
+.button-column1 {
+    text-align: center;
+    margin-right:0px; /* Adjust margin between button columns */
+    padding: 0px 41px 10px 0px;
+}
+.button-column2 {
+    text-align: center;
+    margin-right: 40px; /* Adjust margin between button columns */
+    padding: 10xp 10px 10px 10px;
+}
+.button-column3 {
+    text-align: center;
+    margin-right: 0px; /* Adjust margin between button columns */
+    padding: 0px 41px 10px 0px;
+}
+.button-column4 {
+    text-align: center;
+    margin-right: 100px; /* Adjust margin between button columns */
+    padding: 0px 41px 10px 0px;
+}
+.main-button1 {
+    padding: 10px 40px;
+    background-color: #f6720c;
+    border-color: #f6720c;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px; /* Adjust margin between main buttons */
+}
+.main-button1:hover{
+    border-color:  rgba(17, 13, 87, 0.911);
+}
+.main-button2:hover{
+    border-color:  rgba(17, 13, 87, 0.911);
+}
+.main-button3:hover{
+    border-color:  rgba(17, 13, 87, 0.911);
+}
+.main-button4:hover{
+    border-color:  rgba(17, 13, 87, 0.911);
+}
+.main-button2 {
+    padding: 10px 30px;
+    background-color: #f6720c;
+    border-color: #f6720c;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px; /* Adjust margin between main buttons */
+}
+.main-button3 {
+    padding: 10px 30px;
+    background-color: #f6720c;
+    border-color: #f6720c;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px; /* Adjust margin between main buttons */
+}
+.main-button4 {
+    padding: 10px 30px;
+    background-color: #f6720c;
+    border-color: #f6720c;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px; /* Adjust margin between main buttons */
+}
+
+.sub-buttons1 {
+    display: none;
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+.sub-buttons2 {
+    display: none;
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.sub-button1a {
+    padding: 5px 10px;
+    margin-bottom: 5px; /* Adjust margin between sub-buttons */
+    background-color: #f6720c;
+    border-color: #f6720c;
+}
+.sub-button1b {
+    padding: 5px 10px;
+    margin-bottom: 5px; /* Adjust margin between sub-buttons */
+    background-color: #f6720c;
+    border-color: #f6720c;
+}
+.sub-button2a {
+    padding: 5px 10px;
+    margin-bottom: 5px; /* Adjust margin between sub-buttons */
+    background-color: #f6720c;
+    border-color: #f6720c;
+}
+.sub-button2b {
+    padding: 5px 10px;
+    margin-bottom: 5px; /* Adjust margin between sub-buttons */
+    background-color: #f6720c;
+    border-color: #f6720c;
+}
+.button-column1:hover .sub-buttons1 {
+    display: block;
+   
+}
+.button-column2:hover .sub-buttons2 {
+    display: block;
+   color: #f6720c;
+}
+.sub-buttons {
+    position: absolute;
+    display: none;
+}
+
+.main-button:hover + .sub-buttons {
+    display: block;
+}
+
