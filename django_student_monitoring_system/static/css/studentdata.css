@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    flex: 1;
+    width: 100%;
+    height: 10%;
+    background-color: rgba(17, 13, 87, 0.911);
+}
+
+.footer {
+    flex: 1;
+    width: 100%;
+    height: 10%;
+    background-color: rgba(17, 13, 87, 0.911);
+}
+
+.gap {
+    height: 20%;
+    width: 100%;
+}
+
+.box {
+    flex: 6;
+    position: relative;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;   
+    /* Added box shadow */
+}
+
+.subbox {
+    width: 92%; /* Adjust width to account for padding */
+    height: 80%;
+    padding: 10px; /* Adjust padding */
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: -3% 31% 26% 1 ;/* Center vertically and horizontally */
+    box-shadow: 0px 14px 40px rgba(80, 76, 76, 0.842);
+}
+
+.download-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color:  #f6720c;
+    padding: 8px 15px 10px 10px; /* Added padding */
+    color: white;
+    border: none;
+    cursor: pointer;
+     /* Added box shadow */
+}
+
+.download-btn:hover {
+    background-color:  rgba(17, 13, 87, 0.911);
+}
+
+.fa-arrow-left {
+   margin: 1% 0% 0% 1%;
+   size:12;
+
+    
+}
+
+i.fa-solid.fa-arrow-left:hover {
+    color: blue; /* Change color to blue on hover */
+}
