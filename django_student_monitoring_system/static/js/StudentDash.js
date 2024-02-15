@@ -10,4 +10,3 @@ function changeButtonText(button, newText) {
         button.textContent = originalText;
     };
 }
-

@@ -1,43 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/Login.css' %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/Login.css' %}" />
     <title>SATS</title>
-</head>
-<body>
-    <div id="header">
-            <div id="navbar">
-            <div class="logo-left">
-                <img src="{% static 'images/RNSIT logo.jpg' %}" alt="Left Logo">
-            </div>
-            <div class="nav-text">
-                <h1>Student Assessment Tracking System</h1>
-            </div>
-            <div class="logo-right">
-                <img src="{% static 'images/RNSITCSE logo.jpg' %}" alt="Right Logo">
-            </div>
-        </div>        
-    </div>
+  </head>
+  <body>
+    {% include "header.html" %}
 
     <div id="form-container">
-        <form id="login-form"  method="POST">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" id="login-btn" action={% url 'UserAuthorization' %}>Login</button>
-        </form>
+      <form
+        id="login-form"
+        action="{% url 'UserAuthorization' %}"
+        method="POST"
+      >
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Email" required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit" id="login-btn">Login</button>
+      </form>
     </div>
-    <footer>
-        <div class="container">
-            <div class="left">
-                <p>&copy; RNSIT </p>
-            </div>
-            <div class="right">
-                <p><a href="https://www.rnsit.ac.in/">Visit our college website<span class="arrow">&#10140;</span></a></p>
-            </div>
-        </div>
-    </footer>       
-</body>
+
+    {% include "footer.html" %}
+  </body>
 </html>

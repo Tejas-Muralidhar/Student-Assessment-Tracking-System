@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.db import connection
 from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 def AllMarksSubject(request):
     if request.method == 'GET':
@@ -31,13 +33,49 @@ def GetSubjects(request):
         
         with connection.cursor() as cursor:
             cursor.callproc('SPGetSubjects', [user_type_key])
+            res = cursor.fetchall()
             # Fetch the result set returned by the stored procedure
-            cursor.execute('SELECT * FROM #TEMPORARY_TABLE_NAME')  # Replace #TEMPORARY_TABLE_NAME with the actual name of the temporary table created in your stored procedure
             columns = [col[0] for col in cursor.description]
-            results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            results = [dict(zip(columns, row)) for row in res]
 
             # Return the results as JSON response
             return JsonResponse({'subjects': results})
     else:
         # Return error response for non-GET requests
         return JsonResponse({'message': 'Only GET requests are allowed'})
+
+@csrf_exempt
+def InsertSubjects(request):
+    if request.method == 'POST':
+        try:
+            data = request.body.decode('utf-8')
+            data_json = json.loads(data)
+            # data_json = {
+            # "subjectCode": "21CS21",
+            # "subjectName": "Math2",
+            # "subjectType": 1,
+            # "sem": 2,
+            # "isElective": 0,
+            # "credits": 3,
+            # "IA1": 50,
+            # "IA2": 50,
+            # "IA3": 50,
+            # "avgIA": 50,
+            # "assignment1": 10,
+            # "assignment2": 10,
+            # "quiz1": 10,
+            # "quiz2": 10,
+            # "maxIAMarks": 50,
+            # "labObservation": 0,
+            # "labRecord": 0,
+            # "labViva": 0,
+            # "maxEAMarks":50
+            # }
+
+            with connection.cursor() as cursor:
+                cursor.callproc('SPInsertSubjects', [json.dumps(data_json)])
+                return JsonResponse({'message': 'Subjects inserted successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)

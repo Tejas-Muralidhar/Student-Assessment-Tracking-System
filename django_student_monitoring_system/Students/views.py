@@ -1,24 +1,22 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db import connection
+import json
+from django.views.decorators.csrf import csrf_exempt
 
-def student_mapping_view(request): #Accessed by Student, Fac and HOD
-    '''
-    Implement subject enrollment logic here
-    student subject and mark and attendance. 
-    SPstudent_mapping(IN usn)
-    it gets back table of everything related to student. Personal details, Marks, Attendance of every subject taken.
-    '''
-    return JsonResponse({'message': 'Subject enrollment view'})
+@csrf_exempt
+def MapStudentSubject(request):
+    if request.method == 'POST':
+        try:
+            data = request.body.decode('utf-8')
+            data_json = json.loads(data)
+            ip_user_type_key = data_json.get('user_type_key')
+            ip_subject_code = data_json.get('subject_code')
 
-def multiple_student_mapping_view(request): #Accessed only by Faculty and Hod!
-    '''
-    Implement subject enrollment logic here
-    student subject and mark and attendance.
-    SPmultiple_student_mapping(IN semester, IN section)
-    it gets back table of everything related to class of students. Personal details, Marks, Attendance and Faculty Name of every subject taken.
-    '''
-    return JsonResponse({'message':'This gives back multiple student subject mapping'})
-
-# views to write down to send info into db like faculty entering marks
-
+            with connection.cursor() as cursor:
+                cursor.callproc('SPMapStudentSubject', [ip_user_type_key, ip_subject_code])
+                return JsonResponse({'message': 'Student subject mapping successful'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)

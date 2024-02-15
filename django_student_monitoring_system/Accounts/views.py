@@ -5,55 +5,82 @@ from django.http import HttpResponse,JsonResponse
 from django.db import connection
 import json
 
-def UserProfile(request): #path is: localhost:8000/accounts/view-profile/
-    if request.method == 'GET':
-        userTypeKey = request.GET.get('user_type_key')  # Assuming user_id is passed as a query parameter
+def UserProfile(user_type_key): 
+    try:
         
-        try:
-            with connection.cursor() as cursor:
-                cursor.callproc('SPUserProfile', [userTypeKey])
+        with connection.cursor() as cursor:
+            cursor.callproc('SPUserProfile', [user_type_key])
+            # Fetch all the results
+            results = cursor.fetchall()
+            # Close the cursor explicitly
+            
+            if results:
+                # Assuming SPUserProfile returns a single row, you can directly access the first row
+                row = results[0]
                 columns = [col[0] for col in cursor.description]
-                
-                # Fetch the row for the user
-                row = cursor.fetchone()
-                
-                if row:
-                    # Convert row to dictionary
-                    profile_data = dict(zip(columns, row))
-                    return JsonResponse({'user_profile': profile_data})
-                else:
-                    return JsonResponse({'message': 'User profile not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'message': str(e)}, status=500)
-    else:
-        return JsonResponse({'message': 'Only GET requests are allowed'})
+                # Convert row to dictionary
+                profile_data = dict(zip(columns, row))
+                return profile_data 
+            else:
+                return None
+    except Exception as e:
+        # Log the exception for debugging purposes
+        print("Error fetching user profile:", e)
+        # Return None or an appropriate error message
+        return 500
 
+
+
+@csrf_exempt
 def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
     if request.method == 'POST': 
         email = request.POST.get('email')  # Assuming email is passed from the form
         password = request.POST.get('password')  # Assuming password is passed from the form
-        
-        with connection.cursor() as cursor:
-            cursor.callproc('SPUserAuthorization', [email, password])
-            results = cursor.fetchall()
 
-            if results:
-                # If a valid tuple is returned, it means the user is authenticated
-                user_data = { #to be altered accordingly to what is sent
-                    'user_email': results[0][0],
-                    'role_id': results[0][1],
-                    'user_type': results[0][2],
-                    'user_display_name': results[0][3],
-                    'user_phone': results[0][4]
-                }
-                return JsonResponse({'authenticated': True, 'user_data': user_data})
-            else:
-                # If no tuple is returned, it means authentication failed
-                return JsonResponse({'authenticated': False, 'message': 'Invalid email or password'})
+        try:
+            with connection.cursor() as cursor:
+                cursor.callproc('SPUserAuthorization', [email, password]) #PROCUDURE SHOULD SEND BACK USER_TYPE_KEY I.E FACID OR USN
+                results = cursor.fetchall()
+                cursor.close()
+                if results:
+                    # If a valid tuple is returned, it means the user is authenticated
+                    user_data = { #to be altered accordingly to what is sent
+                        'user_email': results[0][0],
+                        'user_type': results[0][1],
+                        'user_type_key': results[0][2],
+                        'user_display_name': results[0][3],  
+                        'user_phone': results[0][4],
+                        'role_id': results[0][5]
+                    }
+
+                    if user_data['user_type'] == 'Faculty':
+                        data = UserProfile(user_data['user_type_key']) #WE SEND FACID TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE FACULTY
+                        if data == None:
+                            return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
+                        elif data == 500:
+                            return JsonResponse({'message': 'Try again...'}, status=500)
+                        else:
+                            return render(request,"FacultyDash.html",{'data': data}) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
+                    
+                    elif user_data['user_type'] == 'Student':
+                        data = UserProfile(user_data['user_type_key']) #WE SEND USN TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE STUDENT
+                        if data == None:
+                            return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
+                        elif data == 500:
+                            return JsonResponse({'message': 'Try again...'}, status=500)
+                        else:
+                            return render(request,"StudentDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
+                    else:
+                        return JsonResponse({'authenticated': True, 'user_data': user_data})
+                else:
+                    # If no tuple is returned, it means authentication failed
+                    return JsonResponse({'authenticated': False, 'message': 'Invalid email or password'})
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
     else:
         return JsonResponse({'message': 'Only POST requests are allowed'})
     
-
+@csrf_exempt
 def InsertUserDetails(request): #path is: localhost:8000/accounts/register-user/
     if request.method == 'POST':
         user_type = request.POST.get('user_type')  # Assuming user_type is passed from the form
@@ -85,3 +112,6 @@ def InsertUserDetails(request): #path is: localhost:8000/accounts/register-user/
     else:
         # Return error response for non-POST requests
         return JsonResponse({'message': 'Only POST requests are allowed'})
+    
+def Login(request):
+    return render(request,"Login.html")

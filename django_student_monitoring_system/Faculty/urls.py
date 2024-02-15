@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import faculty_subject_view
+from .views import GetMyStudents,MapFacultySubject
 
 urlpatterns = [
-    path('faculty-mapping/',faculty_subject_view,name='faculty-subject-mapping'),
+    path('get-students/',GetMyStudents,name='GetMyStudents'),
+    path('map-facutly-subject/',MapFacultySubject,name='MapFacultySubject'),
 ]

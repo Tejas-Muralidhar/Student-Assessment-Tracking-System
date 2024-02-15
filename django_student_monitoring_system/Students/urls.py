@@ -1,6 +1,6 @@
 from django.urls import path
-# from .views import student_profile_view
+from .views import MapStudentSubject
 
 urlpatterns = [
-    # path('view-student-profile/',student_profile_view,name='student-profile'),
+    path('map-student-subject/',MapStudentSubject,name='MapStudentSubject'),
 ]

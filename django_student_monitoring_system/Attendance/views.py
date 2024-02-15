@@ -27,7 +27,7 @@ def GetAttendance(request):
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'}, status=405)    
 
-
+@csrf_exempt
 def InsertStudentAttendance(request): #to be changed in mysql SP
     if request.method == 'POST':
         try:
@@ -40,7 +40,7 @@ def InsertStudentAttendance(request): #to be changed in mysql SP
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
-
+@csrf_exempt
 def InsertMaxAttendance(request):
     if request.method == 'POST':
         try:

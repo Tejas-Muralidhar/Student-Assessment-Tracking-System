@@ -1,28 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="{% static FacultyDash.css %}">
+    <link rel="stylesheet" href="{% static 'css/FacultyDash.css' %}">
 </head>
 <body>
     <!-- Top margin divided into three parts: left, center, and right -->
-    <div class="top-margin">
-        <div class="left-margin">
-            <img src="{% static Left logo.jpg %}" alt="Left Logo">
-        </div>
-        <div class="center-margin">Student Assesment Tracking System</div>
-        <div class="right-margin">           
-            <img src="{% static Right logo.jpg %}" alt="Right Logo">
-        </div>
-    </div>
+    {% include "header.html" %}
 
     <!-- User profile container -->
     <div class="container faculty-profile">
         <div class="left-column">
             <div class="logo-container">
-                <img src="{% static facultylogo.png %}" alt="Logo">
+                <img src="{% static 'images/facultylogo.png' %}" alt="Logo">
             </div>
         </div>
         <div class="right-column">
@@ -62,7 +55,7 @@
     </div>
     
     
-    <div class="bottom-margin"></div>
+    {% include "footer.html" %}
 
 </body>
 </html>
