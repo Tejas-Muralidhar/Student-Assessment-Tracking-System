@@ -1,78 +1,101 @@
+
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100%;
 }
 
-.header {
+.header, .footer {
     flex: 1;
-    width: 100%;
-    height: 10%;
-    background-color: rgba(17, 13, 87, 0.911);
-}
-
-.footer {
-    flex: 1;
-    width: 100%;
-    height: 10%;
     background-color: rgba(17, 13, 87, 0.911);
 }
 
 .gap {
     height: 20%;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .box {
     flex: 6;
     position: relative;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;   
-    /* Added box shadow */
+    justify-content: center;
+    align-items: center;
 }
 
 .subbox {
-    width: 92%; /* Adjust width to account for padding */
+    width: 92%;
     height: 80%;
-    padding: 10px; /* Adjust padding */
-    
+    padding: 10px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin: -3% 31% 26% 1 ;/* Center vertically and horizontally */
-    box-shadow: 0px 14px 40px rgba(80, 76, 76, 0.842);
+   
 }
 
 .download-btn {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background-color:  #f6720c;
-    padding: 8px 15px 10px 10px; /* Added padding */
+    background-color: #f6720c;
+    padding: 8px 15px 10px 10px;
     color: white;
     border: none;
     cursor: pointer;
-     /* Added box shadow */
+    border-radius: 95%;
 }
 
 .download-btn:hover {
-    background-color:  rgba(17, 13, 87, 0.911);
+    background-color: rgba(17, 13, 87, 0.911);
 }
 
 .fa-arrow-left {
-   margin: 1% 0% 0% 1%;
-   size:12;
-
-    
+margin: 0% 0% 0% 1%; /* Adjusted margin to move the arrow to the left */
+size: 12;
+position: absolute; /* Added absolute positioning */
+left: 10px; /* Adjusted left position */
 }
 
+
 i.fa-solid.fa-arrow-left:hover {
-    color: blue; /* Change color to blue on hover */
+    color: blue;
+}
+
+table {
+border-collapse: collapse;
+margin: 0 auto; /* Center horizontally */
+text-align: center; /* Align content within table cells */
+margin-bottom: 10px;
+}
+
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+#downloadButton {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 95px;
+    cursor: pointer;
 }
