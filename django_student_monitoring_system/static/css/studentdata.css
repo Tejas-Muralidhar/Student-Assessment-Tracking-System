@@ -1,0 +1,101 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.header, .footer {
+    flex: 1;
+    background-color: rgba(17, 13, 87, 0.911);
+}
+
+.gap {
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    flex: 6;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subbox {
+    width: 92%;
+    height: 80%;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   
+}
+
+.download-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #f6720c;
+    padding: 8px 15px 10px 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 95%;
+}
+
+.download-btn:hover {
+    background-color: rgba(17, 13, 87, 0.911);
+}
+
+.fa-arrow-left {
+margin: 0% 0% 0% 1%; /* Adjusted margin to move the arrow to the left */
+size: 12;
+position: absolute; /* Added absolute positioning */
+left: 10px; /* Adjusted left position */
+}
+
+
+i.fa-solid.fa-arrow-left:hover {
+    color: blue;
+}
+
+table {
+border-collapse: collapse;
+margin: 0 auto; /* Center horizontally */
+text-align: center; /* Align content within table cells */
+margin-bottom: 10px;
+}
+
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+#downloadButton {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 95px;
+    cursor: pointer;
+}

@@ -1,0 +1,22 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <link rel="stylesheet" href="{% static 'css/errorpage.css' %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+</head>
+<body>
+    <div class="container">
+        <h2>Oops! Page not found.</h2>
+       
+        <div class="errortype">404</div>
+        <img src="{% static'images/Error3.jpeg'%}" alt="Error Image">
+          
+    <h4>We can't find the page you are looking for.</h4>
+    <button type="button" class="butt"> <i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i>   GO BACK HOME</button>
+</div>
+</body>
+</html>

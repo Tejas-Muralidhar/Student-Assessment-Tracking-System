@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/studentdata1.css'%}">
+   
+</head>
+<body>
+    <div class="container">
+        <div class="header"></div>
+        <div class="gap">
+            <i class="fa-solid fa-arrow-left" style="color: #f6720c;"></i>
+        </div>
+        <div class="box">
+            <div class="subbox">
+                <table id="attendanceTable"></table>
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script>
+        var jsonData = {
+            "data": [
+                { "SUBJECTCODE": "21CS51"},
+                { "SUBJECTCODE": "21CS52"},
+                {"SUBJECTCODE": "21CS53"},
+                { "SUBJECTCODE": "21CS54"},
+                {"SUBJECTCODE": "21CSL581"}
+            ]
+        };
+
+        function renderTables(data) {
+            var table = document.createElement("table");
+            table.id = "attendanceTable";
+
+            var headerRow = table.insertRow();
+            for (var key in data.data[0]) {
+                var headerCell = headerRow.insertCell();
+                headerCell.textContent = key;
+            }
+
+            var maxColumnLengths = {};
+            data.data.forEach(function (subject) {
+                for (var key in subject) {
+                    var contentLength = String(subject[key]).length;
+                    maxColumnLengths[key] = Math.max(maxColumnLengths[key] || 0, contentLength);
+                }
+            });
+
+            data.data.forEach(function (subject) {
+                var dataRow = table.insertRow();
+                for (var key in subject) {
+                    var dataCell = dataRow.insertCell();
+                    dataCell.textContent = subject[key];
+                    dataCell.style.width = (maxColumnLengths[key] * 10) + 'px';
+                }
+            });
+
+            document.querySelector(".subbox").appendChild(table);
+        }
+
+        renderTables(jsonData);
+
+        var downloadButton = document.createElement("button");
+        downloadButton.className = "download-btn";
+        downloadButton.textContent = "Download";
+        downloadButton.addEventListener("click", function () {
+            var table = document.querySelector("table");
+            var tableContent = [];
+            table.querySelectorAll('tr').forEach(function (row) {
+                var rowData = [];
+                row.querySelectorAll('td').forEach(function (cell) {
+                    rowData.push(cell.textContent);
+                });
+                tableContent.push(rowData);
+            });
+            var ws = XLSX.utils.aoa_to_sheet(tableContent);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
+            XLSX.writeFile(wb, 'attendance_table.xlsx');
+        });
+
+        document.querySelector(".subbox").appendChild(downloadButton);
+    </script>
+</body>
+</html>
