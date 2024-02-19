@@ -3,6 +3,7 @@ from django.db import connection
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from Accounts.views import UserAuthorization 
 
 def AllMarksSubject(request):
     if request.method == 'GET':
@@ -26,7 +27,8 @@ def AllMarksSubject(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'}, status=405)
-
+    
+@csrf_exempt
 def GetSubjects(request):
     if request.method == 'GET':
         user_type_key = request.GET.get('user_type_key')  # Assuming usn or facid is passed as a query parameter
@@ -42,7 +44,8 @@ def GetSubjects(request):
             return JsonResponse({'subjects': results})
     else:
         # Return error response for non-GET requests
-        return JsonResponse({'message': 'Only GET requests are allowed'})
+        data = {'message': 'Only GET requests are allowed'}
+        return render(request,'ErrorPage.html',data)
 
 @csrf_exempt
 def InsertSubjects(request):
@@ -78,4 +81,5 @@ def InsertSubjects(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+        data = {'message': 'Only POST requests are allowed', 'status':405}
+        return render(request,'ErrorPage.html',data)

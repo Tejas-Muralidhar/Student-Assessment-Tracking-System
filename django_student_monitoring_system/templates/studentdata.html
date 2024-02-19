@@ -1,94 +1,127 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combined Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/studentdata1.css'%}">
-   
-</head>
-<body>
-    <div class="container">
-        <div class="header"></div>
-        <div class="gap">
-            <i class="fa-solid fa-arrow-left" style="color: #f6720c;"></i>
-        </div>
-        <div class="box">
-            <div class="subbox">
-                <table id="attendanceTable"></table>
-            </div>
-        </div>
-        <div class="footer"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Display</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/StudentData.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/Header.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Footer.css' %}" />
+  </head>
+  <body>
+    {% include "header.html" %}
+    <div class="main-div">
+      {% comment %}
+      <i class="fa-solid fa-arrow-left" style="color: #f6720c"></i>
+      {% endcomment %}
+      <div class="theory-box box">
+        <h1>Theory Subjects:</h1>
+      </div>
+      <div class="lab-box box">
+        <h1>Lab Subjects:</h1>
+      </div>
+      <button class="download-btn">Download</button>
     </div>
-
+    {% include "footer.html" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
     <script>
-        var jsonData = {
-            "data": [
-                { "SUBJECTCODE": "21CS51"},
-                { "SUBJECTCODE": "21CS52"},
-                {"SUBJECTCODE": "21CS53"},
-                { "SUBJECTCODE": "21CS54"},
-                {"SUBJECTCODE": "21CSL581"}
-            ]
-        };
+        function renderTables(data, container) {
+          // Check if the container is null or undefined
+          if (!container) {
+              console.error("Container element is null or undefined.");
+              return;
+          }
 
-        function renderTables(data) {
-            var table = document.createElement("table");
-            table.id = "attendanceTable";
+          var table = document.createElement("table");
+          table.setAttribute("class", "data-table");
 
-            var headerRow = table.insertRow();
-            for (var key in data.data[0]) {
-                var headerCell = headerRow.insertCell();
-                headerCell.textContent = key;
-            }
+          // Check if data is empty
+          if (data.length === 0) {
+              console.error("Data is empty.");
+              return;
+          }
 
-            var maxColumnLengths = {};
-            data.data.forEach(function (subject) {
-                for (var key in subject) {
-                    var contentLength = String(subject[key]).length;
-                    maxColumnLengths[key] = Math.max(maxColumnLengths[key] || 0, contentLength);
-                }
-            });
+          // Create table header
+          var headerRow = table.insertRow();
+          for (var key in data[0]) {
+              // Exclude columns with "Max" in their keys
+              if (!key.includes("Max")) {
+                  var headerCell = document.createElement("th");
+                  // If the key has "Score" in it, append the max score to the header text
+                  headerCell.textContent = key;
+                  headerRow.appendChild(headerCell);
+              }
+          }
 
-            data.data.forEach(function (subject) {
-                var dataRow = table.insertRow();
-                for (var key in subject) {
-                    var dataCell = dataRow.insertCell();
-                    dataCell.textContent = subject[key];
-                    dataCell.style.width = (maxColumnLengths[key] * 10) + 'px';
-                }
-            });
+          // Find maximum column lengths
+          var maxColumnLengths = {};
+          data.forEach(function(subject) {
+              for (var key in subject) {
+                  var content = subject[key];
+                  if (content !== null && content !== undefined && !key.toLowerCase().includes("max")) {
+                      var contentLength = String(content).length;
+                      maxColumnLengths[key] = Math.max(maxColumnLengths[key] || 0, contentLength);
+                  }
+              }
+          });
 
-            document.querySelector(".subbox").appendChild(table);
-        }
+          // Populate table with data
+          data.forEach(function(subject) {
+              var dataRow = table.insertRow();
+              for (var key in subject) {
+                  if (!key.includes("Max")) {
+                      var dataCell = dataRow.insertCell();
+                      var content = subject[key];
+                      if (content !== null && content !== undefined) {
+                          dataCell.textContent = content;
+                          dataCell.style.width = (maxColumnLengths[key] * 10) + "px";
+                      } else {
+                          dataCell.textContent = "-";
+                      }
+                  }
+              }
+          });
 
-        renderTables(jsonData);
+          // Append table to container
+          container.appendChild(table);
+      }
 
-        var downloadButton = document.createElement("button");
-        downloadButton.className = "download-btn";
-        downloadButton.textContent = "Download";
-        downloadButton.addEventListener("click", function () {
-            var table = document.querySelector("table");
-            var tableContent = [];
-            table.querySelectorAll('tr').forEach(function (row) {
-                var rowData = [];
-                row.querySelectorAll('td').forEach(function (cell) {
-                    rowData.push(cell.textContent);
+
+
+            var marks_data = {{ marks|safe }};
+            var lab_marks_data = {{ lab_marks|safe }};
+
+            var theoryContainer = document.querySelector(".theory-box");
+            var labContainer = document.querySelector(".lab-box");
+
+            renderTables(marks_data, theoryContainer);
+            renderTables(lab_marks_data, labContainer);
+
+            var downloadButton = document.querySelector(".download-btn");
+            downloadButton.addEventListener("click", function () {
+                var table = document.querySelector(".data-table");
+
+                var tableContent = [];
+                table.querySelectorAll("tr").forEach(function(row) {
+                    var rowData = [];
+                    row.querySelectorAll("td").forEach(function(cell) {
+                        rowData.push(cell.textContent);
+                    });
+                    tableContent.push(rowData);
                 });
-                tableContent.push(rowData);
-            });
-            var ws = XLSX.utils.aoa_to_sheet(tableContent);
-            var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
-            XLSX.writeFile(wb, 'attendance_table.xlsx');
-        });
 
-        document.querySelector(".subbox").appendChild(downloadButton);
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.aoa_to_sheet(tableContent);
+                XLSX.utils.book_append_sheet(wb, ws, "Marks");
+                XLSX.writeFile(wb, "marks_table.xlsx");
+            });
     </script>
-</body>
+  </body>
 </html>

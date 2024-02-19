@@ -20,7 +20,7 @@ def InsertStudentMarks(request):
     
     
 
-def GetStudentMarksWithMax(request):
+def DownloadStudentMarksWithMax(request):
     if request.method == 'GET':
         user_type_key = request.GET.get('user_type_key')  # Assuming user_type_key is passed as a query parameter
         
@@ -62,5 +62,51 @@ def GetStudentMarksWithMax(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
-        return JsonResponse({'error': 'Only GET requests are allowed'}, status=405)
+        data = {'message': 'Only GET requests are allowed', 'status':405}
+        return render(request,'ErrorPage.html',data)
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.db import connection
+
+def GetStudentMarksWithMax(request):
+    if request.method == 'GET':
+        user_type_key = request.GET.get('user_type_key')  # Assuming user_type_key is passed as a query parameter
+        
+        try:
+            with connection.cursor() as cursor:
+                # Call SPGetStudentMarksWithMax
+                cursor.callproc('SPGetStudentMarksWithMax', [user_type_key])
+                columns = [col[0] for col in cursor.description]
+                rows = cursor.fetchall()
+                # Convert row to dictionary
+                marks_data = [dict(zip(columns, row)) for row in rows]
+                for data in marks_data:
+                    for key, value in data.items():
+                        if value is None:
+                            data[key] = '-'  # Replace None with '-'
+                # Call SPGetLabMarksWithMax
+            with connection.cursor() as cursor:
+                cursor.callproc('SPGetLabMarksWithMax', [user_type_key])
+                columns = [col[0] for col in cursor.description]
+                rows = cursor.fetchall()
+                # Convert row to dictionary
+                lab_marks_data = [dict(zip(columns, row)) for row in rows]
+                for data in lab_marks_data:
+                    for key, value in data.items():
+                        if value is None:
+                            data[key] = '-'  # Replace None with '-'
+            return render(request, 'StudentData.html', {'marks': marks_data, 'lab_marks': lab_marks_data})
+                
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        data = {'message': 'Only GET requests are allowed', 'status':405}
+        return render(request, 'ErrorPage.html', data)
+
+
 

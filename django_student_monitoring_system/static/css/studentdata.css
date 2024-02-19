@@ -2,15 +2,16 @@
 body {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
+    overflow-y: scroll;
+    overflow-x: scroll;
 }
 
-.container {
+.main-div {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     width: 100%;
 }
@@ -20,42 +21,65 @@ body {
     background-color: rgba(17, 13, 87, 0.911);
 }
 
-.gap {
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .box {
     flex: 6;
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 100%; /* Ensure the table container doesn't exceed viewport width */
 }
 
-.subbox {
-    width: 92%;
-    height: 80%;
-    padding: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-   
+/* Apply some basic styling to the table */
+table {
+    border-collapse:separate;
+    font-family: Arial, sans-serif;
+    font-size: smaller;
+    table-layout: fixed; /* Fixed layout to prevent columns from stretching */
+    width: max-content;
+    height: max-content;
+}
+  
+/* Style the table headers */
+th {
+    background-color: #000000;
+    border: 1px solid #dddddd;
+    color: white;
+    text-align: left;
+    padding: 8px;
+    white-space: nowrap; /* Prevent text wrapping in header cells */
+    
+}
+  
+/* Style the table cells */
+td {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px;
+    white-space: nowrap; /* Prevent text wrapping in data cells */
+}
+  
+/* Alternate row colors for better readability */
+tr:nth-child(even) {
+    background-color: rgb(209, 205, 205);
+}
+
+.lab-box{
+    margin: 0;
 }
 
 .download-btn {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 80px;
+    right: 50px;
     background-color: #f6720c;
     padding: 8px 15px 10px 10px;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 95%;
+    border-radius: 5%;
 }
 
 .download-btn:hover {
@@ -63,15 +87,14 @@ body {
 }
 
 .fa-arrow-left {
-margin: 0% 0% 0% 1%; /* Adjusted margin to move the arrow to the left */
+margin: -6% 0% 0% 1%; /* Adjusted margin to move the arrow to the left */
 size: 12;
 position: absolute; /* Added absolute positioning */
 left: 10px; /* Adjusted left position */
 }
 
-
 i.fa-solid.fa-arrow-left:hover {
-    color: blue;
+    color: rgba(17, 13, 87, 0.911);
 }
 
 table {

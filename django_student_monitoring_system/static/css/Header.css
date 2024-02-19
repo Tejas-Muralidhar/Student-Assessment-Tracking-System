@@ -1,0 +1,26 @@
+#header {
+    background-color: #09015f;
+    color: #ffffff;
+    padding: 20px;
+    /* position: fixed; */
+}
+
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-left img,
+.logo-right img {
+    max-height: 50px;
+}
+
+.logo-right img{
+    max-width:140px;
+}
+
+.nav-text h1 {
+    margin: 0;
+    text-align: center;
+}
