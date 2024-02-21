@@ -100,7 +100,7 @@ def GetStudentMarksWithMax(request):
                     for key, value in data.items():
                         if value is None:
                             data[key] = '-'  # Replace None with '-'
-            return render(request, 'StudentData.html', {'marks': marks_data, 'lab_marks': lab_marks_data})
+            return render(request, 'DataDisplay.html', {'display': 'marks', 'data': marks_data, 'lab_data': lab_marks_data})
                 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)

@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Display</title>
+    <link rel="stylesheet" href="{% static 'css/DataDisplay.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/Header.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Footer.css' %}" />
+  </head>
+  <body>
+    {% include "header.html" %}
+    <div id="main-div">
+      <button class="download-btn" id="downloadBtn">Download</button>
+    </div>
+    {% include "footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script>
+      function renderTable(containerId, jsonData) {
+          var container = document.getElementById(containerId);
+          if (!container) {
+              console.log("Container not found!");
+              return;
+          }
+
+          // Create table element
+          var table = document.createElement("table");
+          var thead = document.createElement("thead");
+          var tbody = document.createElement("tbody");
+
+          // Extract headers from the first object in the JSON data
+          var headers = Object.keys(jsonData[0]);
+
+          // Filter headers to exclude those containing "Max"
+          var filteredHeaders = headers.filter(header => !header.includes("Max"));
+
+          // Create table headers
+          var headerRow = document.createElement("tr");
+          filteredHeaders.forEach(function (header) {
+              var th = document.createElement("th");
+              th.textContent = header;
+              headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+
+          // Create table rows
+          jsonData.forEach(function (item) {
+              var row = document.createElement("tr");
+              filteredHeaders.forEach(function (header) {
+                  var cell = document.createElement("td");
+                  cell.textContent = item[header];
+                  row.appendChild(cell);
+              });
+              tbody.appendChild(row);
+          });
+
+          // Append thead and tbody to table
+          table.appendChild(thead);
+          table.appendChild(tbody);
+
+          // Append table to container
+          container.appendChild(table);
+      }
+
+
+      switch ("{{display}}") {
+          case 'marks':
+              renderTable("main-div", {{ data|safe }});
+              renderTable("main-div", {{ lab_data|safe }});
+              break;
+          case 'attendance':
+              renderTable("main-div", {{ data|safe }});
+              break;
+          case 'subjects':
+              renderTable("main-div",{{data|safe}});
+              break;
+          default: console.log("Display did not match anything!");
+      }
+
+      document.getElementById("downloadBtn").addEventListener("click", function () {
+          var displayValue = "{{display}}"; // Assuming you retrieve the value of {{display}} from some source
+          var mainDiv = document.getElementById("main-div");
+          var tables = mainDiv.querySelectorAll("table");
+
+          if (displayValue === 'marks') {
+              // If 'marks', there should be two tables (theory and lab)
+              downloadTables(tables[0], tables[1]);
+          } else {
+              // For 'subjects' or 'attendance', there should be one table
+              downloadTables(tables[0]);
+          }
+      });
+
+      function downloadTables(...tables) {
+          var workbook = XLSX.utils.book_new();
+
+          tables.forEach((table, index) => {
+              // Convert tables to sheets
+              var sheetName = tables.length > 1 ? (index === 0 ? "Theory" : "Lab") : "Table";
+              var sheet = XLSX.utils.table_to_sheet(table);
+
+              // Append sheets to the workbook
+              XLSX.utils.book_append_sheet(workbook, sheet, sheetName);
+          });
+
+          // Save workbook
+          XLSX.writeFile(workbook, "tables.xlsx");
+      }
+    </script>
+  </body>
+</html>

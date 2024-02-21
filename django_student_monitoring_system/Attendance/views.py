@@ -19,9 +19,11 @@ def GetAttendance(request):
                 if rows:
                     # Convert rows to list of dictionaries
                     attendance_data = [dict(zip(columns, row)) for row in rows]
-                    return JsonResponse({'attendance_data': attendance_data})
+                    return render(request,'DataDisplay.html',{'display': 'attendance','data': attendance_data })
+                    
                 else:
-                    return JsonResponse({'message': 'Attendance data not found'}, status=404)
+                    data = {'message': 'Attendance Data not found!', 'status':404}
+                    return render(request, 'ErrorPage.html', data)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:

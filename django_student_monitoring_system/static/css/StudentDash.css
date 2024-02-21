@@ -1,35 +1,38 @@
 #student-details {
-    margin: 20px;
+    margin: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 2px solid whitesmoke;
+    box-shadow: 0px 0px 18px 8px black;
+    width: 50vw;
 }
 
 .column {
     flex: 1;
     text-align: center;
     font-size: small;
+    width: max-content;
 }
 
 .column img {
     max-width: 100px;
-    margin-left: 350px;
-}
-
-.column h2{
-    margin-left: 350px;
 }
 
 .column.details {
     text-align: left;
-    margin-left: 100px;
+    margin: auto 100px;
 }
 
 .actions {
-    margin-top: 20px;
+    margin-top: 40px;
     text-align: center;
 }
 
@@ -45,26 +48,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-.button.marks {
+    width: 200px;
     background-color: #ff6900;
     color: #ffffff;
-    width:150px;
-    font-size: large;
-}
-
-.button.attendance {
-    background-color: #ff6900;
-    color: #ffffff;
-    width: 150px;
-    font-size: large;
-}
-
-.button.subjects {
-    background-color: #ff6900;
-    color: #ffffff;
-    width: 150px;
     font-size: large;
 }
 

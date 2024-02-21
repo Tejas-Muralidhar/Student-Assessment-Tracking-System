@@ -7,7 +7,7 @@ body {
     overflow-x: scroll;
 }
 
-.main-div {
+#main-div {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,25 +21,17 @@ body {
     background-color: rgba(17, 13, 87, 0.911);
 }
 
-.box {
-    flex: 6;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    max-width: 100%; /* Ensure the table container doesn't exceed viewport width */
-}
+
 
 /* Apply some basic styling to the table */
 table {
     border-collapse:separate;
     font-family: Arial, sans-serif;
-    font-size: smaller;
+    font-size: small;
     table-layout: fixed; /* Fixed layout to prevent columns from stretching */
     width: max-content;
     height: max-content;
+    margin: 3% !important;
 }
   
 /* Style the table headers */
@@ -66,13 +58,9 @@ tr:nth-child(even) {
     background-color: rgb(209, 205, 205);
 }
 
-.lab-box{
-    margin: 0;
-}
-
-.download-btn {
+#downloadBtn {
     position: absolute;
-    bottom: 80px;
+    top: 150px !important;
     right: 50px;
     background-color: #f6720c;
     padding: 8px 15px 10px 10px;

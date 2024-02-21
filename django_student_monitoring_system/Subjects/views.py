@@ -41,7 +41,7 @@ def GetSubjects(request):
             results = [dict(zip(columns, row)) for row in res]
 
             # Return the results as JSON response
-            return JsonResponse({'subjects': results})
+            return render(request,'DataDisplay.html',{'display':'subjects','data': results})
     else:
         # Return error response for non-GET requests
         data = {'message': 'Only GET requests are allowed'}
