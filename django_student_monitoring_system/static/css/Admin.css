@@ -1,0 +1,356 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+#header {
+    background-color: #09015f;
+    color: #ffffff;
+    padding: 20px;
+}
+
+#logout-button {
+    position: absolute;
+    top:20%;
+    right:4%;
+    text-align: right;
+    width: auto;
+    padding: 15px 20px;
+    background-color: #ff6900;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: large;
+}
+#logout-button:hover {
+    background-color: #09015f;
+}
+
+
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-left img,
+.logo-right img {
+    max-height: 50px;
+}
+
+.logo-right img{
+    max-width:140px;
+}
+
+ .nav-text h1 {
+    margin: 0;
+    text-align: center;
+}
+
+#main-div{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+#sidebar{
+    text-decoration: none;
+    background-color: #fb9850;
+    height: 100%;
+    width: 20vw;
+    display: grid;
+    grid-template-rows: repeat(3, auto) auto;
+}
+
+.container {
+    display: flex;
+}
+
+#sidebar li{
+    list-style-type: none;
+    height: 30px;
+    padding: 10px 0px;
+    text-align: center;
+}
+
+#sidebar a{
+    color: black;
+}
+
+#sidebar li:hover a {
+    color: white;
+    text-decoration: none;
+}
+
+#sidebar li:hover{
+    background-color: #ff6900;
+    font-size: 1.1em;
+}
+
+#sidebar ul{
+    padding: 0%;
+    font-size: x-large;
+}
+
+#sidebar .sub-nav {
+    display: none;
+    position: absolute;
+    background-color: #2f89b3;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+}
+
+#sidebar li:hover .sub-nav {
+    display: block;
+}
+
+.sub-sub-nav{
+    display: none;
+    position: absolute;
+    background-color: #5585b5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+    width: max-content;
+}
+
+#marks-sub-nav:hover .marks-sub-sub-nav{
+    display: block;
+}
+
+#attendance-sub-nav:hover .attendance-sub-sub-nav{
+    display: block;
+}
+
+.student-sub-nav{
+    top: 20.9%;
+    left: 20%;
+}
+
+.marks-sub-sub-nav{
+    top:0;
+    left:100%;
+}
+
+.attendance-sub-sub-nav{
+    top:33%;
+    left:100%;
+}
+
+.subject-sub-nav{
+    top: 29.8%;
+    left: 20%;
+}
+
+.faculty-sub-nav{
+    top: 38.7%;
+    left: 20%;
+}
+
+.users-sub-nav{
+    top: 47.5%;
+    left: 20%;
+}
+
+#profile-button {
+    margin-top: 140px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#profile-button a {
+    color: black;
+}
+
+#profile-button:hover {
+    background-color: #ff6900;
+    font-size: 1.1em;
+}
+
+#hero img{
+    width: 80vw;
+    height:100vh;
+    object-fit: cover;
+}
+
+#hero{
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 80vw;
+    height: 100%;
+    z-index: -1;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #09015f;
+    color: #ffffff;
+    padding: 3px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+    padding-right: 20px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.arrow {
+    margin-left: 5px; 
+}
+
+
+
+/* Marks */
+
+/* #marksDiv {
+    background-color: #09015f;
+    color: #333; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 0 auto; 
+    z-index: 1000; 
+    position: fixed;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+
+#marksDiv a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+#marksDiv a:hover {
+    background-color: #e0e0e0;
+} */
+
+
+
+
+
+/* Attendance */
+
+/* #attendanceDiv {
+    background-color: #09015f;
+    color: #333; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 0 auto; 
+    z-index: 1; 
+    position: fixed;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+#attendanceDiv a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+#attendanceDiv a:hover {
+    background-color: #e0e0e0;
+} */
+
+/* AddNewUser */
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 30vw;
+    height: auto;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 50%;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#NewUserForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    background-color: #09015f;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
