@@ -61,6 +61,7 @@ body {
 #sidebar{
     text-decoration: none;
     background-color: #fb9850;
+    position: relative;
     height: 100%;
     width: 20vw;
     display: grid;
@@ -100,10 +101,11 @@ body {
 #sidebar .sub-nav {
     display: none;
     position: absolute;
-    left:20%;
+    left:100%;
     background-color: #2f89b3;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 0;
+    width: max-content;
 }
 
 #sidebar li:hover .sub-nav {
@@ -129,7 +131,7 @@ body {
 }
 
 .student-sub-nav{
-    top: 17%;
+    top: 5%;
 }
 
 .marks-sub-sub-nav{
@@ -141,19 +143,19 @@ body {
 }
 
 .subject-sub-nav{
-    top: 23%;
+    top: 10%;
 }
 
 .faculty-sub-nav{
-    top: 31%;
+    top: 18%;
 }
 
 .users-sub-nav{
-    top: 38%;
+    top: 25%;
 }
 
 #profile-button {
-    margin-top: 140px;
+    margin-top: auto;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -225,80 +227,6 @@ a:hover {
 .arrow {
     margin-left: 5px; 
 }
-
-
-
-/* Marks */
-
-/* #marksDiv {
-    background-color: #09015f;
-    color: #333; 
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin: 0 auto; 
-    z-index: 1000; 
-    position: fixed;
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
-}
-
-
-#marksDiv a {
-    display: block;
-    padding: 10px;
-    margin-bottom: 10px;
-    text-decoration: none;
-    color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    text-align: center;
-}
-
-#marksDiv a:hover {
-    background-color: #e0e0e0;
-} */
-
-
-
-
-
-/* Attendance */
-
-/* #attendanceDiv {
-    background-color: #09015f;
-    color: #333; 
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin: 0 auto; 
-    z-index: 1; 
-    position: fixed;
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
-}
-
-#attendanceDiv a {
-    display: block;
-    padding: 10px;
-    margin-bottom: 10px;
-    text-decoration: none;
-    color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    text-align: center;
-}
-
-#attendanceDiv a:hover {
-    background-color: #e0e0e0;
-} */
-
 /* AddNewUser */
 
 form {
@@ -360,9 +288,9 @@ button[type="submit"]:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: relative;
     z-index: -1;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #f96d00;

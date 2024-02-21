@@ -1,91 +1,22 @@
 function replaceHeroChild(newChild) {
     var hero = document.getElementById('hero');
-    var existingChild = hero.firstChild; 
 
-    if (existingChild) {
-        hero.removeChild(existingChild);
+    // Check if hero element exists
+    if (!hero) {
+        console.error("Hero element not found");
+        return; // Exit the function early if hero element is not found
     }
 
-    hero.appendChild(newChild);
+    // Check if hero has any existing child
+    if (hero.children.length > 0) {
+        var existingChild = hero.children[0];
+        hero.removeChild(existingChild); // Remove the existing child
+        console.log(hero.childNodes)
+    }
+
+    hero.appendChild(newChild); // Append the new child
 }
 
-
-// function Marks() {
-
-//     var marksDiv = document.createElement("div");
-//     marksDiv.setAttribute("id", "marksDiv");
-//     marksDiv.textContent = "View Marks";
-
-//     var viewOption = document.createElement("a");
-//     viewOption.setAttribute("href", "#");
-//     viewOption.textContent = "View Marks";
-
-//     marksDiv.appendChild(viewOption);
-
-//     replaceHeroChild(marksDiv);
-// }
-
-// function createDropdownButton() {
-//     // Create the button element
-//     var dropdownButton = document.createElement("button");
-    
-//     // Set button attributes
-//     dropdownButton.setAttribute("id", "dropdownButton");
-//     dropdownButton.textContent = "Dropdown"; // Set button text
-    
-//     // Create the dropdown content
-//     var dropdownContent = document.createElement("div");
-//     dropdownContent.setAttribute("id", "dropdownContent");
-//     dropdownContent.classList.add("dropdown-content");
-    
-//     // Add options to the dropdown content
-//     var option1 = document.createElement("a");
-//     option1.setAttribute("href", "#");
-//     option1.textContent = "Option 1";
-//     dropdownContent.appendChild(option1);
-    
-//     var option2 = document.createElement("a");
-//     option2.setAttribute("href", "#");
-//     option2.textContent = "Option 2";
-//     dropdownContent.appendChild(option2);
-    
-//     // Append the dropdown content to the button
-//     dropdownButton.appendChild(dropdownContent);
-    
-//     // Append the button to the desired container
-//     var container = document.getElementById("container"); // Replace "container" with the ID of your desired container
-//     container.appendChild(dropdownButton);
-// }
-
-// // Call the function to create the dropdown button
-// createDropdownButton();
-
-
-
-
-// function Attendance() {
-
-//     var attendanceDiv = document.createElement("div");
-//     attendanceDiv.setAttribute("id", "attendanceDiv");
-
-//     var viewOption1 = document.createElement("a");
-//     viewOption1.setAttribute("href", "#");
-//     viewOption1.textContent = "View Attendance by Semester";
-
-//     var viewOption2 = document.createElement("a");
-//     viewOption2.setAttribute("href", "#");
-//     viewOption2.textContent = "View Attendance by Section";
-
-//     var viewOption3 = document.createElement("a");
-//     viewOption3.setAttribute("href", "#");
-//     viewOption3.textContent = "View Attendance by Subject Code";
-
-//     attendanceDiv.appendChild(viewOption1);
-//     attendanceDiv.appendChild(viewOption2);
-//     attendanceDiv.appendChild(viewOption3);
-
-//     replaceHeroChild(attendanceDiv);
-// }
 
 function AddUser()
 {
@@ -140,11 +71,11 @@ function AddUser()
 var textboxContainer; 
 
 function showTextBox(type) {
+    textboxContainer = null;
     if (!textboxContainer) {
         textboxContainer = document.createElement('div');
         textboxContainer.setAttribute('id', 'textboxContainer');
-        document.body.appendChild(textboxContainer); 
-
+        replaceHeroChild(textboxContainer); 
         textboxContainer.addEventListener('mousedown', function (event) {
             event.stopPropagation(); 
         });
