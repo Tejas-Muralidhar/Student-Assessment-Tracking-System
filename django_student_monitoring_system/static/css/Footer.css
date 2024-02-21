@@ -29,8 +29,16 @@ footer {
 a {
     color: #ffffff;
     text-decoration: none;
+    cursor: pointer;
     margin-right: 20px;
     margin-left: 20px;
+}
+
+.left p a{
+    background-color: #ff6900;
+    color: rgb(255, 255, 255);
+    padding: 10%;
+    border-radius: 10%;
 }
 
 a:hover {

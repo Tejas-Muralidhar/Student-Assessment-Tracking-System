@@ -2,7 +2,10 @@
 <footer>
   <div class="container">
     <div class="left">
+      {% comment %}
       <p>&copy; RNSIT</p>
+      {% endcomment %}
+      <p><a onclick="logout()">Logout</a></p>
     </div>
     <div class="right">
       <p>
@@ -12,4 +15,10 @@
       </p>
     </div>
   </div>
+  <script>
+    function logout() {
+      var home = "{% url 'Logout' %}";
+      window.location.href = home;
+    }
+  </script>
 </footer>

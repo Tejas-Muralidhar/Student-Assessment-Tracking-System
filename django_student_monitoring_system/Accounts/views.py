@@ -3,7 +3,11 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,JsonResponse
 from django.db import connection
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.views.decorators.cache import never_cache
 import json
+from django.conf import settings
 
 def UserProfile(user_type_key): 
     try:
@@ -58,16 +62,17 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         if data == None:
                             return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
                         elif data == 500:
-                            return JsonResponse({'message': 'Try again...'}, status=500)
+                            return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
-                            return render(request,"FacultyDash.html",{'data': data}) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
+                            print(data)
+                            return render(request,"FacultyDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     
                     elif user_data['user_type'] == 'Student':
                         data = UserProfile(user_data['user_type_key']) #WE SEND USN TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE STUDENT
                         if data == None:
                             return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
                         elif data == 500:
-                            return JsonResponse({'message': 'Try again...'}, status=500)
+                            return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
                             return render(request,"StudentDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                         
@@ -76,7 +81,7 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         if data == None:
                             return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
                         elif data == 500:
-                            return JsonResponse({'message': 'Try again...'}, status=500)
+                            return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
                             return render(request,"Admin.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     else:
@@ -124,3 +129,9 @@ def InsertUserDetails(request): #path is: localhost:8000/accounts/register-user/
     
 def Login(request):
     return render(request,"Login.html")
+
+
+@never_cache
+def logout_view(request):
+    print('HELLO')
+    return redirect('Login') 
