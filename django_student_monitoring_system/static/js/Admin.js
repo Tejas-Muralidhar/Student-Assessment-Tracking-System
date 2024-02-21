@@ -135,3 +135,53 @@ function AddUser()
 
     replaceHeroChild(addUserDiv);
 }
+
+
+var textboxContainer; 
+
+function showTextBox(type) {
+    if (!textboxContainer) {
+        textboxContainer = document.createElement('div');
+        textboxContainer.setAttribute('id', 'textboxContainer');
+        document.body.appendChild(textboxContainer); 
+
+        textboxContainer.addEventListener('mousedown', function (event) {
+            event.stopPropagation(); 
+        });
+    }
+
+    textboxContainer.innerHTML = '';
+
+    var inputText = document.createElement('input');
+    var submitButton = document.createElement('button');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.innerText = 'Search';
+    inputText.setAttribute('type', 'text');
+    inputText.value = ''; 
+
+    switch (type) {
+        case 'semester':
+            inputText.placeholder = 'Enter Semester (eg. 5)';
+            break;
+        case 'section':
+            inputText.placeholder = 'Enter Section (eg. A)';
+            break;
+        case 'subject':
+            inputText.placeholder = 'Enter Subject Code (eg. 21CSXX)';
+            break;
+        default:
+            inputText.placeholder = 'Enter Value';
+    }
+
+    textboxContainer.appendChild(inputText);
+    textboxContainer.appendChild(submitButton);
+
+    inputText.focus();
+}
+
+function submitValue() {
+    var inputValue = document.querySelector('#textboxContainer input[type="text"]').value;
+    // Depending on the input value, redirect to appropriate page
+    console.log('Submitted value:', inputValue);
+    // You can redirect to a new page using window.location.href = 'newpage.html';
+}
