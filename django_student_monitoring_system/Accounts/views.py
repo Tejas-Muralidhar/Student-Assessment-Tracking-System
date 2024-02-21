@@ -70,6 +70,15 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                             return JsonResponse({'message': 'Try again...'}, status=500)
                         else:
                             return render(request,"StudentDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
+                        
+                    elif user_data['user_type'] == 'Admin':
+                        data = UserProfile(user_data['user_type_key']) #WE SEND USN TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE STUDENT
+                        if data == None:
+                            return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
+                        elif data == 500:
+                            return JsonResponse({'message': 'Try again...'}, status=500)
+                        else:
+                            return render(request,"Admin.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     else:
                         return JsonResponse({'authenticated': True, 'user_data': user_data})
                 else:

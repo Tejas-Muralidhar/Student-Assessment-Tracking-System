@@ -100,6 +100,7 @@ body {
 #sidebar .sub-nav {
     display: none;
     position: absolute;
+    left:20%;
     background-color: #2f89b3;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 0;
@@ -112,6 +113,7 @@ body {
 .sub-sub-nav{
     display: none;
     position: absolute;
+    left: 100%;
     background-color: #5585b5;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 0;
@@ -127,33 +129,27 @@ body {
 }
 
 .student-sub-nav{
-    top: 20.9%;
-    left: 20%;
+    top: 17%;
 }
 
 .marks-sub-sub-nav{
-    top:0;
-    left:100%;
-}
+    top:0%;
+} 
 
 .attendance-sub-sub-nav{
-    top:33%;
-    left:100%;
+    top:0%;
 }
 
 .subject-sub-nav{
-    top: 29.8%;
-    left: 20%;
+    top: 23%;
 }
 
 .faculty-sub-nav{
-    top: 38.7%;
-    left: 20%;
+    top: 31%;
 }
 
 .users-sub-nav{
-    top: 47.5%;
-    left: 20%;
+    top: 38%;
 }
 
 #profile-button {

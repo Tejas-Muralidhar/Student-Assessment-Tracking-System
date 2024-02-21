@@ -1,99 +1,106 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Page</title>
     <link rel="stylesheet" href="{% static 'css/Admin.css' %}" />
     <script src="{% static 'js/Admin.js' %}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-{% incldue "header.html" %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    {% include "header.html" %}
 
     <button id="logout-button">Logout</button>
 
     <div id="main-div">
-        <div id="sidebar">
-            <ul>
-                <li>
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    <a href="#">Student ></a>
-                    <div class="student-sub-nav sub-nav">
-                        <ul>
-                            <li id="marks-sub-nav"><a href="#">View Marks</a>
-                            <!-- InsertStudentMarks (for both inserting and editing) -->
-                            <!-- GetStudentMarksWithMax (to view) -->
-                            <div class="marks-sub-sub-nav sub-sub-nav">
-                                <ul>
-                                    <li><a href="#">View by Semester</a></li>
-                                    <li><a href="#">View by Section</a></li>
-                                    <li><a href="#">View by Subject Code</a></li>
-                                </ul>
-                            </div>
-                            </li>
-                            <li id="attendance-sub-nav"><a href="#">View Attendance</a>
-                            <!-- GetAttendance (to view)
+      <div id="sidebar">
+        <ul>
+          <li>
+            <i class="fa-solid fa-graduation-cap"></i>
+            <a href="#">Student ></a>
+            <div class="student-sub-nav sub-nav">
+              <ul>
+                <li id="marks-sub-nav">
+                  <a href="#">View Marks</a>
+                  <!-- InsertStudentMarks (for both inserting and editing) -->
+                  <!-- GetStudentMarksWithMax (to view) -->
+                  <div class="marks-sub-sub-nav sub-sub-nav">
+                    <ul>
+                      <li><a href="#">View by Semester</a></li>
+                      <li><a href="#">View by Section</a></li>
+                      <li><a href="#">View by Subject Code</a></li>
+                    </ul>
+                  </div>
+                </li>
+                <li id="attendance-sub-nav">
+                  <a href="#">View Attendance</a>
+                  <!-- GetAttendance (to view)
                             InsertMaxAttendance, InsertStudentAttendance (both for inserting and editing) -->
-                            <div class="attendance-sub-sub-nav sub-sub-nav">
-                                <ul>
-                                    <li><a href="#">View by Semester</a></li>
-                                    <li><a href="#">View by Section</a></li>
-                                    <li><a href="#">View by Subject Code</a></li>
-                                </ul>
-                            </div>
-                            </li>
-                            <li><a href="#">See All Students</a></li>
-                            <!-- Yet to write (1. Based on Sem) GetStudents-->
-                        </ul>
-                    </div>
+                  <div class="attendance-sub-sub-nav sub-sub-nav">
+                    <ul>
+                      <li><a href="#">View by Semester</a></li>
+                      <li><a href="#">View by Section</a></li>
+                      <li><a href="#">View by Subject Code</a></li>
+                    </ul>
+                  </div>
                 </li>
-                <li>
-                    <i class="fa-solid fa-book-open"></i>
-                    <a href="#">Subject ></a>
-                    <div class="subject-sub-nav sub-nav">
-                        <ul>
-                            <li><a href="#">Add New Subject</a></li>
-                            <li><a href="#">Edit Existing Subject</a></li>
-                            <li><a href="#">Delete Existing Subject</a></li>
-                            <li><a href="#">Assign Faculty to Subject</a></li>
-                            <li><a href="#">View Subject Details</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <i class="fa-solid fa-chalkboard-user"></i>
-                    <a href="#">Faculty ></a>
-                    <div class="faculty-sub-nav sub-nav">
-                        <ul>
-                            <li><a href="#">View Faculty Details</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <i class="fa-solid fa-users-rectangle"></i>
-                    <a href="#">Users ></a>
-                    <div class="users-sub-nav sub-nav">
-                        <ul>
-                            <li onclick="AddUser()"><a href="#">Add User</a></li>
-                            <!-- InsertUserDetails -->
-                            <li onclick="DeleteUser()"><a href="#">Edit User</a></li>
-                            <li onclick="DeleteUser()"><a href="#">Delete User</a></li>   
-                        </ul>
-                    </div>
-                </li>
-                <li id="profile-button">
-                    <i class="fa-solid fa-user"></i>
-                    <a href="#">User Profile</a>
-                    <!-- Show Admin Profile -->
-                </li>
-            </ul>
-        </div>
-        <div id="hero">
-        </div>
+                <li><a href="#">See All Students</a></li>
+                <!-- Yet to write (1. Based on Sem) GetStudents-->
+              </ul>
+            </div>
+          </li>
+          <li>
+            <i class="fa-solid fa-book-open"></i>
+            <a href="#">Subject ></a>
+            <div class="subject-sub-nav sub-nav">
+              <ul>
+                <li><a href="#">Add New Subject</a></li>
+                <li><a href="#">Edit Existing Subject</a></li>
+                <li><a href="#">Delete Existing Subject</a></li>
+                <li><a href="#">Assign Faculty to Subject</a></li>
+                <li><a href="#">View Subject Details</a></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <a href="#">Faculty ></a>
+            <div class="faculty-sub-nav sub-nav">
+              <ul>
+                <li><a href="#">View Faculty Details</a></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <i class="fa-solid fa-users-rectangle"></i>
+            <a href="#">Users ></a>
+            <div class="users-sub-nav sub-nav">
+              <ul>
+                <li onclick="AddUser()"><a href="#">Add User</a></li>
+                <!-- InsertUserDetails -->
+                <li onclick="DeleteUser()"><a href="#">Edit User</a></li>
+                <li onclick="DeleteUser()"><a href="#">Delete User</a></li>
+              </ul>
+            </div>
+          </li>
+          <li id="profile-button">
+            <i class="fa-solid fa-user"></i>
+            <a href="#">User Profile</a>
+            <!-- Show Admin Profile -->
+          </li>
+        </ul>
+      </div>
+      <div id="hero"></div>
     </div>
 
-{% include "footer.html" %}
-</body>
+    {% include "footer.html" %}
+  </body>
 </html>
