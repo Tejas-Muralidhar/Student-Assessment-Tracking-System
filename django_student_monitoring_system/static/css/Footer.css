@@ -34,11 +34,9 @@ a {
     margin-left: 20px;
 }
 
-.left p a{
-    background-color: #ff6900;
+.left p a {
     color: rgb(255, 255, 255);
     padding: 10%;
-    border-radius: 10%;
 }
 
 a:hover {
@@ -46,5 +44,5 @@ a:hover {
 }
 
 .arrow {
-    margin-left: 5px; 
+    margin-left: 5px;
 }

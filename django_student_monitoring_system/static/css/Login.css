@@ -13,7 +13,7 @@
 
 .logo-left img,
 .logo-right img {
-    max-height: 50px; 
+    max-height: 50px;
 }
 
 .nav-text h1 {
@@ -21,8 +21,8 @@
     text-align: center;
 }
 
-.logo-right img{
-    max-width:140px;
+.logo-right img {
+    max-width: 140px;
 }
 
 body {
@@ -30,7 +30,8 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background-color: #f2f2f2;
+    background-color: #a8dde6;
+    position: relative;
 }
 
 #header {
@@ -44,7 +45,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    position: absolute;
+    left: 40vw;
+    top: 40vh;
 }
 
 #login-form {
@@ -92,9 +95,9 @@ footer {
     width: 100%;
     background-color: #09015f;
     color: #ffffff;
-    padding: 3px; 
+    padding: 3px;
     text-align: center;
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 .container {
@@ -126,5 +129,5 @@ a:hover {
 }
 
 .arrow {
-    margin-left: 5px; 
+    margin-left: 5px;
 }

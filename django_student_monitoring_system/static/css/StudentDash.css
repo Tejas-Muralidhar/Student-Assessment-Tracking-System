@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     border: 2px solid whitesmoke;
-    box-shadow: 0px 0px 18px 8px black;
+    box-shadow: 0px 0px 18px 8px grey;
     width: 50vw;
 }
 
@@ -39,6 +39,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background-image: url("{static 'images/rnsit.jpg'}");
+
 }
 
 .button {
@@ -57,14 +59,15 @@ body {
 .button.view-marks,
 .button.view-attendance,
 .button.view-subjects {
-    display: none; /* Initially hide the view buttons */
+    display: none;
+    /* Initially hide the view buttons */
 }
 
 .button:hover {
     background-color: #09015f;
 }
 
-.button.marks:hover + .button.view-marks,
-.button.attendance:hover + .button.view-attendance {
+.button.marks:hover+.button.view-marks,
+.button.attendance:hover+.button.view-attendance {
     background-color: #09015f;
 }
