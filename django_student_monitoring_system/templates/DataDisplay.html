@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -111,4 +111,151 @@
       }
     </script>
   </body>
+</html> {% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <link rel="stylesheet" href="{% static 'css/DataDisplay.css'%}">
+    <link rel="stylesheet" href="{% static 'css/Header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Footer.css' %}">
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="container" id="main-div">
+        <!-- Table content will be inserted here -->
+        <button class="download-btn" id="downloadBtn">Download as PDF</button>
+    </div>
+    {% include "footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script>
+        // Function to render the table with the provided JSON data in the specified container
+        function renderTable(containerId, jsonData) {
+            var container = document.getElementById(containerId);
+            if (!container) {
+                console.log("Container not found!");
+                return;
+            }
+  
+            // Create table element
+            var table = document.createElement("table");
+            var thead = document.createElement("thead");
+            var tbody = document.createElement("tbody");
+  
+            // Extract headers from the first object in the JSON data
+            var headers = Object.keys(jsonData[0]);
+  
+            // Filter headers to exclude those containing "Max"
+            var filteredHeaders = headers.filter(header => !header.includes("Max"));
+            var finalHeaders = filteredHeaders.filter(header => !header.includes("USN"));
+
+  
+            // Create table headers
+            var headerRow = document.createElement("tr");
+            finalHeaders.forEach(function (header) {
+                var th = document.createElement("th");
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+  
+            // Create table rows
+            jsonData.forEach(function (item) {
+                var row = document.createElement("tr");
+                finalHeaders.forEach(function (header) {
+                    var cell = document.createElement("td");
+                    cell.textContent = item[header];
+                    row.appendChild(cell);
+                });
+                tbody.appendChild(row);
+            });
+  
+            // Append thead and tbody to table
+            table.appendChild(thead);
+            table.appendChild(tbody);
+  
+            // Append table to container
+            container.appendChild(table);
+        }
+
+        // Function to download tables as PDF
+        function downloadTablesAsPDF(...tables) {
+            // Create a new PDF document
+            var docDefinition = {
+                content: [],
+                pageOrientation: 'landscape'
+            };
+
+            // Loop through each table
+            tables.forEach(function (table) {
+                // Convert the table to a PDF content
+                var pdfContent = {
+                    table: {
+                        headerRows: 1,
+                        widths: Array.from({ length: table.rows[0].cells.length }, () => 'auto'), // Set column widths to 'auto'
+                        body: []
+                    }
+                };
+
+                // Add table headers
+                var headers = table.querySelectorAll('thead th');
+                headers.forEach(function (header) {
+                    pdfContent.table.body[0] = pdfContent.table.body[0] || [];
+                    pdfContent.table.body[0].push({ text: header.textContent, style: 'tableHeader' });
+                });
+
+                // Add table rows
+                var rows = table.querySelectorAll('tbody tr');
+                rows.forEach(function (row) {
+                    var rowData = [];
+                    row.querySelectorAll('td').forEach(function (cell) {
+                        rowData.push(cell.textContent);
+                    });
+                    pdfContent.table.body.push(rowData);
+                });
+
+                // Add page break after each table
+                docDefinition.content.push(pdfContent, { text: '', pageBreak: 'after' });
+            });
+
+            // Create PDF
+            pdfMake.createPdf(docDefinition).download('tables.pdf');
+        }
+
+        // Fetch display value from the Django template
+        var displayValue = "{{ display }}";
+
+        // Render tables based on the display value
+        switch (displayValue) {
+            case 'marks':
+                renderTable("main-div", {{ data|safe }});
+                renderTable("main-div", {{ lab_data|safe }});
+                break;
+            case 'attendance':
+                renderTable("main-div", {{ data|safe }});
+                break;
+            case 'subjects':
+                renderTable("main-div", {{ data|safe }});
+                break;
+            default:
+                console.log("Display value did not match any case.");
+        }
+
+        // Add event listener to the download button
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+            // Select all tables within the main content div
+            var tables = document.querySelectorAll("table");
+
+            // Download tables as wwwwPDF
+            downloadTablesAsPDF(...tables);
+        });
+    </script>
+</body>
 </html>
+

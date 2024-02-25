@@ -1,85 +1,78 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/StudentDash.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/Header.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/Footer.css' %}" />
-    <script src="{% static 'js/StudentDash.js' %}"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/StudentDash.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Footer.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Student Dashboard</title>
-  </head>
-  <body>
+</head>
+<body>
     {% include "header.html" %}
-    <div id="student-details">
-      <div class="hero">
-        <div class="column">
-          <h2>Student</h2>
-          <img src="{% static 'images/studentIcon.jpg' %}" alt="Student Icon" />
+    <main>
+        <div class="maincontainer">
+            <div class="profile-card">
+                <div class="profile-img">
+                    <img src="{% static 'images/studentIcon.jpg' %}" alt="Student Icon">
+                </div>
+                <div class="profile-info">
+                    <h2>{{NAME}}</h2>
+                    <ul>
+                        <li><strong>USN:</strong> {{USN}}</li>
+                        <li><strong>Semester and Section:</strong> {{SEMESTER}}{{SECTION}}</li>
+                        <li><strong>Date of Birth:</strong> {{DOB}}</li>
+                        <li><strong>Phone:</strong> {{PHONENUMBER}}</li>
+                        <li><strong>Email:</strong> {{EMAIL}}</li>
+                        <li><strong>Parent Phone:</strong> {{PARENTPHONE}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="actions">
+              <div class="card mb-2" style="max-width: 35rem;">
+                <div class="card-body" onclick="getStudentMarksWithMax('{{USN}}')">
+                  <h5 class="card-title">MARKS</h5>
+                  <p class="card-text">Check your updated marks in all your enrolled subjects.</p>
+                </div>
+              </div>
+              <div class="card mb-2" style="max-width: 35rem;">
+                <div class="card-body" onclick="getAttendance('{{USN}}')">
+                  <h5 class="card-title">ATTENDANCE</h5>
+                  <p class="card-text">Check your latest attendance in all enrolled subjects here.</p>
+                </div>
+              </div>
+              <div class="card mb-2" style="max-width: 35rem;">
+                <div class="card-body" onclick="getSubjects('{{USN}}')">
+                  <h5 class="card-title">SUBJECTS</h5>
+                  <p class="card-text">Check all subjects you've currently enrolled in.</p>
+                </div>
+              </div>
+                {% comment %} <button class="button marks" onclick="getStudentMarksWithMax('{{USN}}')">Marks</button>
+                <button class="button attendance" onclick="getAttendance('{{USN}}')">Attendance</button>
+                <button class="button subjects" onclick="getSubjects('{{USN}}')">Subjects</button> {% endcomment %}
+            </div>
         </div>
-        <div class="column details">
-          <p><strong>Name:</strong> {{NAME}}</p>
-          <p><strong>USN:</strong> {{USN}}</p>
-          <p><strong>Sem:</strong> {{SEMESTER}}</p>
-          <p><strong>Section:</strong> {{SECTION}}</p>
-          <p><strong>Date of Birth:</strong> {{DOB}}</p>
-          <p><strong>Phone:</strong> {{PHONENUMBER}}</p>
-          <p><strong>Email:</strong> {{EMAIL}}</p>
-          <p><strong>Parent Phone:</strong> {{PARENTPHONE}}</p>
-        </div>
-      </div>
-
-      <div class="actions">
-        <div class="actions">
-          <button
-            class="button marks"
-            onmouseover="changeButtonText(this, 'View')"
-            onclick="getStudentMarksWithMax('{{USN}}')"
-          >
-            Marks
-          </button>
-          <button
-            class="button attendance"
-            onmouseover="changeButtonText(this, 'View')"
-            onclick="getAttendance('{{USN}}')"
-          >
-            Attendance
-          </button>
-          <button
-            class="button subjects"
-            onmouseover="changeButtonText(this, 'View')"
-            onclick="getSubjects('{{USN}}')"
-          >
-            Subjects
-          </button>
-        </div>
-      </div>
-    </div>
+    </main>
     {% include "footer.html" %}
+    <script src="{% static 'js/StudentDash.js' %}"></script>
     <script>
-      // Function to handle Marks button click
       function getStudentMarksWithMax(USN) {
-        var marksUrl =
-          "{% url 'GetStudentMarksWithMax' %}?user_type_key=" +
-          encodeURIComponent(USN);
+        var marksUrl = "{% url 'GetStudentMarksWithMax' %}?user_type_key=" + encodeURIComponent(USN);
         window.location.href = marksUrl;
-      }
-
-      // Function to handle Attendance button click
-      function getAttendance(USN) {
-        var attendanceUrl =
-          "{% url 'GetAttendance' %}?user_type_key=" + encodeURIComponent(USN);
-        console.log(USN);
+    }
+    
+    function getAttendance(USN) {
+        var attendanceUrl = "{% url 'GetAttendance' %}?user_type_key=" + encodeURIComponent(USN);
         window.location.href = attendanceUrl;
-      }
-
-      // Function to handle Subjects button click
-      function getSubjects(USN) {
-        var subjectsUrl =
-          "{% url 'GetSubjects' %}?user_type_key=" + encodeURIComponent(USN);
+    }
+    
+    function getSubjects(USN) {
+        var subjectsUrl = "{% url 'GetSubjects' %}?user_type_key=" + encodeURIComponent(USN);
         window.location.href = subjectsUrl;
-      }
+    }
+    
     </script>
-  </body>
+</body>
 </html>

@@ -1,16 +1,16 @@
 footer {
     position: fixed;
-    bottom: 0;
-    width: 100%;
+    width: 100vw;
+    height: 5vh;
     background-color: #09015f;
     color: #ffffff;
-    padding: 3px;
+    padding: 1% 1%;
     text-align: center;
     font-size: 14px;
+    bottom: 0;
 }
 
-.container {
-    max-width: 1200px;
+.footercontainer {
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -26,7 +26,7 @@ footer {
     padding-right: 20px;
 }
 
-a {
+.right p a {
     color: #ffffff;
     text-decoration: none;
     cursor: pointer;
@@ -37,6 +37,7 @@ a {
 .left p a {
     color: rgb(255, 255, 255);
     padding: 10%;
+    cursor: pointer;
 }
 
 a:hover {

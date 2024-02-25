@@ -65,10 +65,6 @@ def DownloadStudentMarksWithMax(request):
         data = {'message': 'Only GET requests are allowed', 'status':405}
         return render(request,'ErrorPage.html',data)
 
-
-from django.shortcuts import render
-from django.http import JsonResponse
-
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db import connection

@@ -44,7 +44,7 @@ def GetSubjects(request):
             return render(request,'DataDisplay.html',{'display':'subjects','data': results})
     else:
         # Return error response for non-GET requests
-        data = {'message': 'Only GET requests are allowed'}
+        data = {'message': 'Only GET requests are allowed','status': 303}
         return render(request,'ErrorPage.html',data)
 
 @csrf_exempt
