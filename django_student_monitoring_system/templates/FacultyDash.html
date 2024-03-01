@@ -37,7 +37,7 @@
                 </div>
               </div>
               <div class="card mt-4" style="max-width: 20rem;">
-                <div class="card-body" onclick="">
+                <div class="card-body" onclick="editStudentMarksWithMax('{{FID}}')">
                   <h5 class="card-title">EDIT MARKS</h5>
                   <p class="card-text">Add, Delete and Update the marks of your students.</p>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
               </div>
               <div class="card" style="max-width: 20rem;">
-                <div class="card-body" onclick="">
+                <div class="card-body" onclick="editAttendance('{{FID}}')">
                   <h5 class="card-title">EDIT ATTENDANCE</h5>
                   <p class="card-text">Add, Delete and Update the attendance of your students.</p>
                 </div>
@@ -68,12 +68,12 @@
     <script src="{% static 'js/FacultyDash.js' %}"></script>
     <script>
     function getStudentMarksWithMax(FID) {
-        var marksUrl = "{% url 'get_student_marks' %}?user_type_key=" + encodeURIComponent(FID);
+        var marksUrl = "{% url 'get_student_marks' %}?user_type_key=" + encodeURIComponent(FID) + "&type=v";
         window.location.href = marksUrl;
     }
     
-    function getAttendance(USN) {
-        var attendanceUrl = "{% url 'get_student_attendance' %}?user_type_key=" + encodeURIComponent(USN);
+    function getAttendance(FID) {
+        var attendanceUrl = "{% url 'get_student_attendance' %}?user_type_key=" + encodeURIComponent(FID) + "&type=v";
         window.location.href = attendanceUrl;
     }
     
@@ -81,7 +81,16 @@
         var subjectsUrl = "{% url 'GetSubjects' %}?user_type_key=" + encodeURIComponent(FID);
         window.location.href = subjectsUrl;
     }
+
+    function editStudentMarksWithMax(FID){
+        var marksUrl = "{% url 'get_student_marks' %}?user_type_key=" + encodeURIComponent(FID) + "&type=e";
+        window.location.href = marksUrl;
+    }
     
+    function editAttendance(FID){
+        var attendanceUrl = "{% url 'get_student_attendance' %}?user_type_key=" + encodeURIComponent(FID) + "&type=e";
+        window.location.href = attendanceUrl;
+  }
     </script>
 </body>
 </html>

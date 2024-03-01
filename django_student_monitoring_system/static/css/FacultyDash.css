@@ -89,7 +89,7 @@ main {
 }
 
 .actions .card:hover {
-    background-color: #01e0e0;
+    background-color: #02cccc;
     color: black;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
     transition: .3s;

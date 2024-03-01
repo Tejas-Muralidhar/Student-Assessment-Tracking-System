@@ -42,6 +42,7 @@ def MapFacultySubject(request):
 def get_student_marks(request):
     try:
         user_type_key = request.GET.get('user_type_key')
+        type = request.GET.get('type')
         # Call GetSubjects to get all subjects taught by the faculty
         with connection.cursor() as cursor:
             cursor.callproc('SPGetSubjects', [user_type_key])
@@ -57,29 +58,46 @@ def get_student_marks(request):
 
         for subject in subjects_data:
             subject_code = subject['SubjectCode']
+            subject_type = subject['SubjectType']
             # Call GetSubjectMarks
-            with connection.cursor() as cursor:
-                cursor.callproc('SPGetTheorySubjectMarks', [subject_code])
-                columns = [col[0] for col in cursor.description]
-                marks = cursor.fetchall()
-                marks_data.extend(marks)
+            if subject_type == 1:
+                with connection.cursor() as cursor:
+                    cursor.callproc('SPGetTheorySubjectMarks', [subject_code])
+                    columns = [col[0] for col in cursor.description]
+                    marks = cursor.fetchall()
+                    marks_data.extend(marks)
+            else:
+                with connection.cursor() as cursor:
+                    cursor.callproc('SPGetTheorySubjectMarks', [subject_code])
+                    columns = [col[0] for col in cursor.description]
+                    marks = cursor.fetchall()
+                    labmarks_data.extend(marks)
+
             #call SPGetLabSubjectMarks call the data as lab_marks
         Marksdata = [dict(zip(columns, row)) for row in marks_data]
+        LabMarksdata = [dict(zip(columns, row)) for row in labmarks_data]
         for data in Marksdata:
             for key, value in data.items():
                 if value is None:
                     data[key] = '-'  # Replace None with '-'
         #do the same for lab marks, REMOVE NULL
-        return render(request,'DataDisplay.html',{'display': 'marks','data': Marksdata, 'view': 'Faculty'}) #send lab_marks also
+        if type == 'v':
+            return render(request,'DataDisplay.html',{'display': 'marks','data': Marksdata,'lab_data': LabMarksdata, 'view': 'Faculty'}) #send lab_marks also
+        elif type == 'e':
+            return render(request,'DataEdit.html',{'display': 'marks','data': Marksdata,'lab_data': LabMarksdata, 'view': 'Faculty'})
+        else:
+            data = {'message': "Bad Request!", 'status':400}
+            return render(request, 'ErrorPage.html', data)
     
     except Exception as e:
-        data = {'message': e, 'status':500}
+        data = {'message': 'Something went wrong. Try again!!', 'status':500}
         return render(request, 'ErrorPage.html', data)
     
 @csrf_exempt
 def get_student_attendance(request):
     try:
         user_type_key = request.GET.get('user_type_key')
+        type = request.GET.get('type')
         # Call GetSubjects to get all subjects taught by the faculty
         with connection.cursor() as cursor:
             cursor.callproc('SPGetSubjects', [user_type_key])
@@ -107,8 +125,14 @@ def get_student_attendance(request):
             for key, value in data.items():
                 if value is None:
                     data[key] = '-'  # Replace None with '-'
-        return render(request,'DataDisplay.html',{'display': 'attendance','data': Attdata, 'view': 'Faculty'})
-    
+        if type == 'v':
+            return render(request,'DataDisplay.html',{'display': 'attendance','data': Attdata, 'view': 'Faculty'})
+        elif type == 'e':
+            return render(request,'DataEdit.html',{'display': 'attendance','data': Attdata, 'view': 'Faculty'})
+        else:
+            data = {'message': 'Invalid Request! Try Again', 'status':400}
+            return render(request, 'ErrorPage.html', data)
+
     except Exception as e:
         data = {'message': 'Something went wrong. Try again!!', 'status':500}
         return render(request, 'ErrorPage.html', data)

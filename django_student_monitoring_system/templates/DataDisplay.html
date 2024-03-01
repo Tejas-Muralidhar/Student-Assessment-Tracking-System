@@ -23,8 +23,6 @@
     <script>
         // Function to render the table with the provided JSON data in the specified container
         function renderTable(containerId, jsonData, displayValue, view) {
-            console.log("Hello");
-            console.log(jsonData)
             var container = document.getElementById(containerId);
             if (!container) {
                 console.log("Container not found!");
@@ -57,8 +55,6 @@
             else{
                 filteredHeaders = headers;
             }
-
-        console.log(filteredHeaders);
 
             // Create table headers
             var headerRow = document.createElement("tr");

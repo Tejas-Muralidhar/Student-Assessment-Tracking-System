@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Display</title>
-    <link rel="stylesheet" href="{% static 'css/DataDisplay.css'%}">
+    <link rel="stylesheet" href="{% static 'css/DataEdit.css'%}">
     <link rel="stylesheet" href="{% static 'css/Header.css' %}">
     <link rel="stylesheet" href="{% static 'css/Footer.css' %}">
 </head>
@@ -14,7 +13,12 @@
     {% include "header.html" %}
     <div class="container" id="main-div">
         <!-- Table content will be inserted here -->
-        <button class="download-btn" id="downloadBtn">Download as Excel to Edit</button>
+        <div>
+            <button class="download-btn" id="downloadBtn">Download Data as Excel to Edit</button>
+            <input type="file" id="fileInput" style="display: none;">
+            <label for="fileInput" class="upload-btn">Upload Edited Excel File</label>
+
+        </div>
     </div>
     {% include "footer.html" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
@@ -22,7 +26,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
     <script>
         // Function to render the table with the provided JSON data in the specified container
-        function renderTable(containerId, jsonData, displayValue) {
+        function renderTable(containerId, jsonData, displayValue, view) {
             var container = document.getElementById(containerId);
             if (!container) {
                 console.log("Container not found!");
@@ -36,20 +40,29 @@
   
             // Extract headers from the first object in the JSON data
             var headers = Object.keys(jsonData[0]);
-  
-            var finalHeaders;
-            var filteredHeaders;
+
+            var filteredHeaders = headers;
             // Filter headers to exclude those containing "Max"
-            if(displayValue !== 'attendance'){
-                 filteredHeaders = headers.filter(header => !header.includes("Max"));
-                 finalHeaders = filteredHeaders.filter(header => !header.includes("USN"));
-            }else{
-                finalHeaders = headers;
+            if(displayValue === 'marks'){
+                 filteredHeaders = filteredHeaders.filter(header => !header.includes("Max"));
+            }
+            
+            if(view === 'Student'){
+                filteredHeaders = filteredHeaders.filter(header => !header.includes("USN"));
+            }else if(view === 'Faculty'){
+                filteredHeaders = filteredHeaders.filter(header => !header.includes("FID"));
+            }
+            else if(view === 'Both'){
+                filteredHeaders = filteredHeaders.filter(header => !header.includes("FID"));
+                filteredHeaders = filteredHeaders.filter(header => !header.includes("USN"));
+            }
+            else{
+                filteredHeaders = headers;
             }
 
             // Create table headers
             var headerRow = document.createElement("tr");
-            finalHeaders.forEach(function (header) {
+            filteredHeaders.forEach(function (header) {
                 var th = document.createElement("th");
                 th.textContent = header;
                 headerRow.appendChild(th);
@@ -59,7 +72,7 @@
             // Create table rows
             jsonData.forEach(function (item) {
                 var row = document.createElement("tr");
-                finalHeaders.forEach(function (header) {
+                filteredHeaders.forEach(function (header) {
                     var cell = document.createElement("td");
                     cell.textContent = item[header];
                     row.appendChild(cell);
@@ -75,64 +88,45 @@
             container.appendChild(table);
         }
 
-        // Function to download tables as PDF
-        function downloadTablesAsPDF(...tables) {
-            // Create a new PDF document
-            var docDefinition = {
-                content: [],
-                pageOrientation: 'landscape'
-            };
+        // Function to download tables as Excel
+        function downloadTablesAsExcel(...tables) {
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
 
             // Loop through each table
-            tables.forEach(function (table) {
-                // Convert the table to a PDF content
-                var pdfContent = {
-                    table: {
-                        headerRows: 1,
-                        widths: Array.from({ length: table.rows[0].cells.length }, () => 'auto'), // Set column widths to 'auto'
-                        body: []
-                    }
-                };
+            tables.forEach(function(table, index) {
+                // Convert table to worksheet
+                var ws = XLSX.utils.table_to_sheet(table);
 
-                // Add table headers
-                var headers = table.querySelectorAll('thead th');
-                headers.forEach(function (header) {
-                    pdfContent.table.body[0] = pdfContent.table.body[0] || [];
-                    pdfContent.table.body[0].push({ text: header.textContent, style: 'tableHeader' });
-                });
-
-                // Add table rows
-                var rows = table.querySelectorAll('tbody tr');
-                rows.forEach(function (row) {
-                    var rowData = [];
-                    row.querySelectorAll('td').forEach(function (cell) {
-                        rowData.push(cell.textContent);
-                    });
-                    pdfContent.table.body.push(rowData);
-                });
-
-                // Add page break after each table
-                docDefinition.content.push(pdfContent, { text: '', pageBreak: 'after' });
+                // Add worksheet to workbook with sheet name as 'Sheet1', 'Sheet2', etc.
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet' + (index + 1));
             });
 
-            // Create PDF
-            pdfMake.createPdf(docDefinition).download('tables.pdf');
+            // Generate Excel file
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+            // Convert binary string to Blob
+            var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+            // Trigger file download
+            saveAs(blob, 'tables.xlsx');
         }
 
         // Fetch display value from the Django template
         var displayValue = "{{ display }}";
+        var view = "{{view}}"; 
 
         // Render tables based on the display value
         switch (displayValue) {
             case 'marks':
-                renderTable("main-div", {{ data|safe }},displayValue);
-                //renderTable("main-div", {{ lab_data|safe }},displayValue);
+                renderTable("main-div", {{ data|safe }},displayValue, view);
+                //renderTable("main-div", {{ lab_data|safe }},displayValue, view);
                 break;
             case 'attendance':
-                renderTable("main-div", {{ data|safe }},displayValue);
+                renderTable("main-div", {{ data|safe }},displayValue, view);
                 break;
             case 'subjects':
-                renderTable("main-div", {{ data|safe }},displayValue);
+                renderTable("main-div", {{ data|safe }},displayValue, view);
                 break;
             default:
                 console.log("Display value did not match any case.");
@@ -143,11 +137,59 @@
             // Select all tables within the main content div
             var tables = document.querySelectorAll("table");
 
-            // Download tables as wwwwPDF
-            downloadTablesAsPDF(...tables);
+            // Download tables as Excel
+            downloadTablesAsExcel(...tables);
         });
+
+        // Utility function to convert string to array buffer
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i != s.length; ++i) 
+                view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+
+        // Function to handle file upload
+        function handleFileUpload(event) {
+            var file = event.target.files[0]; // Get the uploaded file
+            var reader = new FileReader(); // Create a new FileReader object
+
+            // Event listener for when the FileReader has finished loading the file
+            reader.onload = function (e) {
+                var data = e.target.result; // Get the file data
+                var workbook = XLSX.read(data, { type: 'binary' }); // Read the Excel workbook
+
+                // Process each sheet in the workbook
+                workbook.SheetNames.forEach(function (sheetName) {
+                    var worksheet = workbook.Sheets[sheetName]; // Get the current sheet
+                    var tableData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Convert sheet to JSON
+
+                    // Perform operations with the table data, such as updating the database
+                    // For example, you can send the data to the server using AJAX for processing
+
+                    // Example: Send table data to server using AJAX
+                    sendDataToServer(tableData);
+                });
+            };
+
+            // Read the uploaded file as binary string
+            reader.readAsBinaryString(file);
+        }
+
+        // Function to send data to the server for processing
+        function sendDataToServer(data) {
+            // Example: Send data to the server using AJAX
+            // Replace this with your actual AJAX call to update the database
+            // Here, 'data' represents the table data extracted from the Excel file
+            // You can send 'data' to the server and handle it accordingly on the server side
+            console.log('Sending data to server:', data);
+        }
+
+        // Add event listener to the file input field
+        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+
+
     </script>
 </body>
 </html>
-
-

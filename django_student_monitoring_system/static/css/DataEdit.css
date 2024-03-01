@@ -131,7 +131,8 @@ body {
     /* Adjusted width to fill the container */
 }
 
-.download-btn {
+.download-btn,
+.upload-btn {
     margin-top: 10px;
     padding: 10px 20px;
     background-color: #09015f;
@@ -140,11 +141,13 @@ body {
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s;
 }
 
-.download-btn:hover {
-    background-color: #09015f;
+.download-btn:hover,
+.upload-btn:hover {
+    background-color: #090086;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 table {
