@@ -19,7 +19,7 @@ def GetAttendance(request):
                 if rows:
                     # Convert rows to list of dictionaries
                     attendance_data = [dict(zip(columns, row)) for row in rows]
-                    return render(request,'DataDisplay.html',{'display': 'attendance','data': attendance_data })
+                    return render(request,'DataDisplay.html',{'display': 'attendance','data': attendance_data, 'view': 'Student'})
                     
                 else:
                     data = {'message': 'Attendance Data not found!', 'status':404}

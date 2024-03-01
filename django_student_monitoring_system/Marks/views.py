@@ -6,7 +6,7 @@ from openpyxl import Workbook
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def InsertStudentMarks(request):
+def InsertStudentMarks(request): #edit marks button
     if request.method == 'POST':
         try:
             data = request.body.decode('utf-8')
@@ -72,7 +72,6 @@ from django.db import connection
 def GetStudentMarksWithMax(request):
     if request.method == 'GET':
         user_type_key = request.GET.get('user_type_key')  # Assuming user_type_key is passed as a query parameter
-        
         try:
             with connection.cursor() as cursor:
                 # Call SPGetStudentMarksWithMax
@@ -96,13 +95,10 @@ def GetStudentMarksWithMax(request):
                     for key, value in data.items():
                         if value is None:
                             data[key] = '-'  # Replace None with '-'
-            return render(request, 'DataDisplay.html', {'display': 'marks', 'data': marks_data, 'lab_data': lab_marks_data})
+            return render(request, 'DataDisplay.html', {'display': 'marks', 'data': marks_data, 'lab_data': lab_marks_data, 'view': 'Student'})
                 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
         data = {'message': 'Only GET requests are allowed', 'status':405}
         return render(request, 'ErrorPage.html', data)
-
-
-

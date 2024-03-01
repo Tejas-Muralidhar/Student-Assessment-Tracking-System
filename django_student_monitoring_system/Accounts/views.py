@@ -54,7 +54,6 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         'user_type_key': results[0][2],
                         'user_display_name': results[0][3],  
                         'user_phone': results[0][4],
-                        'role_id': results[0][5]
                     }
 
                     if user_data['user_type'] == 'Faculty':
@@ -64,7 +63,6 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         elif data == 500:
                             return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
-                            print(data)
                             return render(request,"FacultyDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     
                     elif user_data['user_type'] == 'Student':

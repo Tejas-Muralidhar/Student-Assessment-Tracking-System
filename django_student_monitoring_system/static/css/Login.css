@@ -30,7 +30,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background-color: #a8dde6;
+    background-color: #0a5ba7e3;
     position: relative;
 }
 
@@ -51,9 +51,9 @@ body {
 }
 
 #login-form {
-    background-color: #ffffff;
+    background-color: #d1e3fc;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     padding: 20px;
     width: 300px;
 }
@@ -63,20 +63,22 @@ body {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid black;
     border-radius: 5px;
     box-sizing: border-box;
+    background-color: #dce8fa;
 }
 
 #login-form input[type="email"]:focus,
 #login-form input[type="password"]:focus {
     outline: none;
     border-color: #09015f;
+    background-color: whitesmoke;
 }
 
 #login-btn {
     width: 100%;
-    background-color: #ff6900;
+    background-color: #f86700;
     color: #ffffff;
     border: none;
     padding: 10px;

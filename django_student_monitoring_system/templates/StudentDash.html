@@ -15,8 +15,8 @@
     <main>
         <div class="maincontainer">
             <div class="profile-card">
-                <div class="profile-img">
-                    <img src="{% static 'images/studentIcon.jpg' %}" alt="Student Icon">
+                <div class="profile-img mt-4">
+                    <img src="{% static 'images/studentIcon.svg' %}" alt="Student Icon"> 
                 </div>
                 <div class="profile-info">
                     <h2>{{NAME}}</h2>
@@ -31,27 +31,24 @@
                 </div>
             </div>
             <div class="actions">
-              <div class="card mb-2" style="max-width: 35rem;">
+              <div class="card mt-4" style="max-width: 35rem;">
                 <div class="card-body" onclick="getStudentMarksWithMax('{{USN}}')">
                   <h5 class="card-title">MARKS</h5>
                   <p class="card-text">Check your updated marks in all your enrolled subjects.</p>
                 </div>
               </div>
-              <div class="card mb-2" style="max-width: 35rem;">
+              <div class="card mb-2 mt-2" style="max-width: 35rem;">
                 <div class="card-body" onclick="getAttendance('{{USN}}')">
                   <h5 class="card-title">ATTENDANCE</h5>
                   <p class="card-text">Check your latest attendance in all enrolled subjects here.</p>
                 </div>
               </div>
-              <div class="card mb-2" style="max-width: 35rem;">
+              <div class="card mb-4" style="max-width: 35rem;">
                 <div class="card-body" onclick="getSubjects('{{USN}}')">
                   <h5 class="card-title">SUBJECTS</h5>
                   <p class="card-text">Check all subjects you've currently enrolled in.</p>
                 </div>
               </div>
-                {% comment %} <button class="button marks" onclick="getStudentMarksWithMax('{{USN}}')">Marks</button>
-                <button class="button attendance" onclick="getAttendance('{{USN}}')">Attendance</button>
-                <button class="button subjects" onclick="getSubjects('{{USN}}')">Subjects</button> {% endcomment %}
             </div>
         </div>
     </main>

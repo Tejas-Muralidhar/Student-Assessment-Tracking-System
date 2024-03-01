@@ -14,7 +14,7 @@
     {% include "header.html" %}
     <div class="container" id="main-div">
         <!-- Table content will be inserted here -->
-        <button class="download-btn" id="downloadBtn">Download as PDF</button>
+        <button class="download-btn" id="downloadBtn">Download as Excel to Edit</button>
     </div>
     {% include "footer.html" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
@@ -22,9 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
     <script>
         // Function to render the table with the provided JSON data in the specified container
-        function renderTable(containerId, jsonData, displayValue, view) {
-            console.log("Hello");
-            console.log(jsonData)
+        function renderTable(containerId, jsonData, displayValue) {
             var container = document.getElementById(containerId);
             if (!container) {
                 console.log("Container not found!");
@@ -38,31 +36,20 @@
   
             // Extract headers from the first object in the JSON data
             var headers = Object.keys(jsonData[0]);
-
-            var filteredHeaders = headers;
+  
+            var finalHeaders;
+            var filteredHeaders;
             // Filter headers to exclude those containing "Max"
-            if(displayValue === 'marks'){
-                 filteredHeaders = filteredHeaders.filter(header => !header.includes("Max"));
+            if(displayValue !== 'attendance'){
+                 filteredHeaders = headers.filter(header => !header.includes("Max"));
+                 finalHeaders = filteredHeaders.filter(header => !header.includes("USN"));
+            }else{
+                finalHeaders = headers;
             }
-            
-            if(view === 'Student'){
-                filteredHeaders = filteredHeaders.filter(header => !header.includes("USN"));
-            }else if(view === 'Faculty'){
-                filteredHeaders = filteredHeaders.filter(header => !header.includes("FID"));
-            }
-            else if(view === 'Both'){
-                filteredHeaders = filteredHeaders.filter(header => !header.includes("FID"));
-                filteredHeaders = filteredHeaders.filter(header => !header.includes("USN"));
-            }
-            else{
-                filteredHeaders = headers;
-            }
-
-        console.log(filteredHeaders);
 
             // Create table headers
             var headerRow = document.createElement("tr");
-            filteredHeaders.forEach(function (header) {
+            finalHeaders.forEach(function (header) {
                 var th = document.createElement("th");
                 th.textContent = header;
                 headerRow.appendChild(th);
@@ -72,7 +59,7 @@
             // Create table rows
             jsonData.forEach(function (item) {
                 var row = document.createElement("tr");
-                filteredHeaders.forEach(function (header) {
+                finalHeaders.forEach(function (header) {
                     var cell = document.createElement("td");
                     cell.textContent = item[header];
                     row.appendChild(cell);
@@ -134,19 +121,18 @@
 
         // Fetch display value from the Django template
         var displayValue = "{{ display }}";
-        var view = "{{view}}"; 
 
         // Render tables based on the display value
         switch (displayValue) {
             case 'marks':
-                renderTable("main-div", {{ data|safe }},displayValue, view);
-                //renderTable("main-div", {{ lab_data|safe }},displayValue, view);
+                renderTable("main-div", {{ data|safe }},displayValue);
+                //renderTable("main-div", {{ lab_data|safe }},displayValue);
                 break;
             case 'attendance':
-                renderTable("main-div", {{ data|safe }},displayValue, view);
+                renderTable("main-div", {{ data|safe }},displayValue);
                 break;
             case 'subjects':
-                renderTable("main-div", {{ data|safe }},displayValue, view);
+                renderTable("main-div", {{ data|safe }},displayValue);
                 break;
             default:
                 console.log("Display value did not match any case.");
@@ -163,4 +149,5 @@
     </script>
 </body>
 </html>
+
 
