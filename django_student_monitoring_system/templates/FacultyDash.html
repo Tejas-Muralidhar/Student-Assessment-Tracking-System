@@ -13,6 +13,7 @@
 <body>
     {% include "header.html" %}
     <main>
+        <button class="logout-btn" onclick="Logout('{{FID}}')">Log Out</button>
         <div class="maincontainer">
             <div class="profile-card">
                 <div class="profile-img">
@@ -90,7 +91,12 @@
     function editAttendance(FID){
         var attendanceUrl = "{% url 'get_student_attendance' %}?user_type_key=" + encodeURIComponent(FID) + "&type=e";
         window.location.href = attendanceUrl;
-  }
+    }
+
+    function Logout(FID){
+      var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(FID);
+      window.location.href = home;
+    }
     </script>
 </body>
 </html>

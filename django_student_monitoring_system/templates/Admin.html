@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 {% load static %}
 <html lang="en">
   <head>
@@ -127,4 +127,77 @@
 
     {% include "footer.html" %}
   </body>
+</html> {% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="{% static 'css/Admin.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Header.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Footer.css' %}" />
+    <script src="{% static 'js/Admin.js' %}"></script>
+</head>
+<body>
+    {% include 'header.html'%}
+    <div class="navbar">
+        <ul class="nav-links">
+            <li class="dropdown">
+                <a>Student <span class="dropdown-icon">&#9662;</span></a>
+                <div class="dropdown-content">
+                    <a id="view-student-marks-link">View Student Marks</a>
+                    <a>View Student Attendance</a>
+                    <a>View All Students</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a>Subject <span class="dropdown-icon">&#9662;</span></a>
+                <div class="dropdown-content">
+                    <a>View Subject Details</a>
+                    <a>Add Subject</a>
+                    <a>Edit Subject</a>
+                    <a>Delete Subject</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a>Faculty <span class="dropdown-icon">&#9662;</span></a>
+                <div class="dropdown-content">
+                    <a>View Faculty Details</a>
+                    <a>Assign Faculty to Subject</a>
+                    <a>Add Faculty</a>
+                    <a>Delete Faculty</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a>Users <span class="dropdown-icon">&#9662;</span></a>
+                <div class="dropdown-content">
+                    <a>View Users</a>
+                    <a>Add User</a>
+                    <a>Edit User</a>
+                    <a>Delete User</a>
+                </div>
+            </li>
+        </ul>
+        <div>
+          <button class="get-help-btn">Get Help</button>
+          <button class="logout-btn" onclick="Logout('{{FID}}')">Log Out</button>
+        </div>
+    </div>
+    <div id="main-div">
+      <div id="hero">
+
+      </div>
+      <!-- Other content of the dashboard goes here -->
+    </div>
+    {% include 'footer.html'%}
+    <script>
+      function Logout(FID){
+        var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(FID);
+        window.location.href = home;
+      }; 
+    </script>
+</body>
 </html>

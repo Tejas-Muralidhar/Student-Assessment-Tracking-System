@@ -117,6 +117,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     align-items: center;
+    background-color: #a8c5fa;
     /* Align content in the center vertically */
 }
 

@@ -2,323 +2,94 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
-    overflow-y: hidden;
 }
 
-#header {
-    background-color: #09015f;
-    color: #ffffff;
-    padding: 20px;
-}
-
-#logout-button {
-    position: absolute;
-    top:20%;
-    right:4%;
-    text-align: right;
-    width: auto;
+.navbar {
+    background-color: #ff7d20;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 15px 20px;
-    background-color: #ff6900;
-    border-radius: 10px;
-    border: none;
-    color: white;
-    font-size: large;
-}
-#logout-button:hover {
-    background-color: #09015f;
+    height: 5vh;
 }
 
-
-#navbar {
+.nav-links {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo-left img,
-.logo-right img {
-    max-height: 50px;
-}
-
-.logo-right img{
-    max-width:140px;
-}
-
- .nav-text h1 {
-    margin: 0;
-    text-align: center;
-}
-
-#main-div{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-}
-
-#sidebar{
-    text-decoration: none;
-    background-color: #fb9850;
-    position: relative;
-    height: 100%;
-    width: 20vw;
-    display: grid;
-    grid-template-rows: repeat(3, auto) auto;
-}
-
-.container {
-    display: flex;
-}
-
-#sidebar li{
     list-style-type: none;
-    height: 30px;
-    padding: 10px 0px;
-    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-#sidebar a{
+.dropdown>a {
+    text-decoration: none !important;
     color: black;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-#sidebar li:hover a {
-    color: white;
-    text-decoration: none;
-}
-
-#sidebar li:hover{
-    background-color: #ff6900;
-    font-size: 1.1em;
-}
-
-#sidebar ul{
-    padding: 0%;
-    font-size: x-large;
-}
-
-#sidebar .sub-nav {
-    display: none;
-    position: absolute;
-    left:100%;
-    background-color: #2f89b3;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 0;
-    width: max-content;
-}
-
-#sidebar li:hover .sub-nav {
-    display: block;
-}
-
-.sub-sub-nav{
-    display: none;
-    position: absolute;
-    left: 100%;
-    background-color: #5585b5;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 0;
-    width: max-content;
-}
-
-#marks-sub-nav:hover .marks-sub-sub-nav{
-    display: block;
-}
-
-#attendance-sub-nav:hover .attendance-sub-sub-nav{
-    display: block;
-}
-
-.student-sub-nav{
-    top: 5%;
-}
-
-.marks-sub-sub-nav{
-    top:0%;
-} 
-
-.attendance-sub-sub-nav{
-    top:0%;
-}
-
-.subject-sub-nav{
-    top: 10%;
-}
-
-.faculty-sub-nav{
-    top: 18%;
-}
-
-.users-sub-nav{
-    top: 25%;
-}
-
-#profile-button {
-    margin-top: auto;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#profile-button a {
-    color: black;
-}
-
-#profile-button:hover {
-    background-color: #ff6900;
-    font-size: 1.1em;
-}
-
-#hero img{
-    width: 80vw;
-    height:100vh;
-    object-fit: cover;
-}
-
-#hero{
-    overflow-x: hidden;
-    overflow-y: hidden;
-    width: 80vw;
-    height: 100%;
-    z-index: -1;
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #09015f;
-    color: #ffffff;
-    padding: 3px;
-    text-align: center;
-    font-size: 14px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.left {
-    text-align: left;
-}
-
-.right {
-    text-align: right;
-    padding-right: 20px;
-}
-
-a {
-    color: white;
-    text-decoration: none;
+.nav-links li {
     margin-right: 20px;
-    margin-left: 20px;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-.arrow {
-    margin-left: 5px; 
-}
-/* AddNewUser */
-
-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 30vw;
-    height: auto;
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 50%;
-}
-
-button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-#NewUserForm {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transform: translate(-50%, -50%);
-    background-color: #09015f;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.hidden {
+.dropdown-content {
     display: none;
+    position: absolute;
+    background-color: #09015f;
+    min-width: 160px;
+    z-index: 1;
+    cursor: pointer;
 }
 
-#textboxContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: -1;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f96d00;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 20vw;
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
-#inputText {
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 250px;
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-decoration: none !important;
 }
 
-button {
+.dropdown-content a:hover {
+    background-color: powderblue;
+    color: black;
+}
+
+.get-help-btn {
+    background-color: #09015f;
+    color: white;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    transition: 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.get-help-btn:hover {
+    background-color: forestgreen;
+}
+
+/* #main-div {
+    background-image: url('/static/images/rnsit.jpg');
+    height: 100%;
+    width: 100vw;
+    background-repeat: no-repeat;
+
+} */
+
+.logout-btn {
+    background-color: #09015f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: forestgreen;
 }

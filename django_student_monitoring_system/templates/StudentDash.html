@@ -13,6 +13,7 @@
 <body>
     {% include "header.html" %}
     <main>
+        <button class="logout-btn" onclick="Logout('{{USN}}')">Log Out</button>
         <div class="maincontainer">
             <div class="profile-card">
                 <div class="profile-img mt-4">
@@ -70,6 +71,10 @@
         window.location.href = subjectsUrl;
     }
     
+    function Logout(USN){
+      var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(USN);
+      window.location.href = home;
+    }
     </script>
 </body>
 </html>

@@ -21,6 +21,24 @@ main {
 
 }
 
+
+.logout-btn {
+    position: absolute;
+    right: 2%;
+    top: 5%;
+    background-color: #09015f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: forestgreen;
+}
+
 .maincontainer {
     width: max-content;
     margin: 0 auto;

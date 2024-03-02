@@ -11,7 +11,6 @@ from django.conf import settings
 
 def UserProfile(user_type_key): 
     try:
-        
         with connection.cursor() as cursor:
             cursor.callproc('SPUserProfile', [user_type_key])
             # Fetch all the results
@@ -56,6 +55,11 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         'user_phone': results[0][4],
                     }
 
+                    with connection.cursor() as cursor:
+                        cursor.callproc('SPUpdateLog',[user_data['user_type_key']])
+                        results = cursor.fetchall()
+                        cursor.close()
+
                     if user_data['user_type'] == 'Faculty':
                         data = UserProfile(user_data['user_type_key']) #WE SEND FACID TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE FACULTY
                         if data == None:
@@ -81,6 +85,7 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         elif data == 500:
                             return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
+                            print(data)
                             return render(request,"Admin.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     else:
                         return JsonResponse({'authenticated': True, 'user_data': user_data})
@@ -131,5 +136,8 @@ def Login(request):
 
 @never_cache
 def logout_view(request):
-    print('HELLO')
+    user_type_key = request.GET.get('utk')
+    with connection.cursor() as cursor:
+        cursor.callproc('SPUpdateLog', [user_type_key])
+        connection.commit()
     return redirect('Login') 
