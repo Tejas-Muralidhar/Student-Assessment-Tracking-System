@@ -1,4 +1,4 @@
-{% comment %} <!DOCTYPE html>
+<!-- {% comment %} <!DOCTYPE html>
 {% load static %}
 <html lang="en">
   <head>
@@ -31,7 +31,7 @@
                 <li id="marks-sub-nav">
                   <a href="#">View Marks</a>
                   <!-- InsertStudentMarks (for both inserting and editing) -->
-                  <!-- GetStudentMarksWithMax (to view) -->
+                  <!-- GetStudentMarksWithMax (to view) 
                   <div class="marks-sub-sub-nav sub-sub-nav">
                     <ul>
                       <li>
@@ -54,8 +54,6 @@
                 </li>
                 <li id="attendance-sub-nav">
                   <a href="#">View Attendance</a>
-                  <!-- GetAttendance (to view)
-                            InsertMaxAttendance, InsertStudentAttendance (both for inserting and editing) -->
                   <div class="attendance-sub-sub-nav sub-sub-nav">
                     <ul>
                       <li>
@@ -77,7 +75,6 @@
                   </div>
                 </li>
                 <li><a href="#">See All Students</a></li>
-                <!-- Yet to write (1. Based on Sem) GetStudents-->
               </ul>
             </div>
           </li>
@@ -109,7 +106,6 @@
             <div class="users-sub-nav sub-nav">
               <ul>
                 <li onclick="AddUser()"><a href="#">Add User</a></li>
-                <!-- InsertUserDetails -->
                 <li onclick="DeleteUser()"><a href="#">Edit User</a></li>
                 <li onclick="DeleteUser()"><a href="#">Delete User</a></li>
               </ul>
@@ -118,7 +114,6 @@
           <li id="profile-button">
             <i class="fa-solid fa-user"></i>
             <a href="#">User Profile</a>
-            <!-- Show Admin Profile -->
           </li>
         </ul>
       </div>
@@ -127,7 +122,7 @@
 
     {% include "footer.html" %}
   </body>
-</html> {% endcomment %}
+</html> {% endcomment %} -->
 
 {% load static %}
 <!DOCTYPE html>
@@ -175,7 +170,7 @@
                 <a>Users <span class="dropdown-icon">&#9662;</span></a>
                 <div class="dropdown-content">
                     <a>View Users</a>
-                    <a>Add User</a>
+                    <a id="add-user-btn">Add User</a>
                     <a>Edit User</a>
                     <a>Delete User</a>
                 </div>
@@ -192,12 +187,59 @@
       </div>
       <!-- Other content of the dashboard goes here -->
     </div>
+
+    <div id="main-div">
+      <div id="hero">
+          <!-- This is where the form for adding a new student will be generated -->
+          <div id="add-student-form" style="display: none;">
+              <form id="student-form">
+                  
+                <label for="usn">USN:</label>
+        <input type="text" id="usn" name="usn" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+        </select><br><br>
+
+        <label for="dateOfBirth">Date of Birth:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required><br><br>
+
+        <label for="parentNumber">Parent's Phone:</label>
+        <input type="tel" id="parentNumber" name="parentNumber" pattern="[0-9]{10}" required><br><br>
+
+        <label for="section">Section:</label>
+        <input type="text" id="section" name="section" required><br><br>
+
+        <label for="userEmail">Email:</label>
+        <input type="email" id="userEmail" name="userEmail" required><br><br>
+
+        <label for="userPassword">Password:</label>
+        <input type="password" id="userPassword" name="userPassword" required><br><br>
+
+        <input type="hidden" id="roleId_id" name="roleId_id" value="1">
+
+        <input type="submit" value="Submit">
+
+              </form>
+          </div>
+      </div>
+      <!-- Other content of the dashboard goes here -->
+  </div>
+<script>
+  function Logout(FID){
+    var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(FID);
+    window.location.href = home;
+  };
+</script>
     {% include 'footer.html'%}
-    <script>
-      function Logout(FID){
-        var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(FID);
-        window.location.href = home;
-      }; 
-    </script>
 </body>
 </html>

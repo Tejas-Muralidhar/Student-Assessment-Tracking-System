@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 newDiv.textContent = "Table to view users";
                 break;
             case "Add User":
-                newDiv.textContent = "Form to add user";
+                newDiv.textContent = addNewUserOption();
                 break;
             case "Edit User":
                 newDiv.textContent = "Form to edit user";
@@ -168,3 +168,75 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+
+  
+  var newUserButtonsGenerated = false;
+
+  function addNewUserOption() {
+    if (!newUserButtonsGenerated) {
+        var newUserOptions = document.createElement("div");
+        newUserOptions.id = "new-user-buttons"; // Add an ID to the container div
+        newUserOptions.innerHTML = `
+            <button id="add-student-button" onclick="showNewStudentForm()">Add New Student</button>
+            <button id="add-faculty-button" onclick="showNewFacultyForm()">Add New Faculty</button>
+        `;
+        document.body.appendChild(newUserOptions);
+        newUserButtonsGenerated = true; // Set the flag to true indicating buttons are generated
+    }
+}
+
+
+
+    function showNewStudentForm() {
+        var studentForm = document.createElement("form");
+        // Populate form fields for adding a new student
+        studentForm.innerHTML = `
+            <label for="usn">USN:</label>
+            <input type="text" id="usn" name="usn"><br>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br>
+            <!-- Add other fields as needed -->
+            <button type="submit">Submit</button>
+        `;
+        document.getElementById("main-div").appendChild(studentForm);
+    }
+
+    function showNewFacultyForm() {
+        var facultyForm = document.createElement("form");
+        // Populate form fields for adding a new faculty
+        facultyForm.innerHTML = `
+            <label for="facultyName">Name:</label>
+            <input type="text" id="facultyName" name="facultyName"><br>
+            <!-- Add other fields as needed -->
+            <button type="submit">Submit</button>
+        `;
+        document.getElementById("main-div").appendChild(facultyForm);
+    }
+
+    // // Call addNewUserOption() when the page is loaded
+    // window.onload = addNewUserOption;
+
+
+    function replaceHeroChild(newChild) {
+        var hero = document.getElementById('hero');
+        var existingChild = hero.firstChild;
+    
+        if (existingChild) {
+            hero.removeChild(existingChild);
+        }
+    
+        hero.appendChild(newChild);
+    }
+
+
+
+    document.getElementById("add-student-btn").addEventListener("click", function() {
+        document.getElementById("add-student-form").style.display = "block";
+        // You can generate the form fields dynamically here
+    });
+    
+    // JavaScript to handle showing the form for adding a new user
+    document.getElementById("add-user-btn").addEventListener("click", function() {
+        addNewUserOption()
+    });
