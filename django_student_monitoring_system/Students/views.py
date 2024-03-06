@@ -14,6 +14,7 @@ def MapStudentSubject(request):
             ip_subject_code = data_json.get('subject_code')
 
             with connection.cursor() as cursor:
+                #to be changed!
                 cursor.callproc('SPMapStudentSubject', [ip_user_type_key, ip_subject_code])
                 return JsonResponse({'message': 'Student subject mapping successful'}, status=200)
         except Exception as e:

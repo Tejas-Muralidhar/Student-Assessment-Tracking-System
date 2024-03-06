@@ -162,7 +162,6 @@
                 <div class="dropdown-content">
                     <a>View Faculty Details</a>
                     <a>Assign Faculty to Subject</a>
-                    <a>Add Faculty</a>
                     <a>Delete Faculty</a>
                 </div>
             </li>
@@ -182,16 +181,13 @@
         </div>
     </div>
     <div id="main-div">
-      <div id="hero">
-
-      </div>
       <!-- Other content of the dashboard goes here -->
     </div>
 
-    <div id="main-div">
+    {% comment %} <div id="main-div">
       <div id="hero">
           <!-- This is where the form for adding a new student will be generated -->
-          <div id="add-student-form" style="display: none;">
+          <div id="add-student-form" style="display: block;">
               <form id="student-form">
                   
                 <label for="usn">USN:</label>
@@ -233,13 +229,14 @@
           </div>
       </div>
       <!-- Other content of the dashboard goes here -->
-  </div>
-<script>
-  function Logout(FID){
-    var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(FID);
-    window.location.href = home;
-  };
-</script>
-    {% include 'footer.html'%}
+  </div> {% endcomment %}
+  {% include 'footer.html'%}
+  <script>
+    function Logout(FID){
+      var home = "{% url 'Logout' %}?utk="+ encodeURIComponent(FID);
+      window.location.href = home;
+    };
+      var studentMarksURL = "{% url 'GetStudentMarksWithMax' %}";
+  </script>
 </body>
 </html>

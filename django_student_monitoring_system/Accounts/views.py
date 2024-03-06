@@ -56,7 +56,7 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                     }
 
                     with connection.cursor() as cursor:
-                        cursor.callproc('SPUpdateLog',[user_data['user_type_key']])
+                        cursor.callproc('SPLogin',[user_data['user_type_key']])
                         results = cursor.fetchall()
                         cursor.close()
 
@@ -91,7 +91,7 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         return JsonResponse({'authenticated': True, 'user_data': user_data})
                 else:
                     # If no tuple is returned, it means authentication failed
-                    return JsonResponse({'authenticated': False, 'message': 'Invalid email or password'})
+                    return redirect('Login') 
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=500)
     else:
@@ -138,6 +138,6 @@ def Login(request):
 def logout_view(request):
     user_type_key = request.GET.get('utk')
     with connection.cursor() as cursor:
-        cursor.callproc('SPUpdateLog', [user_type_key])
+        cursor.callproc('SPLogout', [user_type_key])
         connection.commit()
     return redirect('Login') 

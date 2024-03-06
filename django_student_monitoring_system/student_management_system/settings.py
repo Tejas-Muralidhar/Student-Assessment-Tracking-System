@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Students',
     'Subjects',
     'Marks',
+    'Admin',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'student_monitoring_system',
         'USER': 'root',
-        'PASSWORD': 'Anup@2003',
+        'PASSWORD': 'tejastejas@2101',
         'HOST': 'localhost', 
         'PORT': '3306',       
     }

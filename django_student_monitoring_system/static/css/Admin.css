@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-y: scroll;
 }
 
 .navbar {
@@ -94,6 +95,7 @@ body {
     background-color: forestgreen;
 }
 
+/*changes from anoop*/
 
 #add-student-form {
     display: none;
@@ -147,14 +149,18 @@ input[type="submit"]:hover {
 #new-user-buttons {
     display: flex;
     justify-content: center;
-    margin-top: 150px; /* Adjust as needed */
+    margin-top: 150px;
+    /* Adjust as needed */
 }
 
 /* Style for the buttons */
 #new-user-buttons button {
-    margin: 0 10px; /* Adjust spacing between buttons */
-    padding: 15px 30px; /* Adjust button padding */
-    font-size: 18px; /* Adjust button font size */
+    margin: 0 10px;
+    /* Adjust spacing between buttons */
+    padding: 15px 30px;
+    /* Adjust button padding */
+    font-size: 18px;
+    /* Adjust button font size */
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -164,13 +170,88 @@ input[type="submit"]:hover {
 #new-user-buttons #add-faculty-button {
     background-color: #09015f;
     color: white;
-    padding: 20px 40px; /* Adjust button padding for larger size */
-    font-size: 20px; /* Adjust button font size */
+    padding: 20px 40px;
+    /* Adjust button padding for larger size */
+    font-size: 20px;
+    /* Adjust button font size */
 }
 
 #new-user-buttons #add-student-button {
     background-color: #09015f;
     color: white;
-    padding: 20px 40px; /* Adjust button padding for larger size */
-    font-size: 20px; /* Adjust button font size */
+    padding: 20px 40px;
+    /* Adjust button padding for larger size */
+    font-size: 20px;
+    /* Adjust button font size */
+}
+
+/* Admin.css */
+
+caption {
+    font-size: medium;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #09015f;
+}
+
+/* Style for the table */
+table {
+    font-size: x-small;
+    width: fit-content;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: whitesmoke;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    width: max-content;
+}
+
+th {
+    background-color: #09015f;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Style for table caption */
+caption {
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+}
+
+/* Style for message when no lab marks data available */
+#main-div p {
+    font-style: italic;
+    color: #666666;
+    text-align: center;
+    padding: 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#column-dropdown {
+    width: max-content;
+    margin: 0 5px;
+}
+
+#search-input {
+    width: max-content;
+    margin: 0 5px;
+}
+
+#ContentDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+    flex-direction: column;
+    margin-bottom: 10vh;
+    margin-top: 10px;
 }
