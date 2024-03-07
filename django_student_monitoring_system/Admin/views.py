@@ -206,16 +206,25 @@ def AdmViewSubjects(request):
         except Exception as e:
             return JsonResponse({'error': str(e)})
         
+@csrf_exempt        
 def AdmDeleteUser(request):
-    del_value = request.GET.get('user_type_key')
+    if request.method == "POST":
+        del_value = request.POST.get('user_input')
 
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMUserDel', [del_value])
-            return JsonResponse({'message': 'User deleted successfully'})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
-        
+        print(del_value) 
+
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMUserDel', [del_value])
+                results = cursor.fetchall()
+
+                return JsonResponse({'message': 'User deleted successfully'})
+            except Exception as e:
+                return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Only POST requests allowed!'})
+
+@csrf_exempt        
 def AdmViewUsers(request):
     with connection.cursor() as cursor:
         try:
@@ -290,5 +299,104 @@ def AdmAddEditSubject(request):
         
         return JsonResponse({"message": "Data submitted successfully."})
 
+    else:
+        return JsonResponse({"error": "Only POST requests are allowed."})
+
+@csrf_exempt
+def ADMFacViewMapping(request):
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMFacViewMapping')
+                results = cursor.fetchall()
+                # Convert results to a list of dictionaries
+                print(results)
+                data = []
+                for row in results:
+                    data.append({
+                        'Faculty ID': row[0],
+                        'Faculty Name': row[1],
+                        'Subject Code': row[2],
+                        'Subject Title': row[3],
+                        'Semester': row[4],
+                        'Section': row[5],
+                        # Add more columns as needed
+                    })
+                return JsonResponse({'data': data})
+            except Exception as e:
+                return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed.'})
+    
+@csrf_exempt
+def ADMUserAddEdit(request):
+    if request.method == 'POST':
+        try:
+            user_type = request.POST.get('user_type')
+
+            if user_type == 'Student':
+
+                usn = request.POST.get('USN')
+                name = request.POST.get('Name')
+                gender = request.POST.get('Gender')
+                dateOfBirth = request.POST.get('DOB')
+                parentNumber = request.POST.get('ParentNumber')
+                userEmail = request.POST.get('Email')
+                userPassword = request.POST.get('Password')
+                Phone = request.POST.get('Phone')
+                Semester = request.POST.get('Semester')
+                Section = request.POST.get('Section')
+
+                json_data = json.dumps({
+                "usn": usn,
+                "name":name,
+                "gender":gender,
+                "dateOfBirth":dateOfBirth,
+                "parentNumber":parentNumber,
+                "userEmail":userEmail,
+                "userPassword":userPassword,
+                "Phone":Phone,
+                "roleId_id":1
+                })
+
+            else:
+
+                facultyID = request.POST.get('FID')
+                facultyName = request.POST.get('Name')
+                gender = request.POST.get('Gender')
+                userEmail = request.POST.get('Email')
+                userPassword = request.POST.get('Password')
+                Phone = request.POST.get('Phone')
+
+                json_data = json.dumps({
+                "facultyID": facultyID,
+                "facultyName":facultyName,
+                "gender":gender,
+                "userEmail":userEmail,
+                "userPassword":userPassword,
+                "Phone":Phone,
+                "roleId_id": 2
+                })
+
+            # Call the stored procedure with the JSON data
+            with connection.cursor() as cursor:
+                cursor.callproc('ADMUserCreateEdit', [user_type,json_data])
+                results = cursor.fetchall()
+
+            if user_type == 'Student':
+                json_data1 =  json.dumps({
+                    "Usn": usn,
+                    "Sem": Semester,
+                    "Section": Section
+                })
+                print(json_data1)
+                with connection.cursor() as cursor:
+                    cursor.callproc('ADMUserMapStuSem',[json_data1])
+                    results = cursor.fetchall()
+                
+            return JsonResponse({"message": "Data submitted successfully."})
+        
+        except Exception as e:
+            return JsonResponse({"error": str(e)})
     else:
         return JsonResponse({"error": "Only POST requests are allowed."})

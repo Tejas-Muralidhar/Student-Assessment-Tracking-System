@@ -43,10 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 newDiv.appendChild(viewSubjectDetails());
                 break;
             case "Add Subject":
-                newDiv.appendChild(addSubjectContent());
+                newDiv.appendChild(addEditSubjectContent("add"));
                 break;
             case "Edit Subject":
-                newDiv.appendChild(editSubjectContent());
+                newDiv.appendChild(addEditSubjectContent("edit"));
                 break;
             case "Delete Subject":
                 newDiv.appendChild(deleteSubjectContent());
@@ -57,17 +57,17 @@ document.addEventListener("DOMContentLoaded", function () {
             case "Assign Faculty to Subject":
                 newDiv.appendChild(assignFacultyContent());
                 break;
-            case "Delete Faculty":
-                newDiv.appendChild(deleteFacultyContent());
+            case "View Faculty-Subject Assignments":
+                newDiv.appendChild(viewFacultySubjectContent());
                 break;
             case "View Users":
                 newDiv.appendChild(viewUsers());
                 break;
             case "Add User":
-                newDiv.appendChild(addUserContent());
+                newDiv.appendChild(addEditUserContent("add"));
                 break;
             case "Edit User":
-                newDiv.appendChild(editUserContent());
+                newDiv.appendChild((addEditUserContent("edit")));
                 break;
             case "Delete User":
                 newDiv.appendChild(deleteUserContent());
@@ -192,17 +192,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         function filterTable() {
-            // Check if marksData is defined
-            if (!marksData) return;
             var selectedColumn = document.getElementById("column-dropdown").value;
             var searchText = document.getElementById("search-input").value.toUpperCase();
-            var rows = newDiv.querySelectorAll("table tbody tr");
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
             rows.forEach(function (row) {
-                var cellText = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.theorymarks[0]).indexOf(selectedColumn) + 1) + ")").textContent.toUpperCase();
-                if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
-                    row.style.display = "";
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var theoryMarksCell = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.theorymarks[0]).indexOf(selectedColumn) + 1) + ")");
+                var labMarksCell = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.labmarks[0]).indexOf(selectedColumn) + 1) + ")");
+
+                // Check if the cell exists in either theory marks or lab marks columns
+                var cell = theoryMarksCell || labMarksCell;
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 } else {
-                    row.style.display = "none";
+                    row.style.display = ""; // Show the row if the cell is not found
                 }
             });
         }
@@ -305,13 +318,24 @@ document.addEventListener("DOMContentLoaded", function () {
         function filterTable() {
             var selectedColumn = document.getElementById("column-dropdown").value;
             var searchText = document.getElementById("search-input").value.toUpperCase();
-            var rows = document.querySelectorAll("#main-div table tbody tr");
-            rows.forEach(function (row) {
-                var cellText = row.querySelector("td:nth-child(" + (Object.keys(attendanceData.attendance[0]).indexOf(selectedColumn) + 1) + ")").textContent.toUpperCase();
-                if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
-                    row.style.display = "";
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
+            rows.forEach(function (row, index) {
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var cell = row.querySelector("td:nth-child(" + (Object.keys(attendanceData.attendance[0]).indexOf(selectedColumn) + 1) + ")");
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 } else {
-                    row.style.display = "none";
+                    row.style.display = ""; // Hide the row if the cell is not found
                 }
             });
         }
@@ -410,13 +434,24 @@ document.addEventListener("DOMContentLoaded", function () {
         function filterTable() {
             var selectedColumn = document.getElementById("column-dropdown").value;
             var searchText = document.getElementById("search-input").value.toUpperCase();
-            var rows = document.querySelectorAll("#main-div table tbody tr");
-            rows.forEach(function (row) {
-                var cellText = row.querySelector("td:nth-child(" + (Object.keys(studentsData.students[0]).indexOf(selectedColumn) + 1) + ")").textContent.toUpperCase();
-                if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
-                    row.style.display = "";
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
+            rows.forEach(function (row, index) {
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var cell = row.querySelector("td:nth-child(" + (Object.keys(studentsData.students[0]).indexOf(selectedColumn) + 1) + ")");
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 } else {
-                    row.style.display = "none";
+                    row.style.display = ""; // Hide the row if the cell is not found
                 }
             });
         }
@@ -433,14 +468,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Make an AJAX request to fetch subject details
         var xhr = new XMLHttpRequest();
+        var subjectsData;
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    var subjectsData = JSON.parse(xhr.responseText);
+                    subjectsData = JSON.parse(xhr.responseText);
                     // Check if subjects data is available
                     if (subjectsData && subjectsData.marks) {
+
+                        newDiv.innerHTML = "<p>Filter Your Search: </p>";
+                        var filterdiv = document.createElement('div');
+                        var columnDropdown = document.createElement("select");
+                        columnDropdown.id = "column-dropdown";
+                        var defaultOption = document.createElement("option");
+                        defaultOption.text = "Select column...";
+                        columnDropdown.add(defaultOption);
+                        // Get the keys from the first item in marksData.marks.theorymarks array
+                        Object.keys(subjectsData.marks.theorymarks[0]).forEach(function (key) {
+                            var option = document.createElement("option");
+                            option.text = key;
+                            columnDropdown.add(option);
+                        });
+                        filterdiv.appendChild(columnDropdown);
+
+                        // Create a search input field
+                        var searchInput = document.createElement("input");
+                        searchInput.type = "text";
+                        searchInput.id = "search-input"; // Assign an id to the search input
+                        searchInput.placeholder = "Search...";
+                        filterdiv.appendChild(searchInput);
+
+                        newDiv.appendChild(filterdiv);
+
+                        columnDropdown.addEventListener("change", filterTable);
+                        searchInput.addEventListener("input", filterTable);
+
                         // Display theory subjects
                         if (subjectsData.marks.theorymarks && subjectsData.marks.theorymarks.length > 0) {
+
                             newDiv.appendChild(createSubjectTable(subjectsData.marks.theorymarks, "Theory Subjects"));
                         } else {
                             var p = document.createElement('p');
@@ -504,6 +569,45 @@ document.addEventListener("DOMContentLoaded", function () {
             return table;
         }
 
+        function filterTable() {
+            var selectedColumn = document.getElementById("column-dropdown").value;
+            var searchText = document.getElementById("search-input").value.toUpperCase();
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
+            rows.forEach(function (row) {
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var theoryMarksCell, labMarksCell;
+
+                // Check if theory marks are available
+                if (subjectsData.marks.theorymarks && subjectsData.marks.theorymarks.length > 0) {
+                    theoryMarksCell = row.querySelector("td:nth-child(" + (Object.keys(subjectsData.marks.theorymarks[0]).indexOf(selectedColumn) + 1) + ")");
+                }
+
+                // Check if lab marks are available
+                if (subjectsData.marks.labmarks && subjectsData.marks.labmarks.length > 0) {
+                    labMarksCell = row.querySelector("td:nth-child(" + (Object.keys(subjectsData.marks.labmarks[0]).indexOf(selectedColumn) + 1) + ")");
+                }
+
+                // Check if the cell exists in either theory marks or lab marks columns
+                var cell = theoryMarksCell || labMarksCell;
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                } else {
+                    row.style.display = ""; // Show the row if the cell is not found
+                }
+            });
+        }
+
+
         // Return the new div element
         return newDiv;
     }
@@ -514,14 +618,44 @@ document.addEventListener("DOMContentLoaded", function () {
         var newDiv = document.createElement("div");
         newDiv.id = 'ContentDiv';
 
+        var facultyData;
+
         // Make an AJAX request to fetch faculty data
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    var facultyData = JSON.parse(xhr.responseText);
+                    facultyData = JSON.parse(xhr.responseText);
                     // Check if faculty data is available
                     if (facultyData && facultyData.faculty && facultyData.faculty.length > 0) {
+
+                        newDiv.innerHTML = "<p>Filter Your Search: </p>";
+                        var filterdiv = document.createElement('div');
+                        var columnDropdown = document.createElement("select");
+                        columnDropdown.id = "column-dropdown";
+                        var defaultOption = document.createElement("option");
+                        defaultOption.text = "Select column...";
+                        columnDropdown.add(defaultOption);
+                        // Get the keys from the first item in marksData.marks.theorymarks array
+                        Object.keys(facultyData.faculty[0]).forEach(function (key) {
+                            var option = document.createElement("option");
+                            option.text = key;
+                            columnDropdown.add(option);
+                        });
+                        filterdiv.appendChild(columnDropdown);
+
+                        // Create a search input field
+                        var searchInput = document.createElement("input");
+                        searchInput.type = "text";
+                        searchInput.id = "search-input"; // Assign an id to the search input
+                        searchInput.placeholder = "Search...";
+                        filterdiv.appendChild(searchInput);
+
+                        newDiv.appendChild(filterdiv);
+
+                        columnDropdown.addEventListener("change", filterTable);
+                        searchInput.addEventListener("input", filterTable);
+
                         newDiv.appendChild(createFacultyTable(facultyData.faculty, "Faculty Members"));
                     } else {
                         var p = document.createElement('p');
@@ -572,6 +706,31 @@ document.addEventListener("DOMContentLoaded", function () {
             return table;
         }
 
+        function filterTable() {
+            var selectedColumn = document.getElementById("column-dropdown").value;
+            var searchText = document.getElementById("search-input").value.toUpperCase();
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
+            rows.forEach(function (row, index) {
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var cell = row.querySelector("td:nth-child(" + (Object.keys(facultyData.faculty[0]).indexOf(selectedColumn) + 1) + ")");
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                } else {
+                    row.style.display = ""; // Hide the row if the cell is not found
+                }
+            });
+        }
+
         // Return the new div element
         return newDiv;
     }
@@ -581,14 +740,44 @@ document.addEventListener("DOMContentLoaded", function () {
         var newDiv = document.createElement("div");
         newDiv.id = 'ContentDiv';
 
+        var userData;
+
         // Make an AJAX request to fetch users data
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    var userData = JSON.parse(xhr.responseText);
+                    userData = JSON.parse(xhr.responseText);
                     // Check if users data is available
                     if (userData && userData.users && userData.users.length > 0) {
+
+                        newDiv.innerHTML = "<p>Filter Your Search: </p>";
+                        var filterdiv = document.createElement('div');
+                        var columnDropdown = document.createElement("select");
+                        columnDropdown.id = "column-dropdown";
+                        var defaultOption = document.createElement("option");
+                        defaultOption.text = "Select column...";
+                        columnDropdown.add(defaultOption);
+                        // Get the keys from the first item in marksData.marks.theorymarks array
+                        Object.keys(userData.users[0]).forEach(function (key) {
+                            var option = document.createElement("option");
+                            option.text = key;
+                            columnDropdown.add(option);
+                        });
+                        filterdiv.appendChild(columnDropdown);
+
+                        // Create a search input field
+                        var searchInput = document.createElement("input");
+                        searchInput.type = "text";
+                        searchInput.id = "search-input"; // Assign an id to the search input
+                        searchInput.placeholder = "Search...";
+                        filterdiv.appendChild(searchInput);
+
+                        newDiv.appendChild(filterdiv);
+
+                        columnDropdown.addEventListener("change", filterTable);
+                        searchInput.addEventListener("input", filterTable);
+
                         newDiv.appendChild(createUsersTable(userData.users, "Users"));
                     } else {
                         var p = document.createElement('p');
@@ -640,119 +829,54 @@ document.addEventListener("DOMContentLoaded", function () {
             return table;
         }
 
+        function filterTable() {
+            var selectedColumn = document.getElementById("column-dropdown").value;
+            var searchText = document.getElementById("search-input").value.toUpperCase();
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
+            rows.forEach(function (row, index) {
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var cell = row.querySelector("td:nth-child(" + (Object.keys(userData.users[0]).indexOf(selectedColumn) + 1) + ")");
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                } else {
+                    row.style.display = ""; // Hide the row if the cell is not found
+                }
+            });
+        }
+
         // Return the new div element
         return newDiv;
     }
 
-    function addSubjectContent() {
+    function addEditSubjectContent(action) {
         // Create a new div element for the content
         var newDiv = document.createElement("div");
         newDiv.id = "ContentDiv";
 
         // Create a heading
         var heading = document.createElement("h2");
-        heading.textContent = "Register New Subject:";
         heading.style.marginBottom = "0";
         var subheading = document.createElement("p");
-        subheading.textContent = "Trying to add the data of an already existing subject will lead to editing the Subject details!";
-        newDiv.appendChild(heading);
-        newDiv.appendChild(subheading);
 
-        // Create a form element
-        var form = document.createElement("form");
-        form.action = "/admin/add-edit-subject/"; // URL of the backend view
-        form.method = "POST"; // HTTP method
-        form.style.padding = "20px"; // Padding for the form
-        form.style.background = "whitesmoke"; // Background color of the form
-        form.style.border = "2px solid #09015f"; // Border color of the form
-        form.style.borderRadius = "10px"; // Rounded corners for the form
-
-        // Create labels and inputs for each detail
-        var labels = ["Subject Title:", "Subject Code:", "Semester:", "Number of Credits:", "Subject Type:", "Enter Maximum IA Marks:", "Enter Maximum Assignment Marks:", "Enter Maximum Quiz Marks:", "Enter Maximum Observation Marks:", "Enter Maximum Record Marks:", "Enter Maximum Viva Marks:", "Final Internal Marks Split:", "Final External Marks Split:"];
-        var inputNames = ["subject_name", "subject_code", "semester", "credits", "lab_or_theory", "MaxIA", "MaxAssignment", "MaxQuiz", "MaxObservation", "MaxRecord", "MaxViva", "MaxInternals", "MaxExternals"];
-
-        for (var i = 0; i < labels.length; i++) {
-            var label = document.createElement("label");
-            label.textContent = labels[i];
-            label.style.display = "block"; // Make label display as block to put each label on a new line
-
-            var input = document.createElement("input");
-            input.type = "text";
-            input.name = inputNames[i];
-            input.required = true;
-            input.style.marginBottom = "10px"; // Add some bottom margin to the input fields
-            input.style.width = "100%";
-            input.style.height = "30px";
-
-            if (i === 0 || i === 1) { // Subject name and Subject code are strings
-                input.type = "text";
-            } else { // Everything else is a number
-                input.type = "number";
-                input.min = 0; // Minimum value is 1 for all numbers
-                input.required = true;
-                if (i === 2) { // Semester: between 1 and 8
-                    input.min = 1;
-                    input.max = 8;
-                } else if (i === 3) { // Credits: above 0
-                    input.min = 1;
-                }
-            }
-
-            if (i === 4) { // If it's the "Subject Type" field
-                input = document.createElement("select");
-                input.style.width = "100%";
-                input.style.height = "40px";
-                input.name = inputNames[i];
-                input.required = true;
-                input.style.marginBottom = "10px"; // Add some bottom margin to the select field
-
-                // Option for Lab
-                var labOption = document.createElement("option");
-                labOption.value = "0";
-                labOption.textContent = "Lab";
-                input.appendChild(labOption);
-
-                // Option for Theory
-                var theoryOption = document.createElement("option");
-                theoryOption.value = "1";
-                theoryOption.textContent = "Theory";
-                input.appendChild(theoryOption);
-            }
-
-            form.appendChild(label);
-            form.appendChild(input);
+        if (action === "add") {
+            heading.textContent = "Register a New Subject:";
+            subheading.textContent = "Trying to add the data of an already existing subject will lead to editing the Subject details!";
+        }
+        else {
+            heading.textContent = "Edit a Registered Subject:";
+            subheading.textContent = "Trying to edit the data of a non-existent subject will lead to the creation of a new Subject!";
         }
 
-        // Create a submit button
-        var submitButton = document.createElement("input");
-        submitButton.type = "submit";
-        submitButton.value = "Submit";
-        submitButton.style.marginTop = "10px"; // Add some top margin to the submit button
-        submitButton.style.backgroundColor = "#ff7d20"; // Orange background color
-        submitButton.style.color = "white"; // White text color
-        submitButton.style.padding = "10px 20px"; // Padding for the button
-
-        form.appendChild(submitButton);
-
-        // Append the form to the content div
-        newDiv.appendChild(form);
-
-        return newDiv;
-    }
-
-
-    // Function to generate content for "Edit Subject"
-    function editSubjectContent() {
-        // Create a new div element for the content
-        var newDiv = document.createElement("div");
-        newDiv.id = "ContentDiv";
-
-        // Create a heading
-        var heading = document.createElement("h2");
-        heading.style.marginBottom = "0";
-        heading.textContent = "Edit a Registered Subject:";
-        var subheading = document.createElement("p");
-        subheading.textContent = "Trying to edit the data of a non-existent subject will lead to the creation of a new Subject!";
 
         newDiv.appendChild(heading);
         newDiv.appendChild(subheading);
@@ -997,29 +1121,359 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // Function to generate content for "Delete Faculty"
-    function deleteFacultyContent() {
+    function viewFacultySubjectContent() {
         // Create a new div element
         var newDiv = document.createElement("div");
         newDiv.id = "ContentDiv";
-        newDiv.textContent = "Form to delete faculty";
+
+        // Declare data variable outside the xhr.onreadystatechange function
+        var data;
+
+        // Make an AJAX request to fetch the faculty subject data
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Parse the JSON response
+                    data = JSON.parse(xhr.responseText);
+                    // Check if data is available
+                    if (data && data.data) {
+                        // Create filter elements
+                        newDiv.innerHTML = "<p>Filter Your Search: </p>";
+                        var filterdiv = document.createElement('div');
+                        var columnDropdown = document.createElement("select");
+                        columnDropdown.id = "column-dropdown";
+                        var defaultOption = document.createElement("option");
+                        defaultOption.text = "Select column...";
+                        columnDropdown.add(defaultOption);
+                        Object.keys(data.data[0]).forEach(function (key) {
+                            var option = document.createElement("option");
+                            option.text = key;
+                            columnDropdown.add(option);
+                        });
+                        columnDropdown.addEventListener("change", filterTable);
+                        filterdiv.appendChild(columnDropdown);
+
+                        // Create a search input field
+                        var searchInput = document.createElement("input");
+                        searchInput.type = "text";
+                        searchInput.id = "search-input"; // Assign an id to the search input
+                        searchInput.placeholder = "Search...";
+                        searchInput.addEventListener("input", filterTable);
+                        filterdiv.appendChild(searchInput);
+
+                        newDiv.appendChild(filterdiv);
+
+                        // Create and populate table
+                        var table = document.createElement("table");
+
+                        var headerRow = document.createElement("tr");
+                        for (var key in data.data[0]) {
+                            var headerCell = document.createElement("th");
+                            headerCell.textContent = key;
+                            headerRow.appendChild(headerCell);
+                        }
+                        table.appendChild(headerRow);
+
+                        data.data.forEach(function (item) {
+                            var row = document.createElement("tr");
+                            for (var key in item) {
+                                var cell = document.createElement("td");
+                                cell.textContent = item[key];
+                                row.appendChild(cell);
+                            }
+                            table.appendChild(row);
+                        });
+
+                        newDiv.appendChild(table);
+                    } else {
+                        // If no data available, display a message
+                        var p = document.createElement('p');
+                        p.innerHTML = "No Faculty have been mapped yet!";
+                        newDiv.appendChild(p);
+                    }
+                } else {
+                    // If there is an error in fetching data, display an error message
+                    var p = document.createElement('p');
+                    p.innerHTML = "Error fetching Faculty-Subject data: " + xhr.statusText;
+                    newDiv.appendChild(p);
+                }
+            }
+        };
+
+        // Open the AJAX request to fetch data from the server
+        xhr.open("GET", "/admin/view-faculty-mapping", true);
+        // Send the AJAX request
+        xhr.send();
+
+        // Function to handle filtering
+        function filterTable() {
+            var selectedColumn = document.getElementById("column-dropdown").value;
+            var searchText = document.getElementById("search-input").value.toUpperCase();
+            var rows = document.querySelectorAll("#ContentDiv table tr");
+
+            rows.forEach(function (row, index) {
+                if (row.querySelector("th")) { // Check if the row contains any <th> elements
+                    return; // Skip the header row
+                }
+
+                var cell = row.querySelector("td:nth-child(" + (Object.keys(data.data[0]).indexOf(selectedColumn) + 1) + ")");
+
+                if (cell) {
+                    var cellText = cell.textContent.toUpperCase();
+                    if (selectedColumn === "Select column..." || cellText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                } else {
+                    row.style.display = ""; // Hide the row if the cell is not found
+                }
+            });
+        }
+
+        // Return the new div element
         return newDiv;
     }
 
     // Function to generate content for "Add User"
-    function addUserContent() {
+    function addEditUserContent(action) {
         // Create a new div element
         var newDiv = document.createElement("div");
         newDiv.id = "ContentDiv";
-        newDiv.textContent = "Add user Form";
-        return newDiv;
-    }
 
-    // Function to generate content for "Edit User"
-    function editUserContent() {
-        // Create a new div element
-        var newDiv = document.createElement("div");
-        newDiv.id = "ContentDiv";
-        newDiv.textContent = "Form to edit user";
+        var heading = document.createElement("h2");
+        heading.style.marginBottom = "0";
+        var subheading = document.createElement("p");
+        if (action === 'add') {
+            heading.textContent = "Add New User:";
+            subheading.textContent = "Trying to add the data of an already existing user will lead to editing exisiting User details!";
+        }
+        else {
+            heading.textContent = "Edit User Details:";
+            subheading.textContent = "Trying to edit the data of a non existent user will lead to the creation of a new User!";
+        }
+        newDiv.appendChild(heading);
+        newDiv.appendChild(subheading);
+
+        // Create a form element
+        var form = document.createElement("form");
+        form.action = "/admin/add-edit-user/"; // URL of the backend view
+        form.method = "POST"; // HTTP method
+        form.style.padding = "20px"; // Padding for the form
+        form.style.background = "whitesmoke"; // Background color of the form
+        form.style.border = "2px solid #09015f"; // Border color of the form
+        form.style.borderRadius = "10px"; // Rounded corners for the form
+
+        // Create a label and dropdown for user type
+        var userTypeLabel = document.createElement("label");
+        userTypeLabel.textContent = "User Type:";
+        var userTypeSelect = document.createElement("select");
+        userTypeSelect.name = "user_type";
+        userTypeSelect.style.width = '100%';
+        userTypeSelect.required = true;
+
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select User Type";
+        defaultOption.disabled = true; // Use disabled property instead of setAttribute
+        defaultOption.selected = true; // Optionally set this option as selected by default
+        userTypeSelect.appendChild(defaultOption);
+
+        // Option for Faculty
+        var facultyOption = document.createElement("option");
+        facultyOption.value = "Faculty";
+        facultyOption.textContent = "Faculty";
+        userTypeSelect.appendChild(facultyOption);
+
+        // Option for Student
+        var studentOption = document.createElement("option");
+        studentOption.value = "Student";
+        studentOption.textContent = "Student";
+        userTypeSelect.appendChild(studentOption);
+
+        form.appendChild(userTypeLabel);
+        form.appendChild(userTypeSelect);
+        form.appendChild(document.createElement("br"));
+
+        // Function to create inputs for faculty
+        function createFacultyInputs() {
+            var facultyInputs = [
+                { label: "Faculty ID:", name: "FID", type: "number", min: 1000, max: 9999 },
+                { label: "Name:", name: "Name", type: "text" },
+                { label: "Gender:", name: "Gender", type: "select", options: ["M", "F"] },
+                { label: "Phone Number:", name: "Phone", type: "tel", pattern: "[0-9]{10}" },
+                { label: "Email:", name: "Email", type: "email" },
+                { label: "Password:", name: "Password", type: "password" },
+                { label: "Repeat Password:", name: "RepeatPassword", type: "password" }
+            ];
+
+            facultyInputs.forEach(function (inputData) {
+                var label = document.createElement("label");
+                label.textContent = inputData.label;
+
+                var input;
+                if (inputData.type === "select") {
+                    input = document.createElement("select");
+                    input.style.width = '100%';
+                    input.style.height = '35px';
+                    inputData.options.forEach(function (optionValue) {
+                        var option = document.createElement("option");
+                        option.value = option.textContent = optionValue;
+                        input.appendChild(option);
+                    });
+                } else {
+                    input = document.createElement("input");
+                    input.type = inputData.type;
+                    input.style.width = '100%';
+                    input.style.height = '35px';
+                }
+
+                input.name = inputData.name;
+                input.required = true;
+                if (inputData.type === "number") {
+                    input.min = inputData.min;
+                    input.max = inputData.max;
+                } else if (inputData.pattern) {
+                    input.pattern = inputData.pattern;
+                }
+
+                form.appendChild(label);
+                form.appendChild(input);
+                form.appendChild(document.createElement("br"));
+            });
+
+            var repeatPasswordInput = form.querySelector('input[name="RepeatPassword"]');
+            var passwordInput = form.querySelector('input[name="Password"]');
+            repeatPasswordInput.addEventListener("input", function () {
+                if (repeatPasswordInput.value !== passwordInput.value) {
+                    repeatPasswordInput.setCustomValidity("Passwords do not match");
+                } else {
+                    repeatPasswordInput.setCustomValidity("");
+                }
+            });
+
+            var submitButton = document.createElement("input");
+            submitButton.type = "submit";
+            submitButton.value = "Submit";
+            submitButton.style.marginTop = "10px"; // Add some top margin to the submit button
+            submitButton.style.backgroundColor = "#ff7d20"; // Green background color
+            submitButton.style.color = "white"; // White text color
+            submitButton.style.padding = "10px 20px"; // Padding for the button
+
+            form.appendChild(submitButton);
+        }
+
+        // Function to create inputs for student
+        function createStudentInputs() {
+            var studentInputs = [
+                { label: "University Seat Number (USN):", name: "USN", type: "text", maxLength: 10 },
+                { label: "Name:", name: "Name", type: "text" },
+                { label: "Gender:", name: "Gender", type: "select", options: ["M", "F"] },
+                { label: "Date of Birth (yyyy-mm-dd):", name: "DOB", type: "date" },
+                { label: "Phone:", name: "Phone", type: "tel", pattern: "[0-9]{10}" },
+                { label: "Parent Phone Number:", name: "ParentNumber", type: "tel", pattern: "[0-9]{10}" },
+                { label: "Email:", name: "Email", type: "email" },
+                { label: "Password:", name: "Password", type: "password" },
+                { label: "Repeat Password:", name: "RepeatPassword", type: "password" },
+                { label: "Semester:", name: "Semester", type: "number", min: 1, max: 8 },
+                { label: "Section:", name: "Section", type: "select", options: ["A", "B", "C"] },
+            ];
+
+            studentInputs.forEach(function (inputData) {
+                var label = document.createElement("label");
+                label.textContent = inputData.label;
+
+                var input;
+                if (inputData.type === "select") {
+                    input = document.createElement("select");
+                    input.style.width = '100%';
+                    input.style.height = '35px';
+                    inputData.options.forEach(function (optionValue) {
+                        var option = document.createElement("option");
+                        option.value = option.textContent = optionValue;
+                        input.appendChild(option);
+                    });
+                } else {
+                    input = document.createElement("input");
+                    input.style.width = '100%';
+                    input.style.height = '35px';
+                    input.type = inputData.type;
+                    if (inputData.type === "date") {
+                        input.valueAsDate = new Date();
+                    }
+                }
+
+                input.name = inputData.name;
+                input.required = true;
+                if (inputData.maxLength) {
+                    input.maxLength = inputData.maxLength;
+                }
+                if (inputData.pattern) {
+                    input.pattern = inputData.pattern;
+                }
+                if (inputData.min) {
+                    input.min = inputData.min;
+                }
+                if (inputData.max) {
+                    input.max = inputData.max;
+                }
+
+                form.appendChild(label);
+                form.appendChild(input);
+                form.appendChild(document.createElement("br"));
+            });
+
+            // Add event listener to repeat password input for validation
+            var repeatPasswordInput = form.querySelector('input[name="RepeatPassword"]');
+            var passwordInput = form.querySelector('input[name="Password"]');
+            repeatPasswordInput.addEventListener("input", function () {
+                if (repeatPasswordInput.value !== passwordInput.value) {
+                    repeatPasswordInput.setCustomValidity("Passwords do not match");
+                } else {
+                    repeatPasswordInput.setCustomValidity("");
+                }
+            });
+
+            var parentphoneInput = form.querySelector('input[name="ParentNumber"]');
+            var phoneInput = form.querySelector('input[name="Phone"]');
+            parentphoneInput.addEventListener("input", function () {
+                if (parentphoneInput.value == phoneInput.value) {
+                    parentphoneInput.setCustomValidity("Parent's Phone number cannot be the same as the Student's!");
+                } else {
+                    parentphoneInput.setCustomValidity("");
+                }
+            });
+
+            var submitButton = document.createElement("input");
+            submitButton.type = "submit";
+            submitButton.value = "Submit";
+            submitButton.style.marginTop = "10px"; // Add some top margin to the submit button
+            submitButton.style.backgroundColor = "#ff7d20"; // Green background color
+            submitButton.style.color = "white"; // White text color
+            submitButton.style.padding = "10px 20px"; // Padding for the button
+
+            form.appendChild(submitButton);
+        }
+
+        // Add event listener to user type select
+        userTypeSelect.addEventListener("change", function () {
+            // Clear existing inputs
+            while (form.childNodes.length > 2) {
+                form.removeChild(form.lastChild);
+            }
+
+            // Create inputs based on selected user type
+            if (userTypeSelect.value === "Faculty") {
+                createFacultyInputs();
+            } else if (userTypeSelect.value === "Student") {
+                createStudentInputs();
+            }
+        });
+
+        // Append the form to the new div
+        newDiv.appendChild(form);
+
         return newDiv;
     }
 
@@ -1028,7 +1482,92 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create a new div element
         var newDiv = document.createElement("div");
         newDiv.id = "ContentDiv";
-        newDiv.textContent = "Form to delete user";
+
+        // Heading
+        var heading = document.createElement("h2");
+        heading.textContent = "Delete Existing User:";
+        heading.style.marginBottom = "0";
+        newDiv.appendChild(heading);
+
+        // Subheading
+        var subheading = document.createElement("p");
+        subheading.textContent = "Trying to delete a non-existent User will lead to no action!";
+        newDiv.appendChild(subheading);
+
+        // Create a form element
+        var form = document.createElement("form");
+        form.action = "/admin/delete-user/"; // URL of the backend view
+        form.method = "POST"; // HTTP method
+        form.style.padding = "20px"; // Padding for the form
+        form.style.background = "whitesmoke"; // Background color of the form
+        form.style.border = "2px solid #09015f"; // Border color of the form
+        form.style.borderRadius = "10px"; // Rounded corners for the form
+
+        // Create a label and dropdown for user type
+        var userTypeLabel = document.createElement("label");
+        userTypeLabel.textContent = "User Type:";
+        var userTypeSelect = document.createElement("select");
+        userTypeSelect.name = "user_type";
+        userTypeSelect.style.width = '100%';
+        userTypeSelect.required = true;
+
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select User Type";
+        defaultOption.selected = true;
+        defaultOption.disabled = true;
+        userTypeSelect.appendChild(defaultOption);
+
+        // Option for Faculty
+        var facultyOption = document.createElement("option");
+        facultyOption.value = "Faculty";
+        facultyOption.textContent = "Faculty";
+        userTypeSelect.appendChild(facultyOption);
+
+        // Option for Student
+        var studentOption = document.createElement("option");
+        studentOption.value = "Student";
+        studentOption.textContent = "Student";
+        userTypeSelect.appendChild(studentOption);
+
+        form.appendChild(userTypeLabel);
+        form.appendChild(userTypeSelect);
+        form.appendChild(document.createElement("br"));
+
+        // Create input for Faculty ID or USN based on user type
+        var userInputLabel = document.createElement("label");
+        var userInput = document.createElement("input");
+        userInput.type = "text";
+        userInput.name = "user_input";
+        userInputLabel.textContent = "User ID:";
+        userInput.placeholder = "Select User Type first!";
+
+        form.appendChild(userInputLabel);
+        form.appendChild(userInput);
+        form.appendChild(document.createElement("br"));
+
+        // Add event listener to user type select
+        userTypeSelect.addEventListener("change", function () {
+            // Change label and placeholder based on user type
+            userInputLabel.textContent = (userTypeSelect.value === "Faculty") ? "Faculty ID:" : "USN:";
+            userInput.placeholder = (userTypeSelect.value === "Faculty") ? "Enter Faculty ID" : "Enter USN";
+        });
+
+        // Submit button
+        var submitButton = document.createElement("input");
+        submitButton.type = "submit";
+        submitButton.value = "Submit";
+        submitButton.style.marginTop = "10px"; // Add some top margin to the submit button
+        submitButton.style.backgroundColor = "#ff7d20"; // Green background color
+        submitButton.style.color = "white"; // White text color
+        submitButton.style.padding = "10px 20px"; // Padding for the button
+        form.appendChild(submitButton);
+
+        // Append the form to the new div
+        newDiv.appendChild(form);
+
         return newDiv;
     }
+
+
 })

@@ -1,7 +1,8 @@
 /* Errorpage.css */
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     margin: 0;
     padding: 0;
     background-color: white;
@@ -15,19 +16,20 @@ body {
 .container h2 {
     font-size: 36px;
     color: rgba(17, 13, 87, 0.911);
-    margin:-24px 10px 10px 10px;
-    padding: 10px 10px 10px 10px ;
+    margin: -24px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
 }
 
 .container img {
-    width: 650px; /* Adjust the width to your desired size */
+    width: 650px;
+    /* Adjust the width to your desired size */
     height: auto;
     margin-top: 20px;
 }
 
 .container .errortype {
     font-size: 48px;
-    color:#ff0000;
+    color: #ff0000;
     margin-top: 20px;
 }
 
@@ -38,10 +40,12 @@ body {
 }
 
 .container .butt {
-    background-color:#f6720c;
+    background-color: #f6720c;
     color: white;
     padding: 14px 20px;
     margin: 20px 100x 10px 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     border: none;
     cursor: pointer;
     border-radius: 5px;
@@ -49,6 +53,6 @@ body {
 }
 
 .container .butt:hover {
-    background-color:rgba(17, 13, 87, 0.911);
+    background-color: rgba(17, 13, 87, 0.911);
     box-shadow: 10px 10px 19px rgb(97, 88, 88);
 }

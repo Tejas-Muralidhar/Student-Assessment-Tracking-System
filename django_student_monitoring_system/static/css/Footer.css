@@ -8,6 +8,8 @@ footer {
     text-align: center;
     font-size: 14px;
     bottom: 0;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
 }
 
 .footercontainer {

@@ -10,13 +10,15 @@ import json
 from django.conf import settings
 
 def UserProfile(user_type_key): 
+    print(user_type_key)
     try:
         with connection.cursor() as cursor:
             cursor.callproc('SPUserProfile', [user_type_key])
             # Fetch all the results
             results = cursor.fetchall()
+            print(results)
             # Close the cursor explicitly
-            
+
             if results:
                 # Assuming SPUserProfile returns a single row, you can directly access the first row
                 row = results[0]
@@ -70,7 +72,9 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                             return render(request,"FacultyDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     
                     elif user_data['user_type'] == 'Student':
+                        print(user_data)
                         data = UserProfile(user_data['user_type_key']) #WE SEND USN TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE STUDENT
+                        print(data)
                         if data == None:
                             return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
                         elif data == 500:

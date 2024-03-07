@@ -1,114 +1,8 @@
-/* body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow-y: scroll;
-    overflow-x: scroll;
-}
-
-#main-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-}
-
-.header,
-.footer {
-    flex: 1;
-    background-color: rgba(17, 13, 87, 0.911);
-}
-
-
-table {
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-    font-size: small;
-    table-layout: fixed;
-    width: max-content;
-    height: max-content;
-    margin: 3% !important;
-}
-
-th {
-    background-color: #000000;
-    border: 1px solid #dddddd;
-    color: white;
-    text-align: left;
-    padding: 8px;
-    white-space: nowrap;
-}
-
-td {
-    border: 1px solid #ffffff;
-    text-align: left;
-    padding: 8px;
-    white-space: nowrap;
-}
-
-tr:nth-child(even) {
-    background-color: rgb(209, 205, 205);
-}
-
-#downloadBtn {
-    position: absolute;
-    top: 150px !important;
-    right: 50px;
-    background-color: #f6720c;
-    padding: 8px 15px 10px 10px;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5%;
-}
-
-.download-btn:hover {
-    background-color: rgba(17, 13, 87, 0.911);
-}
-
-.fa-arrow-left {
-    margin: -6% 0% 0% 1%;
-    size: 12;
-    position: absolute;
-    left: 10px;
-}
-
-i.fa-solid.fa-arrow-left:hover {
-    color: rgba(17, 13, 87, 0.911);
-}
-
-table {
-    border-collapse: collapse;
-    margin: 0 auto;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-th,
-td {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-}
-
-#downloadButton {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 95px;
-    cursor: pointer;
-} */
-
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     background-color: #f0f0f0;
 }
 
@@ -135,6 +29,8 @@ body {
     margin-top: 10px;
     padding: 10px 20px;
     background-color: #09015f;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     color: white;
     border: none;
     border-radius: 5px;
@@ -151,6 +47,8 @@ table {
     font-size: x-small;
     width: fit-content;
     border-collapse: collapse;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     margin-top: 20px;
     background-color: whitesmoke;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);

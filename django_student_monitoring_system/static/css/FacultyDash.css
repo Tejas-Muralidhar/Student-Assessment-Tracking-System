@@ -5,7 +5,8 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     height: 100vh;
     overflow-y: hidden;
 }
@@ -22,6 +23,8 @@ main {
 
 .logout-btn {
     position: fixed;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     bottom: 10%;
     right: 2%;
     background-color: #09015f;
@@ -34,7 +37,7 @@ main {
 }
 
 .logout-btn:hover {
-    background-color: forestgreen;
+    background-color: red;
 }
 
 .maincontainer {
@@ -118,6 +121,8 @@ main {
     margin: 0 10px;
     border: none;
     border-radius: 5px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     cursor: pointer;
     transition: background-color 0.3s;
     background-color: #007bff;

@@ -1,8 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     margin: 0;
     padding: 0;
-    overflow-y: scroll;
 }
 
 .navbar {
@@ -70,7 +70,8 @@ body {
 }
 
 .get-help-btn:hover {
-    background-color: forestgreen;
+    background-color: whitesmoke;
+    color: black;
 }
 
 /* #main-div {
@@ -92,7 +93,7 @@ body {
 }
 
 .logout-btn:hover {
-    background-color: forestgreen;
+    background-color: red;
 }
 
 /*changes from anoop*/

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AdmFacMapSub,AdmViewFaculty,AdmViewStudentAttendance,AdmViewStudentMarks,AdmViewStudents,AdmDeleteSubject,AdmViewSubjects,AdmDeleteUser,AdmViewUsers,AdmAddEditSubject
+from .views import ADMFacViewMapping,AdmFacMapSub,ADMUserAddEdit, AdmViewFaculty,AdmViewStudentAttendance,AdmViewStudentMarks,AdmViewStudents,AdmDeleteSubject,AdmViewSubjects,AdmDeleteUser,AdmViewUsers,AdmAddEditSubject
 
 urlpatterns = [
     path('map-faculty-subject/',AdmFacMapSub,name='AdmFacMapSub'),
@@ -12,4 +12,6 @@ urlpatterns = [
     path('delete-user/',AdmDeleteUser,name="AdmDeleteUser"),
     path('view-users/',AdmViewUsers,name="AdmViewUsers"),
     path("add-edit-subject/",AdmAddEditSubject,name="AdmAddEditSubject"),
+    path("view-faculty-mapping/",ADMFacViewMapping,name="ADMFacViewMapping"),
+    path("add-edit-user/",ADMUserAddEdit,name="ADMUserAddEdit"),
 ]

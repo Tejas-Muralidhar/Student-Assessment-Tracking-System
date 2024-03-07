@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
-
 #header {
     background-color: #09015f;
     color: #ffffff;
     padding: 20px;
     /* position: fixed; */
-    font-family: "Inconsolata", monospace;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
 }
 
 #navbar {
