@@ -70,7 +70,7 @@ body {
 }
 
 .get-help-btn:hover {
-    background-color: whitesmoke;
+    background-color: powderblue;
     color: black;
 }
 
@@ -255,4 +255,17 @@ caption {
     flex-direction: column;
     margin-bottom: 10vh;
     margin-top: 10px;
+}
+
+.alert {
+    padding: 15px;
+    background-color: powderblue;
+    color: black;
+    opacity: 1;
+    transition: opacity 0.6s;
+    border-radius: 5px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
 }

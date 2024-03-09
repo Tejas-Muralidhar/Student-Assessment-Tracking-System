@@ -17,27 +17,28 @@ main {
     height: 100vh;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     position: relative;
 
 }
 
-.logout-btn {
-    position: fixed;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    bottom: 10%;
-    right: 2%;
-    background-color: #09015f;
-    color: white;
+.logout-btn img {
     padding: 10px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+    position: absolute;
+    top: 1%;
+    right: 0.5%;
+    height: 60px;
+    width: auto;
 }
 
-.logout-btn:hover {
-    background-color: red;
+.logout-btn img:hover {
+    height: 65px;
+    width: auto;
 }
 
 .maincontainer {

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.db import connection
 import json
@@ -7,6 +7,7 @@ from django.http import JsonResponse
 
 @csrf_exempt
 def AdmFacMapSub(request):
+    data = {}
     if request.method == "POST":
         ipUserTypeKey = request.POST.get('faculty_id')
         ipSubjectCode = request.POST.get('subject_code')
@@ -19,131 +20,159 @@ def AdmFacMapSub(request):
                 # If the procedure has any output parameters, you can fetch them like this:
                 # output_data = cursor.fetchone()
                 # You can use JsonResponse to return any data if needed.
-                return JsonResponse({'message': 'Stored procedure executed successfully'})
+                data['message'] = f'Mapped Faculty {ipUserTypeKey} to Subject {ipSubjectCode} successfully!'
+                return render(request,'Admin.html',data)
             except Exception as e:
                 # Handle exceptions appropriately
-                return JsonResponse({'error': str(e)})
+                data['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',data)
     else:
-        return JsonResponse({'error': 'Only POST requests allowed!'})
+        data['message'] = f'Illegal Action!'
+        return redirect('Login')
         
 def AdmViewFaculty(request):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMFacViewFaculty')
-            results = cursor.fetchall()
-            # Convert results into a list of dictionaries for JSON serialization
-            faculty_list = []
-            for row in results:
-                faculty_dict = {
-                    'Faculty ID': row[0],
-                    'Faculty Name': row[1],
-                    'Gender': row[2],
-                    'Email': row[3],
-                    'Phone': row[4],
-                }
-                faculty_list.append(faculty_dict)
-            return JsonResponse({'faculty': faculty_list})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+    response = {}
+    if request.method == "GET":
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMFacViewFaculty')
+                results = cursor.fetchall()
+                # Convert results into a list of dictionaries for JSON serialization
+                faculty_list = []
+                for row in results:
+                    faculty_dict = {
+                        'Faculty ID': row[0],
+                        'Faculty Name': row[1],
+                        'Gender': row[2],
+                        'Email': row[3],
+                        'Phone': row[4],
+                    }
+                    faculty_list.append(faculty_dict)
+                return JsonResponse({'faculty': faculty_list})
+            except Exception as e:
+                response['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',response)
+    else:
+        response['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',response)
         
 def AdmViewStudentAttendance(request):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMStuViewAtt')
-            results = cursor.fetchall()
-            # Convert results into a list of dictionaries for JSON serialization
-            attendance_list = []
-            for row in results:
-                attendance_dict = {
-                    'USN': row[0],
-                    'Semester': row[1],
-                    'Section': row[2],
-                    'Subject Code': row[3],
-                    'Classes Attended': row[4],
-                    'Total Classes': row[5],
-                    'Percentage': row[6]
-                    # Add more fields as needed
-                }
-                attendance_list.append(attendance_dict)
-            return JsonResponse({'attendance': attendance_list})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+    response = {}
+    if request.method == "GET":
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMStuViewAtt')
+                results = cursor.fetchall()
+                # Convert results into a list of dictionaries for JSON serialization
+                attendance_list = []
+                for row in results:
+                    attendance_dict = {
+                        'USN': row[0],
+                        'Semester': row[1],
+                        'Section': row[2],
+                        'Subject Code': row[3],
+                        'Classes Attended': row[4],
+                        'Total Classes': row[5],
+                        'Percentage': row[6]
+                        # Add more fields as needed
+                    }
+                    attendance_list.append(attendance_dict)
+                return JsonResponse({'attendance': attendance_list})
+            except Exception as e:
+                response['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',response)
+    else:
+        response['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',response)
         
 def AdmViewStudentMarks(request):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMStuViewMarks')
-            results = cursor.fetchall()
-            # Convert results into a list of dictionaries for JSON serialization
-            marks_list = []
-            labmarks_list = []
-            for row in results:
-                if row[0] == 1:
-                    marks_dict = {
-                        'USN' : row[1],
-                        'Subject Code': row[2],
-                        'IA 1':row[3],
-                        'IA 2':row[4],
-                        'IA 3':row[5],
-                        'Assignment 1':row[7],
-                        'Assignment 2':row[8],
-                        'Quiz 1':row[9],
-                        'Quiz 2':row[10],
-                        'Average IA': row[6],
-                        'Final IA': row[14],
-                        'Final EA': row[15],
-                        # Add more fields as needed
-                    }
-                    marks_list.append(marks_dict)
-                else:
-                    labmarks_dict = {
-                        'USN' : row[1],
-                        'Subject Code': row[2],
-                        'IA 1':row[3],
-                        'IA 2':row[4],
-                        'IA 3':row[5],
-                        'Record':row[11],
-                        'Observation':row[12],
-                        'Viva':row[13],
-                        'Average IA': row[6],
-                        'Final IA': row[14],
-                        'Final EA': row[15],
-                        # Add more fields as needed
-                    }
-                    labmarks_list.append(labmarks_dict)
-            data = {
-                'theorymarks': marks_list,
-                'labmarks': labmarks_list
-            }
-            return JsonResponse({'marks': data})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+    response = {}
+    if request.method == "GET":
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMStuViewMarks')
+                results = cursor.fetchall()
+                # Convert results into a list of dictionaries for JSON serialization
+                marks_list = []
+                labmarks_list = []
+                for row in results:
+                    if row[0] == 1:
+                        marks_dict = {
+                            'USN' : row[1],
+                            'Subject Code': row[2],
+                            'IA 1':row[3],
+                            'IA 2':row[4],
+                            'IA 3':row[5],
+                            'Assignment 1':row[7],
+                            'Assignment 2':row[8],
+                            'Quiz 1':row[9],
+                            'Quiz 2':row[10],
+                            'Average IA': row[6],
+                            'Final IA': row[14],
+                            'Final EA': row[15],
+                            # Add more fields as needed
+                        }
+                        marks_list.append(marks_dict)
+                    else:
+                        labmarks_dict = {
+                            'USN' : row[1],
+                            'Subject Code': row[2],
+                            'IA 1':row[3],
+                            'IA 2':row[4],
+                            'IA 3':row[5],
+                            'Record':row[11],
+                            'Observation':row[12],
+                            'Viva':row[13],
+                            'Average IA': row[6],
+                            'Final IA': row[14],
+                            'Final EA': row[15],
+                            # Add more fields as needed
+                        }
+                        labmarks_list.append(labmarks_dict)
+                data = {
+                    'theorymarks': marks_list,
+                    'labmarks': labmarks_list
+                }
+                return JsonResponse({'marks': data})
+            except Exception as e:
+                response['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',response)
+    else:
+        response['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',response)
         
 def AdmViewStudents(request):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMStuViewStudents')
-            results = cursor.fetchall()
-            # Convert results into a list of dictionaries for JSON serialization
-            students_list = []
-            for row in results:
-                student_dict = {
-                    'USN': row[0],
-                    'Name': row[1],
-                    'Gender': row[2],
-                    'Date Of Birth': row[3],
-                    'Email': row[4],
-                    'Phone': row[5],
-                    'Parent/Guardian Contact': row[7]
-                    # Add more fields as needed
-                }
-                students_list.append(student_dict)
-            return JsonResponse({'students': students_list})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+    data = {}
+    if request.method == "GET":
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMStuViewStudents')
+                results = cursor.fetchall()
+                # Convert results into a list of dictionaries for JSON serialization
+                students_list = []
+                for row in results:
+                    student_dict = {
+                        'USN': row[0],
+                        'Name': row[1],
+                        'Gender': row[2],
+                        'Date Of Birth': row[3],
+                        'Email': row[4],
+                        'Phone': row[5],
+                        'Parent/Guardian Contact': row[7]
+                        # Add more fields as needed
+                    }
+                    students_list.append(student_dict)
+                return JsonResponse({'students': students_list})
+            except Exception as e:
+                data['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',data)
+    else:
+        data['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',data)
             
 @csrf_exempt
 def AdmDeleteSubject(request):
+    data = {}
     if request.method == "POST":
         sCodeDel = request.POST.get('subject_code')
         with connection.cursor() as cursor:
@@ -151,102 +180,118 @@ def AdmDeleteSubject(request):
                 # Call the stored procedure
                 cursor.callproc('ADMSubDelete', [sCodeDel])
                 results = cursor.fetchall()                    
-                return JsonResponse({'message': 'Subject deleted successfully'})
+                data['message'] = f'Deletion of the Subject {sCodeDel} was successful!'
+                return render(request,'Admin.html',data)
             except Exception as e:
-                return JsonResponse({'error': str(e)})
+                data['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',data)
     else:
-        return JsonResponse({'error': 'Only POST Requests are allowed'})
+        data['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',data)
 
 
 def AdmViewSubjects(request):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMSubViewDetails')
-            results = cursor.fetchall()
-            # Convert results into a list of dictionaries for JSON serialization
-            subjects_list = []
-            labsubjects_list=[]
-            for row in results:
-                if row[2] == 1:
-                    subject_dict = {
-                        'Subject Code': row[0],
-                        'Subject Title': row[1],
-                        'Semester': row[3],
-                        'Credits': row[5],
-                        'Max IA Marks': row[6],
-                        'Max Quiz Marks': row[12],
-                        'Max Assignment Marks': row[10],
-                        'Average IA Marks': row[9],
-                        'Max Internal Marks': row[17],
-                        'Max External Marks': row[18]
-                        # Add more fields as needed
-                    }
-                    subjects_list.append(subject_dict)
-                else:
-                    labsubject_dict = {
-                        'Subject Code': row[0],
-                        'Subject Title': row[1],
-                        'Semester': row[3],
-                        'Credits': row[5],
-                        'Max IA Marks': row[6],
-                        'Max Record Marks': row[15],
-                        'Max Observation Marks': row[14],
-                        'Max Viva Marks': row[16],
-                        'Average IA Marks': row[9],
-                        'Max Internal Marks': row[17],
-                        'Max External Marks': row[18]
-                        # Add more fields as needed
-                    }
-                    labsubjects_list.append(labsubject_dict)
-            data = {
-                'theorymarks': subjects_list,
-                'labmarks': labsubjects_list
-            }
-            return JsonResponse({'marks': data})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+    response = {}
+    if request.method == "GET":
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMSubViewDetails')
+                results = cursor.fetchall()
+                # Convert results into a list of dictionaries for JSON serialization
+                subjects_list = []
+                labsubjects_list=[]
+                for row in results:
+                    if row[2] == 1:
+                        subject_dict = {
+                            'Subject Code': row[0],
+                            'Subject Title': row[1],
+                            'Semester': row[3],
+                            'Credits': row[5],
+                            'Max IA Marks': row[6],
+                            'Max Quiz Marks': row[12],
+                            'Max Assignment Marks': row[10],
+                            'Average IA Marks': row[9],
+                            'Max Internal Marks': row[17],
+                            'Max External Marks': row[18]
+                            # Add more fields as needed
+                        }
+                        subjects_list.append(subject_dict)
+                    else:
+                        labsubject_dict = {
+                            'Subject Code': row[0],
+                            'Subject Title': row[1],
+                            'Semester': row[3],
+                            'Credits': row[5],
+                            'Max IA Marks': row[6],
+                            'Max Record Marks': row[15],
+                            'Max Observation Marks': row[14],
+                            'Max Viva Marks': row[16],
+                            'Average IA Marks': row[9],
+                            'Max Internal Marks': row[17],
+                            'Max External Marks': row[18]
+                            # Add more fields as needed
+                        }
+                        labsubjects_list.append(labsubject_dict)
+                data = {
+                    'theorymarks': subjects_list,
+                    'labmarks': labsubjects_list
+                }
+                return JsonResponse({'marks': data})
+            except Exception as e:
+                response['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',response)
+    else:
+        response['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',response)
         
 @csrf_exempt        
 def AdmDeleteUser(request):
+    data = {}
     if request.method == "POST":
         del_value = request.POST.get('user_input')
-
-        print(del_value) 
-
         with connection.cursor() as cursor:
             try:
                 cursor.callproc('ADMUserDel', [del_value])
                 results = cursor.fetchall()
-
-                return JsonResponse({'message': 'User deleted successfully'})
+                data['message'] = f'Deletion of the User ID {del_value} was successful!'
+                return render(request,'Admin.html',data)
             except Exception as e:
-                return JsonResponse({'error': str(e)})
+                data['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',data)
     else:
-        return JsonResponse({'error': 'Only POST requests allowed!'})
+        data['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',data)
 
 @csrf_exempt        
 def AdmViewUsers(request):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('ADMUserView')
-            results = cursor.fetchall()
-            # Convert results into a list of dictionaries for JSON serialization
-            users_list = []
-            for row in results:
-                user_dict = {
-                    'User ID': row[6],
-                    'User Email': row[2],
-                    'User Type': row[5],
-                    'Logged in': row[4],
-                    # Add more fields as needed
-                }
-                users_list.append(user_dict)
-            return JsonResponse({'users': users_list})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+    data={}
+    if request.method == "GET":
+        with connection.cursor() as cursor:
+            try:
+                cursor.callproc('ADMUserView')
+                results = cursor.fetchall()
+                # Convert results into a list of dictionaries for JSON serialization
+                users_list = []
+                for row in results:
+                    user_dict = {
+                        'User ID': row[6],
+                        'User Email': row[2],
+                        'User Type': row[5],
+                        'Logged in': row[4],
+                        # Add more fields as needed
+                    }
+                    users_list.append(user_dict)
+                return JsonResponse({'users': users_list})
+            except Exception as e:
+                data['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',data)
+    else:
+        data['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',data)
         
 @csrf_exempt
 def AdmAddEditSubject(request):
+    data={}
     if request.method == 'POST':
         # Retrieve data from the form POST request
         subject_code = request.POST.get('subject_code')
@@ -295,15 +340,18 @@ def AdmAddEditSubject(request):
             try:
                 cursor.callproc('ADMSubAddEditSub', [json_data])
             except Exception as e:
-                return JsonResponse({'error': str(e)})
+                data['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',data)
         
-        return JsonResponse({"message": "Data submitted successfully."})
-
+        data['message'] = f'Addition/Updation of Subject {subject_code} was successful!'
+        return render(request,'Admin.html',data)
     else:
-        return JsonResponse({"error": "Only POST requests are allowed."})
+        data['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',data)
 
 @csrf_exempt
 def ADMFacViewMapping(request):
+    response ={}
     if request.method == 'GET':
         with connection.cursor() as cursor:
             try:
@@ -324,12 +372,15 @@ def ADMFacViewMapping(request):
                     })
                 return JsonResponse({'data': data})
             except Exception as e:
-                return JsonResponse({'error': str(e)})
+                response['message'] = f'Something went wrong! {str(e)}'
+                return render(request,'Admin.html',response)
     else:
-        return JsonResponse({'error': 'Only GET requests are allowed.'})
+        response['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',response)
     
 @csrf_exempt
 def ADMUserAddEdit(request):
+    data={}
     if request.method == 'POST':
         try:
             user_type = request.POST.get('user_type')
@@ -346,6 +397,8 @@ def ADMUserAddEdit(request):
                 Phone = request.POST.get('Phone')
                 Semester = request.POST.get('Semester')
                 Section = request.POST.get('Section')
+
+                user_key = usn
 
                 json_data = json.dumps({
                 "usn": usn,
@@ -367,6 +420,8 @@ def ADMUserAddEdit(request):
                 userEmail = request.POST.get('Email')
                 userPassword = request.POST.get('Password')
                 Phone = request.POST.get('Phone')
+
+                user_key = facultyID
 
                 json_data = json.dumps({
                 "facultyID": facultyID,
@@ -394,9 +449,12 @@ def ADMUserAddEdit(request):
                     cursor.callproc('ADMUserMapStuSem',[json_data1])
                     results = cursor.fetchall()
                 
-            return JsonResponse({"message": "Data submitted successfully."})
+            data['message'] = f'Addition/Updation of {user_type} {user_key} was successful!'
+            return render(request,'Admin.html',data)
         
         except Exception as e:
-            return JsonResponse({"error": str(e)})
+            data['message'] = f'Something went wrong! {str(e)}'
+            return render(request,'Admin.html',data)
     else:
-        return JsonResponse({"error": "Only POST requests are allowed."})
+        data['message'] = f'Illegal Action!'
+        return render(request,'Admin.html',data)

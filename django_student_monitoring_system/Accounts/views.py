@@ -10,13 +10,11 @@ import json
 from django.conf import settings
 
 def UserProfile(user_type_key): 
-    print(user_type_key)
     try:
         with connection.cursor() as cursor:
             cursor.callproc('SPUserProfile', [user_type_key])
             # Fetch all the results
             results = cursor.fetchall()
-            print(results)
             # Close the cursor explicitly
 
             if results:
@@ -25,6 +23,7 @@ def UserProfile(user_type_key):
                 columns = [col[0] for col in cursor.description]
                 # Convert row to dictionary
                 profile_data = dict(zip(columns, row))
+                profile_data['message'] = "Welcome Admin!"
                 return profile_data 
             else:
                 return None
@@ -72,9 +71,7 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                             return render(request,"FacultyDash.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     
                     elif user_data['user_type'] == 'Student':
-                        print(user_data)
                         data = UserProfile(user_data['user_type_key']) #WE SEND USN TO USER PROFILE TO GET BACK THE DATA OF THE PROFILE OF THE STUDENT
-                        print(data)
                         if data == None:
                             return JsonResponse({'message': 'No user profile was found with the given credentials'}, status=500)
                         elif data == 500:
@@ -89,7 +86,6 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         elif data == 500:
                             return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
-                            print(data)
                             return render(request,"Admin.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     else:
                         return JsonResponse({'authenticated': True, 'user_data': user_data})
@@ -106,22 +102,6 @@ def InsertUserDetails(request): #path is: localhost:8000/accounts/register-user/
     if request.method == 'POST':
         user_type = request.POST.get('user_type')  # Assuming user_type is passed from the form
         json_data = request.POST.get('json_data')  # Assuming json_data is passed from the form
-
-
-        # ~~~~~~~~~~~~~~~
-        #to check if the post request works:
-        # data = {
-        #         "facultyID": "FAC011",
-        #         "facultyName": "Mrs.Meenakshi",
-        #         "gender": "F",
-        #         "facultyPhone": "7803210",
-        #         "userEmail": "meenaki@gmal.com",
-        #         "userPassword": "21356",
-        #         "roleId_id": "2"
-        #         }
-        
-        # json_data = json.dumps(data)
-        # ~~~~~~~~~~~~~~~
         
         with connection.cursor() as cursor:
             cursor.callproc('SPInsertUserDetails', [user_type, json_data])
@@ -145,3 +125,13 @@ def logout_view(request):
         cursor.callproc('SPLogout', [user_type_key])
         connection.commit()
     return redirect('Login') 
+
+def checklog(user_key):
+    with connection.cursor() as cursor:
+        cursor.callproc('SPGetLogValue', [user_key])
+        result = cursor.fetchall()
+        print(result)
+        if result and result[0][0] == 1:
+            return 1
+        else:
+            return 0
