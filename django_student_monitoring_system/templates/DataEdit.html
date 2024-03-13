@@ -182,11 +182,36 @@
 
         // Function to send data to the server for processing
         function sendDataToServer(data) {
-            // Example: Send data to the server using AJAX
-            // Replace this with your actual AJAX call to update the database
-            // Here, 'data' represents the table data extracted from the Excel file
-            // You can send 'data' to the server and handle it accordingly on the server side
-            console.log('Sending data to server:', data);
+            console.log(data);
+            // Define the URL
+            if(displayValue == "marks")
+                var editUrl = "{% url 'InsertStudentMarks' %}";
+            else if(displayValue == "attendance")
+                var editUrl = "{% url 'InsertStudentAttendance' %}";
+            else
+                console.log("Error! Illegal Action!");
+
+            // Define the request body
+            var requestBody = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+        
+            // Make the POST request using fetch
+            fetch(editUrl, requestBody)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Data sent successfully to: '+ editUrl);
+                    } else {
+                        console.error('Error:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         // Add event listener to the file input field

@@ -50,8 +50,6 @@ def get_student_marks(request):
             subjects = cursor.fetchall()
             subjects_data = [dict(zip(columns, subject)) for subject in subjects]
 
-            print(subjects_data)
-
         # Initialize empty lists to store marks and attendance
         marks_data = []
         labmarks_data = []
@@ -117,10 +115,8 @@ def get_student_attendance(request):
                 cursor.callproc('SPGetSubjectAttendance', [subject_code])
                 attendance = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
-                print(columns)
                 attendance_data.extend(attendance)
         Attdata = [dict(zip(columns, row)) for row in attendance_data]
-        print(Attdata)
         for data in Attdata:
             for key, value in data.items():
                 if value is None:

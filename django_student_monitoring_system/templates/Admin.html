@@ -59,6 +59,21 @@
         </div>
     </div>
     <div id="main-div">
+        <div class="profile-card">
+            <div class="profile-img">
+                <img src="{% static 'images/admin.png' %}" alt="Admin Icon">
+            </div>
+            <div class="profile-info">
+                <h2>{{NAME}}</h2>
+                <ul>
+                    <li><strong>Faculty ID:</strong> {{FID}}</li>
+                    <li><strong>Access Provided:</strong> {{USERTYPE}}</li>
+                    <li><strong>Gender:</strong> {{GENDER}}</li>
+                    <li><strong>Phone:</strong> {{PHONE}}</li>
+                    <li><strong>Email:</strong> {{EMAIL}}</li>
+                </ul>
+            </div>
+        </div>
       <!-- Other content of the dashboard goes here -->
     </div>
   {% include 'footer.html'%}

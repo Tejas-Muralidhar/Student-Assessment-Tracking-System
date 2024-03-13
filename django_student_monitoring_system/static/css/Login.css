@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background-color: #0a5ba7e3;
+    background-color: #135597;
     position: relative;
 }
 
@@ -18,7 +18,7 @@ body {
 }
 
 #login-form {
-    background-color: #d1e3fc;
+    background-color: rgb(161, 210, 226);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     padding: 20px;
@@ -33,14 +33,14 @@ body {
     border: 1px solid black;
     border-radius: 5px;
     box-sizing: border-box;
-    background-color: #dce8fa;
+    background-color: rgb(186, 219, 230);
 }
 
 #login-form input[type="email"]:focus,
 #login-form input[type="password"]:focus {
     outline: none;
     border-color: #09015f;
-    background-color: whitesmoke;
+    background-color: rgb(255, 250, 250);
 }
 
 #login-btn {

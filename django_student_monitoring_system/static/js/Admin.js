@@ -201,8 +201,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     return; // Skip the header row
                 }
 
-                var theoryMarksCell = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.theorymarks[0]).indexOf(selectedColumn) + 1) + ")");
-                var labMarksCell = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.labmarks[0]).indexOf(selectedColumn) + 1) + ")");
+                var table = document.querySelectorAll('table')
+                if (table[0] !== undefined)
+                    var theoryMarksCell = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.theorymarks[0]).indexOf(selectedColumn) + 1) + ")");
+                if (table[1] !== undefined)
+                    var labMarksCell = row.querySelector("td:nth-child(" + (Object.keys(marksData.marks.labmarks[0]).indexOf(selectedColumn) + 1) + ")");
 
                 // Check if the cell exists in either theory marks or lab marks columns
                 var cell = theoryMarksCell || labMarksCell;
@@ -219,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         }
+
 
         // Return the new div element
         return newDiv;
@@ -325,7 +329,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     return; // Skip the header row
                 }
 
-                var cell = row.querySelector("td:nth-child(" + (Object.keys(attendanceData.attendance[0]).indexOf(selectedColumn) + 1) + ")");
+                var table = document.querySelectorAll('table')
+                if (table[0] !== undefined)
+                    var cell = row.querySelector("td:nth-child(" + (Object.keys(attendanceData.attendance[0]).indexOf(selectedColumn) + 1) + ")");
 
                 if (cell) {
                     var cellText = cell.textContent.toUpperCase();
@@ -441,7 +447,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     return; // Skip the header row
                 }
 
-                var cell = row.querySelector("td:nth-child(" + (Object.keys(studentsData.students[0]).indexOf(selectedColumn) + 1) + ")");
+                var table = document.querySelectorAll('table')
+                if (table[0] !== undefined)
+                    var cell = row.querySelector("td:nth-child(" + (Object.keys(studentsData.students[0]).indexOf(selectedColumn) + 1) + ")");
 
                 if (cell) {
                     var cellText = cell.textContent.toUpperCase();
@@ -716,7 +724,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     return; // Skip the header row
                 }
 
-                var cell = row.querySelector("td:nth-child(" + (Object.keys(facultyData.faculty[0]).indexOf(selectedColumn) + 1) + ")");
+                var table = document.querySelectorAll('table')
+
+                if (table[0] !== undefined)
+                    var cell = row.querySelector("td:nth-child(" + (Object.keys(facultyData.faculty[0]).indexOf(selectedColumn) + 1) + ")");
 
                 if (cell) {
                     var cellText = cell.textContent.toUpperCase();
@@ -839,7 +850,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     return; // Skip the header row
                 }
 
-                var cell = row.querySelector("td:nth-child(" + (Object.keys(userData.users[0]).indexOf(selectedColumn) + 1) + ")");
+                var table = document.querySelectorAll('table')
+
+                if (table[0] !== undefined)
+                    var cell = row.querySelector("td:nth-child(" + (Object.keys(userData.users[0]).indexOf(selectedColumn) + 1) + ")");
 
                 if (cell) {
                     var cellText = cell.textContent.toUpperCase();
@@ -1051,8 +1065,8 @@ document.addEventListener("DOMContentLoaded", function () {
         form.style.borderRadius = "10px"; // Rounded corners for the form
 
         // Create labels and inputs for each detail
-        var labels = ["Faculty ID:", "Subject Code:", "Section:", "Semester:"];
-        var inputNames = ["faculty_id", "subject_code", "section", "semester"];
+        var labels = ["Faculty ID:", "Subject Code:", "Semester:", "Section:"];
+        var inputNames = ["faculty_id", "subject_code", "semester", "section"];
 
         for (var i = 0; i < labels.length; i++) {
             var label = document.createElement("label");
@@ -1077,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.addEventListener('input', function () {
                     this.value = this.value.toUpperCase();
                 });
-            } else if (i === 2) { // If it's the "Section" field
+            } else if (i === 3) { // If it's the "Section" field
                 input.maxLength = 1;
                 // Check if section is a letter
                 input.addEventListener('input', function () {
@@ -1092,7 +1106,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.addEventListener('blur', function () {
                     this.value = this.value.toUpperCase();
                 });
-            } else if (i === 3) { // If it's the "Semester" field
+            } else if (i === 2) { // If it's the "Semester" field
                 input.type = "number";
                 input.min = 1;
                 input.max = 8;
@@ -1217,7 +1231,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     return; // Skip the header row
                 }
 
-                var cell = row.querySelector("td:nth-child(" + (Object.keys(data.data[0]).indexOf(selectedColumn) + 1) + ")");
+                var table = document.querySelectorAll('table')
+
+                if (table[0] !== undefined)
+                    var cell = row.querySelector("td:nth-child(" + (Object.keys(data.data[0]).indexOf(selectedColumn) + 1) + ")");
 
                 if (cell) {
                     var cellText = cell.textContent.toUpperCase();

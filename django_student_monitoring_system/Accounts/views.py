@@ -86,6 +86,7 @@ def UserAuthorization(request): #path is: localhost:8000/accounts/user-auth/
                         elif data == 500:
                             return JsonResponse({'message': 'Server Error. Try again...'}, status=500)
                         else:
+                            print(data)
                             return render(request,"Admin.html",data) #ALSO SEND BACK data so that we can use those variables in the HTML PAGE
                     else:
                         return JsonResponse({'authenticated': True, 'user_data': user_data})

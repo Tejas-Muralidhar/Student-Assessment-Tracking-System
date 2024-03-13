@@ -74,13 +74,12 @@ body {
     color: black;
 }
 
-/* #main-div {
-    background-image: url('/static/images/rnsit.jpg');
-    height: 100%;
-    width: 100vw;
-    background-repeat: no-repeat;
+#main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-} */
+}
 
 .logout-btn {
     background-color: #09015f;
@@ -268,4 +267,52 @@ caption {
     bottom: 30px;
     right: 30px;
     z-index: 9999;
+}
+
+.profile-card {
+    margin: 5%;
+    margin-top: 3.5%;
+    padding: 1%;
+    background-color: #133174;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .5);
+    border-radius: 8px;
+    height: auto;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.profile-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-img img {
+    width: 100px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.profile-info {
+    padding: 20px;
+    text-align: center;
+    width: max-content;
+}
+
+.profile-info h2 {
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.profile-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-info ul li {
+    margin-bottom: 5px;
+    color: #000;
 }

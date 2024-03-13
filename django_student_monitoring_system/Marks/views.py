@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.db import connection
@@ -6,19 +7,78 @@ from openpyxl import Workbook
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def InsertStudentMarks(request): #edit marks button
+def InsertStudentMarks(request):
     if request.method == 'POST':
+        print("Hello")
         try:
-            data = request.body.decode('utf-8')
-            with connection.cursor() as cursor:
-                cursor.callproc('SPInsertStudentMarks', [data])
-                return JsonResponse({'message': 'Student marks inserted successfully'}, status=200)
+            # Decode the request body
+            data = json.loads(request.body)
+            print(data)
+
+            # Assuming data is a list of lists
+            headers = data[0]  # Extract headers from the first row
+            result = []
+
+            # Iterate over each row starting from the second row
+            for row in data[1:]:
+                # Create a dictionary for the current row
+                row_dict = {}
+                for i, header in enumerate(headers):
+                    # Assign data to the corresponding header key in the dictionary
+                    row_dict[header] = row[i]
+                # Append the dictionary to the result list
+                result.append(row_dict)
+
+            # Now, result contains a list of dictionaries where each dictionary represents a row of data
+            print(result)
+
+            # Iterate over the rows starting from the second row (index 1)
+            for row in result:
+                print(row)
+                # Extract data from each row
+                usn = row.get('USN')
+                print(usn)
+                subject_code = row.get('SubjectCode')
+                ia1_score = row.get('IA1Score')
+                ia2_score = row.get('IA2Score')
+                ia3_score = row.get('IA3Score')
+                quiz1_score = row.get('Quiz1Score')
+                quiz2_score = row.get('Quiz2Score')
+                assignment1_score = row.get('Assignment1Score')
+                assignment2_score = row.get('Assignment2Score')
+                labrecord_score = row.get('LabRecordScore')
+                labviva_score = row.get('LabVivaScore')
+                labobservation_score = row.get('LabObservationScore')
+
+                # Convert data to JSON string
+                json_data = json.dumps({
+                    "usn": usn,
+                    "subjectCode": subject_code,
+                    "IA1Score": ia1_score,
+                    "IA2Score": ia2_score,
+                    "IA3Score": ia3_score,
+                    "Quiz1Score": quiz1_score,
+                    "Quiz2Score": quiz2_score,
+                    "Assignment1Score": assignment1_score,
+                    "Assignment2Score": assignment2_score,
+                    "labRecordMarks": labrecord_score,
+                    "labObservationMarks": labobservation_score,
+                    "labVivaMarks": labviva_score
+                })
+                print(json_data)
+                # Call the stored procedure with the JSON data
+                with connection.cursor() as cursor:
+                    print("Going to SP")
+                    cursor.callproc('SPInsertStudentMarks', [json_data])
+                    print("Came back from SP")
+                print("Last line of loop")
+            return JsonResponse({'message': 'Student marks inserted successfully'}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
-    
-    
+
+
 
 def DownloadStudentMarksWithMax(request):
     if request.method == 'GET':

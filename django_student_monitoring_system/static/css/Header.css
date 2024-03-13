@@ -7,6 +7,10 @@
     font-weight: 500;
 }
 
+h1 {
+    color: whitesmoke;
+}
+
 #navbar {
     display: flex;
     justify-content: space-between;
