@@ -273,7 +273,7 @@ caption {
     margin: 5%;
     margin-top: 3.5%;
     padding: 1%;
-    background-color: #133174;
+    background-color: #170e80;
     box-shadow: 0 4px 6px rgba(0, 0, 0, .5);
     border-radius: 8px;
     height: auto;
@@ -294,6 +294,7 @@ caption {
     width: 100px;
     height: auto;
     margin-top: 10px;
+
 }
 
 .profile-info {
@@ -304,7 +305,7 @@ caption {
 
 .profile-info h2 {
     margin-bottom: 10px;
-    color: #000000;
+    color: #ffffff;
 }
 
 .profile-info ul {
@@ -314,5 +315,5 @@ caption {
 
 .profile-info ul li {
     margin-bottom: 5px;
-    color: #000;
+    color: #ffffff;
 }
